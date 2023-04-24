@@ -5,7 +5,7 @@ import Form from "./Form";
 
 import { Link } from "react-router-dom";
 
-const SingIn = () => {
+const SignIn = () => {
   const getUserData = async (email: string, password: string) => {};
   return (
     <div>
@@ -18,4 +18,4 @@ const SingIn = () => {
   );
 };
 
-export default SingIn;
+export default SignIn;

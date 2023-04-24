@@ -1,0 +1,27 @@
+@import "./styles/base";
+
+:root {
+  //COLORS
+
+  --color-white: #fff;
+  --color-white-dark: #f7f7f7;
+  --color-white-dark-rgb: 247, 247, 247;
+  --color-black: #000000;
+  --color-black-light: #363636;
+  --color-black-light-rgb: 54, 54, 54;
+  --color-grey: #777777;
+  --color-grey-light: #babecc;
+  --color-grey-rgb: 119, 119, 119;
+
+  //FONT
+
+  --default-font: 1.6rem;
+
+  //BOARD
+  --color-board-default: #282c43;
+  --color-board-group-default: #49505e;
+
+  //alert
+  --color-success: rgb(61 235 61);
+  --color-error: rgb(255 24 24);
+}

@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import Form from "./Form";
 
 const SignUp = () => {
-  const getUserData = async (email: string, password: string) => {};
+  const getUserData = async (
+    email: string,
+    password: string,
+    uName: string
+  ) => {};
   return (
     <>
       <p className={styles["form__title"]}>Sign Up</p>

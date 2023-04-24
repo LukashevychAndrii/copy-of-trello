@@ -6,7 +6,15 @@ import Form from "./Form";
 import { Link } from "react-router-dom";
 
 const SignIn = () => {
-  const getUserData = async (email: string, password: string) => {};
+  const getUserData = async (
+    email: string,
+    password: string,
+    uName: string
+  ) => {
+    console.log(email);
+    console.log(password);
+    console.log(uName);
+  };
   return (
     <div>
       <p className={styles["form__title"]}>Sign In</p>

@@ -3,12 +3,17 @@ import styles from "./Form.module.scss";
 
 import { ReactComponent as PasswordIcon } from "../../img/SVG/lock.svg";
 import { ReactComponent as EmailIcon } from "../../img/SVG/mail.svg";
+import { ReactComponent as UserIcon } from "../../img/SVG/user-o.svg";
 
 interface props {
-  getUserData(email: string, password: string): void;
+  getUserData(email: string, password: string, uName: string): void;
 }
 
 const Form: React.FC<props> = ({ getUserData }) => {
+  const [uName, setUName] = React.useState("");
+  const [uNameTouched, setUNameTouched] = React.useState(false);
+  const [uNameError, setUNameError] = React.useState("Username is too short!");
+
   const [email, setEmail] = React.useState("");
   const [emailTouched, setEmailTouched] = React.useState(false);
   const [emailError, setEmailError] = React.useState(
@@ -24,12 +29,29 @@ const Form: React.FC<props> = ({ getUserData }) => {
   const [valid, setValid] = React.useState(false);
 
   React.useEffect(() => {
-    if (!emailError && !passwordError) {
+    if (!emailError && !passwordError && !uNameError) {
       setValid(true);
     } else {
       setValid(false);
     }
-  }, [setValid, emailError, getUserData, email, password, passwordError]);
+  }, [
+    setValid,
+    emailError,
+    getUserData,
+    email,
+    password,
+    passwordError,
+    uNameError,
+  ]);
+
+  function handleUNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setUName(e.target.value);
+    if (e.target.value.trim().length < 6) {
+      setUNameError("Username is too short!");
+    } else {
+      setUNameError("");
+    }
+  }
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
@@ -58,16 +80,41 @@ const Form: React.FC<props> = ({ getUserData }) => {
       case "password":
         setPasswordTouched(true);
         break;
+      case "uname":
+        setUNameTouched(true);
+        break;
     }
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    getUserData(email, password);
+    getUserData(email, password, uName);
   }
 
   return (
     <form className={styles["form"]} onSubmit={handleSubmit}>
+      <div className={styles["form__element"]}>
+        {uNameTouched && uNameError && (
+          <p className={styles["form__error"]}>{uNameError}</p>
+        )}
+        <input
+          value={uName}
+          onChange={handleUNameChange}
+          onBlur={handleBlur}
+          className={`${styles["form__input"]} ${
+            uNameTouched && uNameError && styles["form__input--error"]
+          }`}
+          type="text"
+          id="uname"
+          name="uname"
+          required
+          placeholder="Username"
+        />
+        <span className={styles["form__input--focus"]}></span>
+        <label className={styles["form__label"]} htmlFor="email">
+          <UserIcon />
+        </label>
+      </div>
       <div className={styles["form__element"]}>
         {emailTouched && emailError && (
           <p className={styles["form__error"]}>{emailError}</p>

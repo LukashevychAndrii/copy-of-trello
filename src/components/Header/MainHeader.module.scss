@@ -1,0 +1,19 @@
+.header {
+  font-size: 2.5rem;
+  padding: 3rem 6rem;
+  color: var(--color-white);
+  background-color: var(--color-board-default);
+  display: flex;
+  justify-content: space-between;
+  & > a {
+    color: var(--color-white);
+    text-decoration: none;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  & &--active {
+    opacity: 1;
+  }
+}

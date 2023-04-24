@@ -6,11 +6,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout/RootLayout";
 import BoardPage from "./pages/BoardPage";
 
+import SignUp from "./components/Acc/SignUp";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ index: true, element: <BoardPage /> }],
+    children: [
+      { index: true, element: <BoardPage /> },
+      { path: "sign-up", element: <SignUp /> },
+    ],
   },
 ]);
 

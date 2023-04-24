@@ -1,0 +1,152 @@
+.form {
+  color: var(--color-white-dark);
+  max-width: 40rem;
+  margin: auto;
+  font-size: var(--default-font);
+  padding: 2.5rem;
+  padding-top: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5.5rem;
+
+  &__element {
+    position: relative;
+  }
+  & svg {
+    width: 4rem;
+  }
+  &__input {
+    padding: 1.2rem;
+    padding-left: 5rem;
+    position: relative;
+    width: 100%;
+    font-size: var(--default-font);
+    font-weight: 600;
+    border-radius: 3px;
+    border: none;
+    position: relative;
+    transition: all 0.2s ease-in;
+    box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.4);
+    &--error ~ label {
+      fill: var(--color-error) !important;
+    }
+    &--error ~ &--focus::after {
+      background-color: var(--color-error);
+    }
+
+    &--focus::before {
+      content: "";
+      position: absolute;
+      top: 95%;
+      z-index: -1;
+      left: 0;
+      width: 100%;
+      height: 0.7rem;
+
+      border-radius: 3px;
+      border: 1px solid;
+      border-color: var(--color-white-dark);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &--focus::after {
+      content: "";
+      position: absolute;
+      top: 95%;
+      z-index: -1;
+      left: 0;
+      width: 100%;
+      height: 0.7rem;
+      background-color: var(--color-success);
+      border-radius: 3px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      transform: scaleX(0);
+      transition: all 0.4s;
+      transform-origin: left;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &__input:focus {
+    outline: none;
+    padding-left: 1.2rem;
+
+    &--focus {
+      transform: scaleX(1);
+    }
+  }
+  &__input:focus ~ &__input--focus::after {
+    transform: scale(1);
+  }
+
+  &__input:focus::placeholder {
+    color: transparent;
+  }
+
+  &__input:focus ~ &__label,
+  &__input:not(:placeholder-shown) ~ &__label {
+    transform: translate(0, -6rem);
+    fill: var(--color-white-dark);
+  }
+  &__input:not(:placeholder-shown) {
+    padding-left: 1.2rem;
+  }
+
+  &__submit-btn {
+    align-self: center;
+    font-size: inherit;
+    background-color: transparent;
+    color: var(--color-white-dark);
+    border: none;
+    border: 1px solid var(--color-white-dark);
+    border-radius: 0.5rem;
+    padding: 2rem 5rem;
+    transition: padding 0.2s;
+    cursor: pointer;
+    box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.3);
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    &:not(:disabled):hover {
+      padding: 2rem 7.5rem;
+    }
+  }
+  &__title {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--color-white-dark);
+    padding-top: 2rem;
+  }
+  &__text {
+    padding-top: 1.5rem;
+    font-size: var(--default-font);
+    color: var(--color-white-dark);
+    text-align: center;
+    & a {
+      color: var(--color-white-dark);
+      font-size: 1.6rem;
+      display: inline-block;
+      transition: transform 0.2s;
+      &:hover {
+        transform: scale(1.1) translateY(-0.3rem);
+      }
+    }
+  }
+  &__error {
+    color: var(--color-error);
+    display: block;
+    position: absolute;
+    top: -3.5rem;
+    left: 5rem;
+  }
+}

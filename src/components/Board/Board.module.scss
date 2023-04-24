@@ -1,0 +1,35 @@
+.board {
+  background-color: var(--color-board-default);
+  height: 100vh;
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fill, 300px);
+  padding-top: 5rem;
+  padding-left: 5rem;
+  font-size: var(--default-font);
+
+  &__group {
+    background-color: var(--color-board-group-default);
+    color: var(--color-white);
+    height: max-content;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 5px;
+    &__title {
+      font-size: 2.3rem;
+    }
+    &__item {
+      background-color: var(--color-white);
+      border-radius: 5px;
+      color: var(--color-black);
+      padding: 1rem;
+      cursor: grab;
+      &--dragging {
+        color: var(--color-board-default);
+        background-color: var(--color-board-default);
+      }
+    }
+  }
+}

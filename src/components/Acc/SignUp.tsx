@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { app } from "../../firebase";
 import { useAppDispatch } from "../../hooks/redux";
 import { setUser } from "../../store/slices/user-slice";
+import { createAlert } from "../../store/slices/alert-slice";
+import getErrorDetails from "../../utils/getErrorDetails";
 
 interface anyKey {
   [key: string]: any;
@@ -43,10 +45,18 @@ const SignUp = () => {
             uName: uName,
           })
         );
+        dispatch(
+          createAlert({
+            alertTitle: "Success!",
+            alertText: "You successfully creaated new account",
+            alertError: false,
+          })
+        );
+
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(createAlert(getErrorDetails(error.code)));
       });
   };
   return (

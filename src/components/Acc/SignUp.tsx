@@ -7,12 +7,16 @@ import { getDatabase, ref, update } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { app } from "../../firebase";
+import { useAppDispatch } from "../../hooks/redux";
+import { setUser } from "../../store/slices/user-slice";
 
 interface anyKey {
   [key: string]: any;
 }
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const getUserData = async (
     email: string,
     password: string,
@@ -31,6 +35,14 @@ const SignUp = () => {
         const updates: anyKey = {};
         updates["/users/" + user.uid] = data;
         await update(ref(db), updates);
+        dispatch(
+          setUser({
+            email: email,
+            password: password,
+            id: user.uid,
+            uName: uName,
+          })
+        );
         navigate("/");
       })
       .catch((error) => {

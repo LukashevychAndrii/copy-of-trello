@@ -9,6 +9,8 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setUser } from "../../store/slices/user-slice";
 import { get, getDatabase, ref } from "@firebase/database";
 import { app } from "../../firebase";
+import { createAlert } from "../../store/slices/alert-slice";
+import getErrorDetails from "../../utils/getErrorDetails";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
@@ -36,17 +38,36 @@ const SignIn = () => {
                   id: user.uid,
                 })
               );
+              dispatch(
+                createAlert({
+                  alertTitle: "Success!",
+                  alertText: "You successfully sign in",
+                  alertError: false,
+                })
+              );
               navigate("/");
             } else {
-              console.log("Incorrect username");
+              dispatch(
+                createAlert({
+                  alertTitle: "Wrong username!",
+                  alertText: "Make sure you have entered correct username",
+                  alertError: true,
+                })
+              );
             }
           } else {
-            console.log("no data");
+            dispatch(
+              createAlert({
+                alertTitle: "Error!",
+                alertText: "Database error",
+                alertError: true,
+              })
+            );
           }
         });
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(createAlert(getErrorDetails(error.code)));
       });
   };
   return (

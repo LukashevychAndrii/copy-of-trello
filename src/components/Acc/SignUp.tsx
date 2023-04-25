@@ -35,7 +35,7 @@ const SignUp = () => {
         };
 
         const updates: anyKey = {};
-        updates["/users/" + user.uid] = data;
+        updates["/users/" + user.uid + "/userdata"] = data;
         await update(ref(db), updates);
         dispatch(
           setUser({
@@ -48,7 +48,7 @@ const SignUp = () => {
         dispatch(
           createAlert({
             alertTitle: "Success!",
-            alertText: "You successfully creaated new account",
+            alertText: "You successfully created new account",
             alertError: false,
           })
         );

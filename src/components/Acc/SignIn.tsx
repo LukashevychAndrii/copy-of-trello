@@ -25,7 +25,7 @@ const SignIn = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         const db = getDatabase(app);
-        const userRef = ref(db, `users/${user.uid}`);
+        const userRef = ref(db, `users/${user.uid}/userdata`);
         get(userRef).then((snapshot) => {
           if (snapshot.exists()) {
             const reternedData = snapshot.val();

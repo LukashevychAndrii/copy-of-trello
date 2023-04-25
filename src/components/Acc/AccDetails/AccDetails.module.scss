@@ -1,0 +1,11 @@
+.acc-details {
+  background-color: var(--color-white-dark);
+  font-size: var(--default-font);
+  width: 45%;
+  padding: 2.5rem 3rem;
+  margin: 0 auto;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 2.5rem;
+}

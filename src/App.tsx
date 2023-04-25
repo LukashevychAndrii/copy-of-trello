@@ -8,6 +8,7 @@ import BoardPage from "./pages/BoardPage";
 
 import SignUp from "./components/Acc/SignUp";
 import SignIn from "./components/Acc/SignIn";
+import AccDetails from "./components/Acc/AccDetails/AccDetails";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { index: true, element: <BoardPage /> },
       { path: "sign-up", element: <SignUp /> },
       { path: "sign-in", element: <SignIn /> },
+      { path: "acc-details", element: <AccDetails /> },
     ],
   },
 ]);

@@ -1,0 +1,60 @@
+.alert-window {
+  background-color: var(--color-black);
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  z-index: 1000;
+  font-size: var(--default-font);
+  color: var(--color-white-dark);
+  padding: 3rem;
+  padding-right: 4rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  animation: alertWindowAppearance ease 0.5s;
+
+  &--close {
+    display: none;
+  }
+  &__icon {
+    &--success {
+      fill: var(--color-success);
+      width: 3rem;
+      height: 3rem;
+    }
+    &--error {
+      fill: var(--color-error);
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+  &__title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  &__close-btn {
+    font-size: 2.5rem;
+    font-weight: 600;
+    position: absolute;
+    top: 0.8rem;
+    right: 1.5rem;
+    opacity: 0.5;
+    cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes alertWindowAppearance {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

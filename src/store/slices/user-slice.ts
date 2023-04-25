@@ -22,7 +22,6 @@ const userSlice = createSlice({
       state.id = action.payload.id;
       state.password = action.payload.password;
       state.uName = action.payload.uName;
-      console.log(action.payload);
     },
     removeUser(state) {
       state.email = null;

@@ -1,0 +1,56 @@
+.add-btn {
+  border: none;
+  font-size: 1.3rem;
+  width: max-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  color: var(--color-white-dark);
+  border-radius: 2rem;
+  gap: 1.5rem;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    transform: translateY(-0.2rem);
+  }
+  &__plus {
+    font-size: inherit;
+  }
+}
+.addItemInput {
+  word-wrap: break-word;
+}
+.new-item__form {
+  opacity: 0.8;
+  &__btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+  }
+  &__add-btn {
+    cursor: pointer;
+    padding: 1rem 3rem;
+    background-color: var(--color-white-dark);
+    border: none;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.2s;
+    &:hover {
+      transform: translateY(-0.2rem);
+    }
+  }
+  &__close-btn {
+    cursor: pointer;
+    font-size: 2rem;
+    color: var(--color-white);
+    transition: all 0.2s;
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+}

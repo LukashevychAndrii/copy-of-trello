@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Board.module.scss";
 
 import AddNewColumn from "./AddNewColumn";
+import AddNewColumnItem from "./AddNewColumnItem";
 
 export interface dataI {
   title: string;
@@ -87,6 +88,16 @@ const Board = () => {
   function getNewList(newList: dataI) {
     setList([...list, newList]);
   }
+  function getNewListItem(newItem: string, index: number) {
+    setList((prev) => {
+      let newList: dataI[] = [...prev];
+      newList[index].items.push(newItem);
+      return newList;
+    });
+  }
+  React.useEffect(() => {
+    console.log(list);
+  }, [list]);
 
   return (
     <div className={styles["board"]}>
@@ -126,6 +137,10 @@ const Board = () => {
                 {groupItem}
               </div>
             ))}
+            <AddNewColumnItem
+              index={groupIndex}
+              getNewListItem={getNewListItem}
+            />
           </div>
         ))}
       <AddNewColumn getNewList={getNewList} />

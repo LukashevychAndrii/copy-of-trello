@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getAuth, signOut } from "firebase/auth";
 import { createAlert } from "../../../store/slices/alert-slice";
 import { useNavigate } from "react-router";
+import { removeUser } from "../../../store/slices/user-slice";
 
 const AccDetails = () => {
   const userName = useAppSelector((state) => state.user.uName);
@@ -24,6 +25,7 @@ const AccDetails = () => {
             alertError: false,
           })
         );
+        dispatch(removeUser());
         navigate("/");
       })
       .catch((error) => {

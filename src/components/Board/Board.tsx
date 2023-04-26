@@ -3,6 +3,11 @@ import styles from "./Board.module.scss";
 
 import AddNewColumn from "./AddNewColumn";
 import AddNewColumnItem from "./AddNewColumnItem";
+import { getDatabase, ref, set } from "firebase/database";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { createAlert } from "../../store/slices/alert-slice";
+import getErrorDetails from "../../utils/getErrorDetails";
+import { AppDispatch } from "../../store";
 
 export interface dataI {
   title: string;
@@ -22,10 +27,31 @@ interface dragItem {
   groupItemIndex: number;
 }
 
-const Board = () => {
-  const data: dataI[] = [{ title: "1", items: ["1"] }];
+function updateUsersTodos(
+  data: dataI[],
+  dispatch: AppDispatch,
+  userID: string
+) {
+  const db = getDatabase();
+  const dbRef = ref(db, `users/${userID}/todos`);
+  set(dbRef, data).catch((error) => {
+    dispatch(createAlert(getErrorDetails(error.code)));
+  });
+}
 
-  const [list, setList] = React.useState(data);
+const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
+  const userID = useAppSelector((state) => state.user.id);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    if (userID) {
+      setList(todos);
+    } else {
+      setList([]);
+    }
+  }, [todos, userID]);
+
+  const [list, setList] = React.useState(todos);
   const [dragging, setDragging] = React.useState(false);
 
   const dragItem = React.useRef<dragItem | null>();
@@ -87,17 +113,16 @@ const Board = () => {
 
   function getNewList(newList: dataI) {
     setList([...list, newList]);
+    if (userID) updateUsersTodos([...list, newList], dispatch, userID);
   }
   function getNewListItem(newItem: string, index: number) {
     setList((prev) => {
       let newList: dataI[] = [...prev];
       newList[index].items.push(newItem);
+      if (userID) updateUsersTodos(newList, dispatch, userID);
       return newList;
     });
   }
-  React.useEffect(() => {
-    console.log(list);
-  }, [list]);
 
   return (
     <div className={styles["board"]}>

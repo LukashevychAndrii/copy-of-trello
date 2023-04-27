@@ -5,7 +5,8 @@
   background-color: var(--color-board-default);
   display: flex;
   justify-content: space-between;
-  & > a {
+  align-items: center;
+  & a {
     color: var(--color-white);
     text-decoration: none;
     opacity: 0.5;
@@ -15,5 +16,20 @@
   }
   & &--active {
     opacity: 1;
+  }
+  &__acc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__user-photo {
+    width: 5rem;
+  }
+  &__user-name {
+    font-size: var(--default-font);
+  }
+  &__auth-nav {
+    display: flex;
+    gap: 2.5rem;
   }
 }

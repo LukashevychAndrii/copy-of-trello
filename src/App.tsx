@@ -33,6 +33,7 @@ interface userDataI {
   id: string;
   password: string;
   uName: string;
+  uPhoto: string;
 }
 
 function App() {
@@ -53,8 +54,10 @@ function App() {
                 id: user.uid,
                 password: reternedData.password,
                 uName: reternedData.uName,
+                uPhoto: reternedData.uPhoto,
               };
               dispatch(setUser(userData));
+              // dispatch(setUserPhoto(reternedData.uPhoto));
             }
           }
         });

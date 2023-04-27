@@ -36,6 +36,7 @@ const SignIn = () => {
                   uName: uName,
                   password: password,
                   id: user.uid,
+                  uPhoto: reternedData.uPhoto,
                 })
               );
               dispatch(

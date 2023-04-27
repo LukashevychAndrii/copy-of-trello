@@ -5,6 +5,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { createAlert } from "../../../store/slices/alert-slice";
 import { useNavigate } from "react-router";
 import { removeUser } from "../../../store/slices/user-slice";
+import UPhoto from "./UPhoto";
 
 const AccDetails = () => {
   const userName = useAppSelector((state) => state.user.uName);
@@ -47,6 +48,9 @@ const AccDetails = () => {
       <div> {password}</div>
       <span>Email:</span>
       <div>{userEmail}</div>
+      <div className={styles["acc-details__avatar"]}>
+        <UPhoto />
+      </div>
       <button onClick={handleSignOutCLick}>Sign Out</button>
     </div>
   );

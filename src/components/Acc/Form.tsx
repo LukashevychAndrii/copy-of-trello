@@ -34,15 +34,7 @@ const Form: React.FC<props> = ({ getUserData }) => {
     } else {
       setValid(false);
     }
-  }, [
-    setValid,
-    emailError,
-    getUserData,
-    email,
-    password,
-    passwordError,
-    uNameError,
-  ]);
+  }, [setValid, emailError, passwordError, uNameError]);
 
   function handleUNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUName(e.target.value);

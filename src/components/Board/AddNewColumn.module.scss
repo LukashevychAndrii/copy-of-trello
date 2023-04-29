@@ -1,6 +1,5 @@
 .add-column {
   background-color: rgba($color: #000000, $alpha: 0.4);
-
   color: var(--color-white-dark);
   height: 5rem;
   border-radius: 20rem;
@@ -13,9 +12,17 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: -0.1rem -0.1rem 0.1rem #6b6b6b,
+    0.1rem 0.3rem 0.1rem var(--color-black);
   &:hover {
-    background-color: rgba($color: #000000, $alpha: 0.2);
     transform: translateY(-0.2rem);
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    box-shadow: -0.1rem -0.1rem 0.2rem #f7f7f7,
+      0rem 0.5rem 2rem var(--color-black);
+  }
+  &:active {
+    box-shadow: inset -0.1rem -0.1rem 0.1rem var(--color-white),
+      inset 0.1rem 0.3rem 0.1rem var(--color-black);
   }
 }
 .checkbox {

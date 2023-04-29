@@ -4,6 +4,7 @@ import styles from "./Form.module.scss";
 import { ReactComponent as PasswordIcon } from "../../img/SVG/lock.svg";
 import { ReactComponent as EmailIcon } from "../../img/SVG/mail.svg";
 import { ReactComponent as UserIcon } from "../../img/SVG/user-o.svg";
+import { useAppSelector } from "../../hooks/redux";
 
 interface props {
   getUserData(email: string, password: string, uName: string): void;
@@ -82,9 +83,14 @@ const Form: React.FC<props> = ({ getUserData }) => {
     e.preventDefault();
     getUserData(email, password, uName);
   }
+  const theme = useAppSelector((state) => state.theme.theme);
 
   return (
-    <form className={styles["form"]} onSubmit={handleSubmit}>
+    <form
+      data-theme={`${theme}`}
+      className={styles["form"]}
+      onSubmit={handleSubmit}
+    >
       <div className={styles["form__element"]}>
         {uNameTouched && uNameError && (
           <p className={styles["form__error"]}>{uNameError}</p>
@@ -103,7 +109,11 @@ const Form: React.FC<props> = ({ getUserData }) => {
           placeholder="Username"
         />
         <span className={styles["form__input--focus"]}></span>
-        <label className={styles["form__label"]} htmlFor="email">
+        <label
+          theme-form-icon={theme}
+          className={styles["form__label"]}
+          htmlFor="email"
+        >
           <UserIcon />
         </label>
       </div>
@@ -125,7 +135,11 @@ const Form: React.FC<props> = ({ getUserData }) => {
           placeholder="Email"
         />
         <span className={styles["form__input--focus"]}></span>
-        <label className={styles["form__label"]} htmlFor="email">
+        <label
+          theme-form-icon={theme}
+          className={styles["form__label"]}
+          htmlFor="email"
+        >
           <EmailIcon />
         </label>
       </div>
@@ -148,7 +162,11 @@ const Form: React.FC<props> = ({ getUserData }) => {
         />
         <span className={styles["form__input--focus"]}></span>
 
-        <label className={styles["form__label"]} htmlFor="password">
+        <label
+          theme-form-icon={theme}
+          className={styles["form__label"]}
+          htmlFor="password"
+        >
           <PasswordIcon />
         </label>
       </div>

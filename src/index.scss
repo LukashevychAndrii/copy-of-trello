@@ -25,3 +25,22 @@
   --color-success: rgb(61 235 61);
   --color-error: rgb(255 24 24);
 }
+
+[data-theme="dark"] {
+  background-color: var(--color-board-default) !important;
+}
+[data-theme="light"] {
+  background-color: #c4c4c4 !important;
+  a {
+    color: var(--color-black) !important;
+  }
+}
+[list-theme="light"] {
+  background-color: rgb(180, 180, 180) !important;
+}
+[theme-toggle-btn="light"] {
+  background-color: rgb(146 146 146) !important;
+}
+[theme-form-icon="light"] {
+  fill: black !important;
+}

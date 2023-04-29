@@ -124,8 +124,10 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
     });
   }
 
+  const theme = useAppSelector((state) => state.theme.theme);
+
   return (
-    <div className={styles["board"]}>
+    <div data-theme={`${theme}`} className={styles["board"]}>
       {list.length > 0 &&
         list.map((group, groupIndex) => (
           <div
@@ -141,6 +143,7 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
             }}
             key={groupIndex}
             className={styles["board__group"]}
+            list-theme={theme}
           >
             <div className={styles["board__group__title"]}>{group.title}</div>
             {group.items.map((groupItem, groupItemIndex) => (

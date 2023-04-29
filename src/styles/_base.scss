@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: inherit;
+  transition: all 0.2s;
 }
 
 html {
@@ -11,5 +12,5 @@ html {
   box-sizing: border-box;
 }
 body {
-  background-color: var(--color-board-default);
+  // background-color: var(--color-board-default);
 }

@@ -5,7 +5,7 @@ import Form from "./Form";
 
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setUser } from "../../store/slices/user-slice";
 import { get, getDatabase, ref } from "@firebase/database";
 import { app } from "../../firebase";
@@ -71,9 +71,11 @@ const SignIn = () => {
         dispatch(createAlert(getErrorDetails(error.code)));
       });
   };
+  const theme = useAppSelector((state) => state.theme.theme);
+
   return (
-    <div>
-      <p className={styles["form__title"]}>Sign In</p>
+    <div data-theme={`${theme}`}>
+      <span className={styles["form__title"]}>Sign In</span>
       <Form getUserData={getUserData} />
       <p className={styles["form__text"]}>
         Or, if you don't have an account <Link to="/sign-up">Sign Up</Link>

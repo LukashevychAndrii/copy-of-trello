@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./store/slices/user-slice";
 import { get, getDatabase, ref } from "@firebase/database";
 import { app } from "./firebase";
+import { setThemeInitial } from "./store/slices/theme-slice";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,8 @@ interface userDataI {
 function App() {
   const dispatch = useDispatch();
   React.useEffect(() => {
+    const theme = localStorage.getItem("todo-theme");
+    dispatch(setThemeInitial({ theme: theme }));
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {

@@ -1,0 +1,51 @@
+.theme {
+  width: 9rem;
+  height: 3.5rem;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  position: relative;
+  border-radius: 20rem;
+  cursor: pointer;
+  box-shadow: inset -0.1rem -0.1rem 0.1rem #6b6b6b,
+    inset 0.1rem 0.3rem 0.1rem var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.1rem;
+  & svg {
+    fill: var(--color-white-dark);
+    transition: transform 0.2s;
+  }
+  &--sun::before {
+    background-color: rgb(179, 179, 0);
+  }
+  &--moon::before {
+    background-color: rgb(78, 78, 78);
+  }
+  &::before {
+    content: "";
+    width: 3.5rem;
+    border-radius: 50%;
+    // transform: scale(1.2);
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    opacity: 0.5;
+    transition: transform 0.2s;
+  }
+  &__input {
+    display: none;
+  }
+  &__input:checked ~ label &::before {
+    transform: translateX(5.5rem);
+  }
+  &__input:not(:checked) ~ label svg:first-of-type {
+    fill: yellow;
+    transform: scale(1.3);
+  }
+  &__input:checked ~ label svg:last-of-type {
+    transform: scale(1.3);
+  }
+}

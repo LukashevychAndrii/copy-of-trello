@@ -24,13 +24,16 @@
   //alert
   --color-success: rgb(61 235 61);
   --color-error: rgb(255 24 24);
+
+  //themes
+  --default-theme-light: #c4c4c4;
 }
 
 [data-theme="dark"] {
   background-color: var(--color-board-default) !important;
 }
 [data-theme="light"] {
-  background-color: #c4c4c4 !important;
+  background-color: var(--default-theme-light) !important;
   a {
     color: var(--color-black) !important;
   }

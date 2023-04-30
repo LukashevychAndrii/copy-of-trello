@@ -16,6 +16,9 @@ import { get, getDatabase, ref } from "@firebase/database";
 import { app } from "./firebase";
 import { setThemeInitial } from "./store/slices/theme-slice";
 
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -67,7 +70,11 @@ function App() {
       }
     });
   }, [dispatch]);
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <SimpleBar style={{ maxHeight: "100vh" }}>
+      <RouterProvider router={router}></RouterProvider>;
+    </SimpleBar>
+  );
 }
 
 export default App;

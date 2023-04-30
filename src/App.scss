@@ -1,0 +1,7 @@
+.simplebar-scrollbar {
+  transition: none !important;
+  &::before {
+    background-color: var(--color-white-dark) !important;
+    opacity: 0.5 !important;
+  }
+}

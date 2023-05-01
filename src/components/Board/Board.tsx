@@ -11,6 +11,7 @@ import { AppDispatch } from "../../store";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import ThreeDots from "./ThreeDots";
 
 export interface dataI {
   title: string;
@@ -133,58 +134,65 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (
-    <SimpleBar style={{ maxWidth: "95vw" }} forceVisible="x">
-      <div data-theme={`${theme}`} className={styles["board"]}>
-        {list.length > 0 &&
-          list.map((group, groupIndex) => (
-            <SimpleBar style={{ maxHeight: "60vh" }} forceVisible="y">
-              <div
-                onDragEnter={
-                  dragging && !group.items?.length
-                    ? (e) => {
-                        handleDragEnter(e, groupIndex, 0);
-                      }
-                    : undefined
-                }
-                onDragEnd={() => {
-                  setDragging(false);
-                }}
+    <div style={{ position: "relative" }}>
+      <SimpleBar style={{ maxWidth: "85vw" }} forceVisible="x">
+        <div data-theme={`${theme}`} className={styles["board"]}>
+          {list.length > 0 &&
+            list.map((group, groupIndex) => (
+              <SimpleBar
+                style={{ maxHeight: "60vh" }}
+                forceVisible="y"
                 key={groupIndex}
-                className={styles["board__group"]}
-                list-theme={theme}
               >
-                <div className={styles["board__group__title"]}>
-                  {group.title}
-                </div>
-                {group.items?.map((groupItem, groupItemIndex) => (
-                  <div
-                    onDragStart={(e) => {
-                      handleDragStart(e, groupIndex, groupItemIndex);
-                    }}
-                    onDragEnter={(e) => {
-                      handleDragEnter(e, groupIndex, groupItemIndex);
-                    }}
-                    key={groupItemIndex}
-                    draggable
-                    className={
-                      dragging
-                        ? getStyles(groupIndex, groupItemIndex)
-                        : styles[`board__group__item`]
-                    }
-                  >
-                    {groupItem}
+                <div
+                  onDragEnter={
+                    dragging && !group.items?.length
+                      ? (e) => {
+                          handleDragEnter(e, groupIndex, 0);
+                        }
+                      : undefined
+                  }
+                  onDragEnd={() => {
+                    setDragging(false);
+                  }}
+                  key={groupIndex}
+                  className={styles["board__group"]}
+                  list-theme={theme}
+                >
+                  <div className={styles["board__group__title"]}>
+                    {group.title}
                   </div>
-                ))}
-                <AddNewColumnItem
-                  index={groupIndex}
-                  getNewListItem={getNewListItem}
-                />
-              </div>
-            </SimpleBar>
-          ))}
-        <AddNewColumn getNewList={getNewList} />
-      </div>
-    </SimpleBar>
+                  {group.items?.map((groupItem, groupItemIndex) => (
+                    <div
+                      onDragStart={(e) => {
+                        handleDragStart(e, groupIndex, groupItemIndex);
+                      }}
+                      onDragEnter={(e) => {
+                        handleDragEnter(e, groupIndex, groupItemIndex);
+                      }}
+                      key={groupItemIndex}
+                      draggable
+                      className={
+                        dragging
+                          ? getStyles(groupIndex, groupItemIndex)
+                          : styles[`board__group__item`]
+                      }
+                    >
+                      {groupItem}
+                    </div>
+                  ))}
+                  <AddNewColumnItem
+                    index={groupIndex}
+                    getNewListItem={getNewListItem}
+                  />
+                </div>
+              </SimpleBar>
+            ))}
+          <AddNewColumn getNewList={getNewList} />
+        </div>
+      </SimpleBar>
+      <ThreeDots />
+    </div>
   );
 };
 

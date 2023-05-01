@@ -75,6 +75,7 @@
     transform: translate(0, -50%);
     display: inline-block;
     transition: all 0.3s ease-in-out;
+    z-index: 2;
   }
 
   &__input:focus {
@@ -152,4 +153,8 @@
     top: -3.5rem;
     left: 5rem;
   }
+}
+
+[theme-form-icon="light"] {
+  fill: black !important;
 }

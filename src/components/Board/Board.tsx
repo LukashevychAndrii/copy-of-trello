@@ -11,7 +11,7 @@ import { AppDispatch } from "../../store";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
-import ThreeDots from "./ThreeDots";
+import ThreeDots from "./ThreeDots/ThreeDots";
 
 export interface dataI {
   title: string;
@@ -29,6 +29,9 @@ interface drag {
 interface dragItem {
   groupIndex: number;
   groupItemIndex: number;
+}
+interface backgroundStyle {
+  [key: string]: string;
 }
 
 function updateUsersTodos(
@@ -133,14 +136,25 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
+  const customBG = useAppSelector((state) => state.user.boardImg);
+  let backgroundImageStyle: backgroundStyle = {
+    position: "relative",
+  };
+  if (customBG) {
+    backgroundImageStyle.backgroundImage = `url(${customBG})`;
+    backgroundImageStyle.backgroundPosition = "center";
+    backgroundImageStyle.backgroundRepeat = "no-repeat";
+    backgroundImageStyle.backgroundSize = "cover";
+    backgroundImageStyle.height = "120vh";
+  }
   return (
-    <div style={{ position: "relative" }}>
+    <div style={backgroundImageStyle}>
       <SimpleBar style={{ maxWidth: "85vw" }} forceVisible="x">
-        <div data-theme={`${theme}`} className={styles["board"]}>
+        <div className={styles["board"]}>
           {list.length > 0 &&
             list.map((group, groupIndex) => (
               <SimpleBar
-                style={{ maxHeight: "60vh" }}
+                style={{ maxHeight: "80vh" }}
                 forceVisible="y"
                 key={groupIndex}
               >

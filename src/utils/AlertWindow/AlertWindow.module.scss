@@ -3,12 +3,12 @@
   position: absolute;
   top: 10%;
   right: 10%;
-  z-index: 1000;
+  z-index: 10000;
   font-size: var(--default-font);
   color: var(--color-white-dark);
   padding: 3rem;
   padding-right: 4rem;
-
+  max-width: 40rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,13 +21,13 @@
   &__icon {
     &--success {
       fill: var(--color-success);
-      width: 3rem;
-      height: 3rem;
+      min-width: 3rem;
+      min-height: 3rem;
     }
     &--error {
       fill: var(--color-error);
-      width: 3rem;
-      height: 3rem;
+      min-width: 3rem;
+      min-height: 3rem;
     }
   }
   &__title {

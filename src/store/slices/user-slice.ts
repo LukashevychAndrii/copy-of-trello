@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "..";
-import { getDatabase, ref, set, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { createAlert } from "./alert-slice";
+import { app } from "../../firebase";
 
 interface initialStateI {
   email: string | null;
@@ -9,6 +10,7 @@ interface initialStateI {
   password: string | null;
   uName: string | null;
   uPhoto: string | null;
+  boardImg: string | null;
 }
 const initialState: initialStateI = {
   email: null,
@@ -16,6 +18,7 @@ const initialState: initialStateI = {
   password: null,
   uName: null,
   uPhoto: null,
+  boardImg: null,
 };
 
 const userSlice = createSlice({
@@ -28,7 +31,7 @@ const userSlice = createSlice({
       state.password = action.payload.password;
       state.uName = action.payload.uName;
       state.uPhoto = action.payload.uPhoto;
-      console.log(action.payload);
+      state.boardImg = action.payload.boardImg;
     },
     removeUser(state) {
       state.email = null;
@@ -36,6 +39,7 @@ const userSlice = createSlice({
       state.password = null;
       state.uName = null;
       state.uPhoto = null;
+      state.boardImg = null;
     },
     setUserPhoto(state, action) {
       state.uPhoto = action.payload.uPhoto;
@@ -43,19 +47,24 @@ const userSlice = createSlice({
     removeUserPhoto(state) {
       state.uPhoto = null;
     },
-  },
-  extraReducers(builder) {
-    builder.addCase(updateUserProfilePhoto.fulfilled, () => {
-      console.log("success");
-    });
-    builder.addCase(updateUserProfilePhoto.rejected, () => {
-      console.log("error");
-    });
+    setBoardImg(state, action) {
+      state.boardImg = action.payload.boardImg;
+    },
+    removeBoardImg(state) {
+      state.boardImg = null;
+    },
   },
 });
 
-export const { setUser, removeUser, removeUserPhoto, setUserPhoto } =
-  userSlice.actions;
+export const {
+  setUser,
+  removeUser,
+  removeUserPhoto,
+  setUserPhoto,
+  setBoardImg,
+  removeBoardImg,
+} = userSlice.actions;
+
 export default userSlice.reducer;
 
 export const updateUserProfilePhoto = createAsyncThunk<
@@ -63,13 +72,14 @@ export const updateUserProfilePhoto = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >(
-  "user/updateUserProfilePhotoupdateUserProfilePhoto",
+  "user/updateUserProfilePhoto",
 
-  async function (_, { rejectWithValue, getState, dispatch }) {
+  async function (_, { getState, dispatch }) {
     console.log("update");
     const appDispatch = dispatch as AppDispatch;
     const state = getState() as RootState;
     const db = getDatabase();
+    console.log(state.user.uPhoto);
     const dbRef = ref(db, `users/${state.user.id}/userdata`);
 
     update(dbRef, { uPhoto: state.user.uPhoto }).catch((error) => {
@@ -82,6 +92,28 @@ export const updateUserProfilePhoto = createAsyncThunk<
       );
     });
 
+    return undefined;
+  }
+);
+
+export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
+  "user/updateBoardImg",
+  async function (_, { getState, dispatch }) {
+    console.log("qwe");
+    const appDispatch = dispatch as AppDispatch;
+    const state = getState() as RootState;
+    const db = getDatabase(app);
+    console.log(state.user.boardImg);
+    const dbRef = ref(db, `users/${state.user.id}/userdata`);
+    update(dbRef, { boardImg: state.user.boardImg }).catch((error) => {
+      appDispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Database error!",
+          alertError: true,
+        })
+      );
+    });
     return undefined;
   }
 );

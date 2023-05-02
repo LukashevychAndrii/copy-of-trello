@@ -1,0 +1,80 @@
+.drag {
+  width: 60rem;
+  height: 35rem;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px dotted var(--color-white-dark);
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  color: var(--color-white-dark);
+
+  &__wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba($color: #000, $alpha: 0.5);
+    z-index: 1000;
+    top: 0;
+    left: 0;
+  }
+  &__over {
+    opacity: 0.6;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+  &__buttons {
+    position: absolute;
+    width: 60rem;
+
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__close-btn {
+      font-size: 3rem;
+      font-weight: 600;
+      opacity: 0.6;
+      cursor: pointer;
+      z-index: 1002;
+      display: flex;
+      justify-self: right;
+      &:hover {
+        opacity: 1;
+      }
+      color: var(--color-white-dark);
+    }
+
+    &__add-btn {
+      background-color: var(--color-white-dark);
+      border: none;
+      padding: 1rem 4rem;
+      border-radius: 0.4rem;
+      font-size: var(--default-font);
+      cursor: pointer;
+      &:hover {
+        transform: translateY(-0.2rem);
+      }
+    }
+    &__remove-btn {
+      background-color: var(--color-white-dark);
+      border: none;
+      padding: 1rem 4rem;
+      border-radius: 0.4rem;
+      font-size: var(--default-font);
+      cursor: pointer;
+      &:hover {
+        transform: translateY(-0.2rem);
+      }
+    }
+  }
+}

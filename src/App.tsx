@@ -38,6 +38,7 @@ interface userDataI {
   password: string;
   uName: string;
   uPhoto: string;
+  boardImg: string;
 }
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
                 password: reternedData.password,
                 uName: reternedData.uName,
                 uPhoto: reternedData.uPhoto,
+                boardImg: reternedData.boardImg,
               };
               dispatch(setUser(userData));
               // dispatch(setUserPhoto(reternedData.uPhoto));

@@ -4,17 +4,19 @@ import { getDatabase, ref, get } from "firebase/database";
 import { app } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { createAlert } from "../store/slices/alert-slice";
+import { useParams } from "react-router-dom";
 
 const BoardPage = () => {
   const [todos, setTodos] = React.useState([]);
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
+  const { boardID } = useParams();
 
   React.useEffect(() => {
     if (userID) {
       const fetchUsersTodos = async () => {
         const db = getDatabase(app);
-        const userRef = ref(db, `users/${userID}/todos`);
+        const userRef = ref(db, `users/${userID}/boards/${boardID}/boardData`);
         await get(userRef)
           .then((snapshot) => {
             if (snapshot.exists()) {
@@ -34,9 +36,9 @@ const BoardPage = () => {
       };
       fetchUsersTodos();
     }
-  }, [userID, dispatch]);
+  }, [userID, dispatch, boardID]);
 
-  return <Board todos={todos} />;
+  return <Board todos={todos} boardID={boardID} />;
 };
 
 export default BoardPage;

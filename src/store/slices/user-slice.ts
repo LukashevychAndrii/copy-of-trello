@@ -102,9 +102,10 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
     console.log("qwe");
     const appDispatch = dispatch as AppDispatch;
     const state = getState() as RootState;
+    const boardID = state.boards.currentBoardID;
     const db = getDatabase(app);
     console.log(state.user.boardImg);
-    const dbRef = ref(db, `users/${state.user.id}/userdata`);
+    const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
     update(dbRef, { boardImg: state.user.boardImg }).catch((error) => {
       appDispatch(
         createAlert({

@@ -12,6 +12,11 @@ import { AppDispatch } from "../../store";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import ThreeDots from "./ThreeDots/ThreeDots";
+import AddNewBoard from "./BoardsList/AddNewBoard";
+import {
+  setCurrentBoardID,
+  updateBoard,
+} from "../../store/slices/boards-slice";
 
 export interface dataI {
   title: string;
@@ -34,29 +39,21 @@ interface backgroundStyle {
   [key: string]: string;
 }
 
-function updateUsersTodos(
-  data: dataI[],
-  dispatch: AppDispatch,
-  userID: string
-) {
-  const db = getDatabase();
-  const dbRef = ref(db, `users/${userID}/todos`);
-  set(dbRef, data).catch((error) => {
-    dispatch(createAlert(getErrorDetails(error.code)));
-  });
-}
-
-const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
+const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
+  todos,
+  boardID,
+}) => {
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     if (userID) {
       setList(todos);
+      dispatch(setCurrentBoardID(boardID));
     } else {
       setList([]);
     }
-  }, [todos, userID]);
+  }, [todos, userID, boardID, dispatch]);
 
   const [list, setList] = React.useState(todos);
   console.log(list);
@@ -121,8 +118,10 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
 
   function getNewList(newList: dataI) {
     setList([...list, newList]);
-    if (userID) updateUsersTodos([...list, newList], dispatch, userID);
+    if (userID && boardID)
+      dispatch(updateBoard({ data: [...list, newList], boardID: boardID }));
   }
+
   function getNewListItem(newItem: string, index: number) {
     setList((prev) => {
       let newList: dataI[] = [...prev];
@@ -130,7 +129,8 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
       newList[index].items
         ? newList[index].items.push(newItem)
         : (newList[index].items = [newItem]);
-      if (userID) updateUsersTodos(newList, dispatch, userID);
+      if (userID && boardID)
+        dispatch(updateBoard({ data: newList, boardID: boardID }));
       return newList;
     });
   }
@@ -149,7 +149,10 @@ const Board: React.FC<{ todos: dataI[] }> = ({ todos }) => {
   }
   return (
     <div style={backgroundImageStyle}>
-      <SimpleBar style={{ maxWidth: "85vw" }} forceVisible="x">
+      <div className={styles["add-new-board__wrapper"]}>
+        <AddNewBoard />
+      </div>
+      <SimpleBar style={{ maxWidth: "80vw", margin: "auto" }} forceVisible="x">
         <div className={styles["board"]}>
           {list.length > 0 &&
             list.map((group, groupIndex) => (

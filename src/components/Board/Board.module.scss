@@ -37,6 +37,13 @@
   }
 }
 
+.add-new-board {
+  &__wrapper {
+    position: absolute;
+    top: 5rem;
+  }
+}
+
 [list-theme="light"] {
   background-color: rgb(180, 180, 180) !important;
 }

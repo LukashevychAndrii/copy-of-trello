@@ -18,13 +18,17 @@ import { setThemeInitial } from "./store/slices/theme-slice";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import BoardList from "./components/Board/BoardsList/BoardsList";
+import { fetchBoards } from "./store/slices/boards-slice";
+import { useAppDispatch } from "./hooks/redux";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <BoardPage /> },
+      { index: true, element: <BoardList /> },
+      { path: ":boardID", element: <BoardPage /> },
       { path: "sign-up", element: <SignUp /> },
       { path: "sign-in", element: <SignIn /> },
       { path: "acc-details", element: <AccDetails /> },
@@ -42,7 +46,7 @@ interface userDataI {
 }
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   React.useEffect(() => {
     const theme = localStorage.getItem("todo-theme");
     dispatch(setThemeInitial({ theme: theme }));
@@ -65,6 +69,8 @@ function App() {
                 boardImg: reternedData.boardImg,
               };
               dispatch(setUser(userData));
+              dispatch(fetchBoards());
+
               // dispatch(setUserPhoto(reternedData.uPhoto));
             }
           }
@@ -72,6 +78,9 @@ function App() {
       }
     });
   }, [dispatch]);
+  // React.useEffect(() => {
+  //   dispatch(fetchBoards());
+  // }, [dispatch]);
   return (
     <SimpleBar style={{ maxHeight: "100vh" }}>
       <RouterProvider router={router}></RouterProvider>;

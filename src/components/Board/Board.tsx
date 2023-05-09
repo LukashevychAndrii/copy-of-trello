@@ -15,6 +15,7 @@ import {
   updateBoard,
 } from "../../store/slices/boards-slice";
 import BoardMembers from "./BoardMembers/BoardMembers";
+import SmallBoardList from "./SmallBoardList/SmallBoardList";
 
 export interface dataI {
   title: string;
@@ -166,7 +167,10 @@ const Board: React.FC<props> = ({ todos, boardID, guest }) => {
   }
   return (
     <div style={backgroundImageStyle} className={styles["board__wrapper"]}>
-      <AddNewBoard />
+      <div>
+        <AddNewBoard />
+        <SmallBoardList />
+      </div>
 
       <SimpleBar className={styles["board__scrollbar"]}>
         <div className={styles["board"]}>

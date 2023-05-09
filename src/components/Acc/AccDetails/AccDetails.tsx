@@ -11,6 +11,7 @@ const AccDetails = () => {
   const userName = useAppSelector((state) => state.user.uName);
   const password = useAppSelector((state) => state.user.password);
   const userEmail = useAppSelector((state) => state.user.email);
+  const userID = useAppSelector((state) => state.user.id);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -48,6 +49,8 @@ const AccDetails = () => {
       <div> {password}</div>
       <span>Email:</span>
       <div>{userEmail}</div>
+      <span>User id:</span>
+      <div>{userID}</div>
       <div className={styles["acc-details__avatar"]}>
         <UPhoto />
       </div>

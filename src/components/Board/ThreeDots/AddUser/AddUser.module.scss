@@ -1,0 +1,98 @@
+.add-user {
+  padding: 1.5rem 2.5rem;
+  position: absolute;
+  top: 5rem;
+  right: 5rem;
+  font-size: var(--default-font);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 40rem;
+  z-index: 1000;
+
+  & > input {
+    padding: 0.5rem;
+  }
+  &__question-mark {
+    font-weight: 600;
+    font-size: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &__wrapper {
+      position: absolute;
+      top: 50%;
+      right: 0.5rem;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid;
+      width: 2.5rem;
+      height: 2.5rem;
+      opacity: 0.6;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  &__clue {
+    position: absolute;
+    top: 7rem;
+    right: -0.5rem;
+    background-color: var(--color-white-dark);
+    border: 3.5px solid red;
+    padding: 1.5rem 2rem;
+    font-size: var(--default-font);
+    z-index: 10;
+    display: none;
+    &::before {
+      content: "";
+      width: 3.3rem;
+      height: 2.2rem;
+      clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+      display: block;
+      background-color: red;
+      position: absolute;
+      top: -2.2rem;
+      right: 2.1rem;
+    }
+    &::after {
+      content: "";
+      width: 2.5rem;
+      height: 1.8rem;
+      z-index: 10;
+      display: block;
+      position: absolute;
+      top: -1.8rem;
+      right: 2.5rem;
+      background-color: var(--color-white-dark);
+      clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+    }
+  }
+  &__checkbox {
+    display: none;
+  }
+  &__checkbox:checked ~ &__clue {
+    display: block;
+  }
+}
+.found-user {
+  position: absolute;
+  top: 11rem;
+  font-size: var(--default-font);
+  right: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 8.6rem;
+  width: 40rem;
+  padding: 1.5rem 2rem;
+  &__data {
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+  }
+  &__img {
+    width: 6rem;
+  }
+}

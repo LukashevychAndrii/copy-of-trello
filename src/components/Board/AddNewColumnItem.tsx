@@ -12,7 +12,7 @@ const AddNewColumnItem: React.FC<props> = (props) => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const [itemText, setItemText] = React.useState<string>("");
   const dispatch = useAppDispatch();
-  console.log(checked);
+  // console.log(checked);
   function handleCloseBtnClick() {
     setChecked(false);
     setItemText("");

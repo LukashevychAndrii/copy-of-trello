@@ -32,4 +32,9 @@
     display: flex;
     gap: 2.5rem;
   }
+  &__items-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8.5rem;
+  }
 }

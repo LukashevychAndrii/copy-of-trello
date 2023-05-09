@@ -1,0 +1,32 @@
+.notification {
+  position: relative;
+  //   background-color: red;
+  &__icon {
+    fill: var(--color-white-dark);
+    width: 3.5rem;
+    height: 3.5rem;
+    position: relative;
+  }
+  &__count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &__wrapper {
+      box-sizing: content-box;
+      position: absolute;
+      top: -0.5rem;
+      right: -1rem;
+      font-size: var(--default-font);
+      width: 2rem;
+      height: 2rem;
+      border: 2px solid var(--color-white);
+      border-radius: 50%;
+      background-color: red;
+      line-height: 2rem;
+      z-index: 10;
+      font-weight: 600;
+      color: var(--color-white-dark);
+    }
+  }
+}

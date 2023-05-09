@@ -6,6 +6,7 @@ import defaultAvatar from "../../img/default-avatar--white.png";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import ThemeToggleBtn from "./ThemeToggleBtn/ThemeToggleBtn";
+import NotificationIcon from "./Notification/NotificationIcon";
 
 const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive ? styles["header--active"] : "";
@@ -22,8 +23,9 @@ const MainHeader = () => {
         Boards
       </NavLink>
       {userName ? (
-        <div style={{ display: "flex", alignItems: "center", gap: "15rem" }}>
+        <div className={styles["header__items-wrapper"]}>
           <ThemeToggleBtn />
+          <NotificationIcon />
           <NavLink className={getStyle} to="acc-details">
             <div className={styles["header__acc"]}>
               <img

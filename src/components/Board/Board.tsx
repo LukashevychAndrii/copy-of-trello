@@ -3,20 +3,18 @@ import styles from "./Board.module.scss";
 
 import AddNewColumn from "./AddNewColumn";
 import AddNewColumnItem from "./AddNewColumnItem";
-import { getDatabase, ref, set } from "firebase/database";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { createAlert } from "../../store/slices/alert-slice";
-import getErrorDetails from "../../utils/getErrorDetails";
-import { AppDispatch } from "../../store";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import ThreeDots from "./ThreeDots/ThreeDots";
 import AddNewBoard from "./BoardsList/AddNewBoard";
 import {
+  getBoardImg,
   setCurrentBoardID,
   updateBoard,
 } from "../../store/slices/boards-slice";
+import BoardMembers from "./BoardMembers/BoardMembers";
 
 export interface dataI {
   title: string;
@@ -39,10 +37,13 @@ interface backgroundStyle {
   [key: string]: string;
 }
 
-const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
-  todos,
-  boardID,
-}) => {
+interface props {
+  todos: dataI[];
+  boardID: string | undefined;
+  guest: boolean;
+}
+
+const Board: React.FC<props> = ({ todos, boardID, guest }) => {
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
 
@@ -50,13 +51,14 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
     if (userID) {
       setList(todos);
       dispatch(setCurrentBoardID(boardID));
+      dispatch(getBoardImg());
     } else {
       setList([]);
     }
   }, [todos, userID, boardID, dispatch]);
 
   const [list, setList] = React.useState(todos);
-  console.log(list);
+  // console.log(list);
   const [dragging, setDragging] = React.useState(false);
 
   const dragItem = React.useRef<dragItem | null>();
@@ -77,6 +79,10 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
     dragItem.current = null;
     dragNode.current = null;
   }
+  // React.useEffect(() => {
+  //   if (boardID && list.length > 0)
+  //     dispatch(updateBoard({ data: list, boardID: boardID, guest: guest }));
+  // }, [list, dispatch, boardID, guest]);
 
   const handleDragEnter: drag = (e, groupIndex, groupItemIndex) => {
     const currentItem = dragItem.current;
@@ -97,6 +103,10 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
           );
         }
         dragItem.current = { groupIndex, groupItemIndex };
+        if (boardID)
+          dispatch(
+            updateBoard({ data: newList, boardID: boardID, guest: guest })
+          );
         return newList;
       });
     }
@@ -119,24 +129,31 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
   function getNewList(newList: dataI) {
     setList([...list, newList]);
     if (userID && boardID)
-      dispatch(updateBoard({ data: [...list, newList], boardID: boardID }));
+      dispatch(
+        updateBoard({
+          data: [...list, newList],
+          boardID: boardID,
+          guest: guest,
+        })
+      );
   }
 
   function getNewListItem(newItem: string, index: number) {
     setList((prev) => {
-      let newList: dataI[] = [...prev];
-      console.log(newList[index].items);
+      let newList: dataI[] = JSON.parse(JSON.stringify(prev));
       newList[index].items
         ? newList[index].items.push(newItem)
         : (newList[index].items = [newItem]);
       if (userID && boardID)
-        dispatch(updateBoard({ data: newList, boardID: boardID }));
+        dispatch(
+          updateBoard({ data: newList, boardID: boardID, guest: guest })
+        );
       return newList;
     });
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
-  const customBG = useAppSelector((state) => state.user.boardImg);
+  const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
   let backgroundImageStyle: backgroundStyle = {
     position: "relative",
   };
@@ -148,19 +165,14 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
     backgroundImageStyle.height = "120vh";
   }
   return (
-    <div style={backgroundImageStyle}>
-      <div className={styles["add-new-board__wrapper"]}>
-        <AddNewBoard />
-      </div>
-      <SimpleBar style={{ maxWidth: "80vw", margin: "auto" }} forceVisible="x">
+    <div style={backgroundImageStyle} className={styles["board__wrapper"]}>
+      <AddNewBoard />
+
+      <SimpleBar className={styles["board__scrollbar"]}>
         <div className={styles["board"]}>
           {list.length > 0 &&
             list.map((group, groupIndex) => (
-              <SimpleBar
-                style={{ maxHeight: "80vh" }}
-                forceVisible="y"
-                key={groupIndex}
-              >
+              <SimpleBar style={{ maxHeight: "70vh" }} key={groupIndex}>
                 <div
                   onDragEnter={
                     dragging && !group.items?.length
@@ -208,7 +220,9 @@ const Board: React.FC<{ todos: dataI[]; boardID: string | undefined }> = ({
           <AddNewColumn getNewList={getNewList} />
         </div>
       </SimpleBar>
-      <ThreeDots />
+
+      <BoardMembers guest={guest} />
+      <ThreeDots setList={setList} />
     </div>
   );
 };

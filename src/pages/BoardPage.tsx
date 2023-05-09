@@ -1,6 +1,6 @@
 import React from "react";
 import Board from "../components/Board/Board";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref, get, onValue } from "firebase/database";
 import { app } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { createAlert } from "../store/slices/alert-slice";
@@ -17,14 +17,17 @@ const BoardPage = () => {
       const fetchUsersTodos = async () => {
         const db = getDatabase(app);
         const userRef = ref(db, `users/${userID}/boards/${boardID}/boardData`);
-        await get(userRef)
-          .then((snapshot) => {
+
+        onValue(
+          userRef,
+          (snapshot) => {
+            console.log(snapshot);
             if (snapshot.exists()) {
               setTodos(snapshot.val());
               console.log(snapshot.val());
             }
-          })
-          .catch((error) => {
+          },
+          (error) => {
             dispatch(
               createAlert({
                 alertTitle: "Error!",
@@ -32,13 +35,30 @@ const BoardPage = () => {
                 alertError: true,
               })
             );
-          });
+          }
+        );
+        // await get(userRef)
+        //   .then((snapshot) => {
+        //     if (snapshot.exists()) {
+        //       setTodos(snapshot.val());
+        //       console.log(snapshot.val());
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     dispatch(
+        //       createAlert({
+        //         alertTitle: "Error!",
+        //         alertText: "Fetching data failed",
+        //         alertError: true,
+        //       })
+        //     );
+        //   });
       };
       fetchUsersTodos();
     }
   }, [userID, dispatch, boardID]);
 
-  return <Board todos={todos} boardID={boardID} />;
+  return <Board todos={todos} boardID={boardID} guest={false} />;
 };
 
 export default BoardPage;

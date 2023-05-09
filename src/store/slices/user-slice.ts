@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "..";
-import { getDatabase, ref, update } from "firebase/database";
+import { getDatabase, push, ref, set, update } from "firebase/database";
 import { createAlert } from "./alert-slice";
 import { app } from "../../firebase";
+import { dataI } from "../../components/Board/Board";
+import getErrorDetails from "../../utils/getErrorDetails";
 
 interface initialStateI {
   email: string | null;
@@ -92,29 +94,6 @@ export const updateUserProfilePhoto = createAsyncThunk<
       );
     });
 
-    return undefined;
-  }
-);
-
-export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
-  "user/updateBoardImg",
-  async function (_, { getState, dispatch }) {
-    console.log("qwe");
-    const appDispatch = dispatch as AppDispatch;
-    const state = getState() as RootState;
-    const boardID = state.boards.currentBoardID;
-    const db = getDatabase(app);
-    console.log(state.user.boardImg);
-    const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
-    update(dbRef, { boardImg: state.user.boardImg }).catch((error) => {
-      appDispatch(
-        createAlert({
-          alertTitle: "Error!",
-          alertText: "Database error!",
-          alertError: true,
-        })
-      );
-    });
     return undefined;
   }
 );

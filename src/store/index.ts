@@ -3,6 +3,7 @@ import userSlice from "./slices/user-slice";
 import alertSlice from "./slices/alert-slice";
 import themeSlice from "./slices/theme-slice";
 import boardsSlice from "./slices/boards-slice";
+import inviteSlice from "./slices/invite-slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     alert: alertSlice,
     theme: themeSlice,
     boards: boardsSlice,
+    invite: inviteSlice,
   },
 });
 

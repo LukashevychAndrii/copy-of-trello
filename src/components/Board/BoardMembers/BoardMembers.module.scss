@@ -1,0 +1,43 @@
+.guests {
+  list-style: none;
+  margin-top: 2.5rem;
+  &__guest {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: space-between;
+
+    &__name {
+      font-size: var(--default-font);
+    }
+    &__img {
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+  &__text {
+    font-size: 2rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+.owner {
+  font-size: var(--default-font);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  justify-content: space-between;
+  &__name {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+  &__img {
+    width: 6rem;
+  }
+  border-bottom: 1px solid;
+  padding-bottom: 2.5rem;
+}

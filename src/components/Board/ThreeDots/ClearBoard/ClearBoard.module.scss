@@ -1,0 +1,49 @@
+.clear {
+  width: 40rem;
+  height: max-content;
+  background-color: var(--color-black);
+  color: var(--color-white-dark);
+  font-size: var(--default-font);
+  padding: 4rem 2rem;
+  position: absolute;
+  text-align: center;
+  top: 8%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  animation: scaling 0.8s;
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 3.5rem 6rem;
+    padding-bottom: 0;
+  }
+  &__button {
+    border: none;
+    background-color: var(--color-white-dark);
+    padding: 1rem 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-size: inherit;
+    &:hover {
+      transform: translateY(-0.4rem);
+    }
+  }
+}
+@keyframes scaling {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1.2);
+
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+
+    opacity: 1;
+  }
+}

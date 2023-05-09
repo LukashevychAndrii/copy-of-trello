@@ -5,8 +5,8 @@ import { createAlert } from "../../../../store/slices/alert-slice";
 import {
   removeBoardImg,
   setBoardImg,
-  updateBoardImg,
 } from "../../../../store/slices/user-slice";
+import { updateBoardImg } from "../../../../store/slices/boards-slice";
 
 interface props {
   hideCustomBg: () => void;

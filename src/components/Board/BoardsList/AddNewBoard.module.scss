@@ -55,6 +55,7 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 2rem;
+
       &--create-btn {
         border: none;
         background-color: inherit;
@@ -89,4 +90,13 @@
   &__input:checked ~ label &__add-btn {
     display: none;
   }
+}
+
+[create-btn-theme="light"] {
+  background-color: var(--default-theme-light);
+  color: var(--color-dark-light);
+}
+[create-btn-theme="dark"] {
+  background-color: var(--color-board-group-default);
+  color: var(--color-white-dark);
 }

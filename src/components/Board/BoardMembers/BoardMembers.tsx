@@ -30,11 +30,11 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
 
   return (
     <>
-      {!guest && sharedBoardDATA ? (
+      {!guest && sharedBoardDATA?.GUESTS ? (
         <div>
           <div className={styles["guests__text"]}>Board Members</div>
           <ul className={styles["guests"]}>
-            {Object.values(sharedBoardDATA.GUESTS).map((el) => (
+            {Object.values(sharedBoardDATA?.GUESTS).map((el) => (
               <li className={styles["guests__guest"]} key={el.guestID}>
                 <div className={styles["guests__guest__name"]}>
                   {el.guestName}
@@ -49,30 +49,34 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
           </ul>
         </div>
       ) : (
-        <div>
-          <div className={styles["owner"]}>
-            <div className={styles["owner__name"]}>{currentBoard?.OWNER}</div>
-            <img
-              className={styles["owner__img"]}
-              src={currentBoard?.ownerPHOTO}
-              alt=""
-            />
+        guests && (
+          <div>
+            <div className={styles["owner"]}>
+              <div className={styles["owner__name"]}>{currentBoard?.OWNER}</div>
+              <img
+                className={styles["owner__img"]}
+                src={currentBoard?.ownerPHOTO}
+                alt=""
+              />
+            </div>
+            <ul className={styles["guests"]}>
+              {guests?.map((el) => (
+                <li className={styles["guests__guest"]} key={el.guestID}>
+                  <div className={styles["guests__guest__name"]}>
+                    {el.guestName}
+                  </div>
+                  <img
+                    className={styles["guests__guest__img"]}
+                    src={
+                      el.guestPhoto.length > 0 ? el.guestPhoto : defaultAvatar
+                    }
+                    alt="guest avatar"
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className={styles["guests"]}>
-            {guests?.map((el) => (
-              <li className={styles["guests__guest"]} key={el.guestID}>
-                <div className={styles["guests__guest__name"]}>
-                  {el.guestName}
-                </div>
-                <img
-                  className={styles["guests__guest__img"]}
-                  src={el.guestPhoto.length > 0 ? el.guestPhoto : defaultAvatar}
-                  alt="guest avatar"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
+        )
       )}
     </>
   );

@@ -10,7 +10,7 @@
   opacity: 0.6;
   z-index: 100;
   cursor: pointer;
-
+  margin-top: 1.5rem;
   &:hover {
     opacity: 1;
   }
@@ -47,7 +47,7 @@
   }
   &__choice {
     position: absolute;
-    top: 5rem;
+    top: 3.5rem;
     right: 4rem;
     z-index: 10;
     border-radius: 0.3rem;

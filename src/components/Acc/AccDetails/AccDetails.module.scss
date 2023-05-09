@@ -14,4 +14,33 @@
     align-self: center;
     position: relative;
   }
+  &__sign-out-btn {
+    margin-top: 2.5rem;
+    grid-row: 5/6;
+    grid-column: 1/-1;
+    justify-self: center;
+    background-color: var(--default-theme-light);
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0.1rem 0.5rem 1rem rgba($color: #000000, $alpha: 0.3);
+    font-size: var(--default-font);
+
+    cursor: pointer;
+    &:hover {
+      transform: translateY(-0.3rem) scale(1.05);
+      box-shadow: 0.2rem 0.7rem 1.5rem rgba($color: #000000, $alpha: 0.6);
+    }
+    &:active {
+      box-shadow: 0.1rem 0.4rem 1rem rgba($color: #000000, $alpha: 0.3);
+    }
+  }
+}
+[sign-out-theme="light"] {
+  background-color: var(--default-theme-light);
+  color: var(--color-dark-light);
+}
+[sign-out-theme="dark"] {
+  background-color: var(--color-board-default);
+  color: var(--color-white-dark);
 }

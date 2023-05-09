@@ -19,6 +19,7 @@ const AddNewBoard = () => {
       setBoardName("");
     }
   }
+  const theme = useAppSelector((state) => state.theme.theme);
 
   return (
     <form>
@@ -58,6 +59,7 @@ const AddNewBoard = () => {
         ></label>
         <div className={styles["boards__create-panel__buttons"]}>
           <button
+            create-btn-theme={theme}
             className={styles["boards__create-panel__buttons--create-btn"]}
             type="button"
             onClick={handleCreateClick}

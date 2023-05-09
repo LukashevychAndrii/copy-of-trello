@@ -41,6 +41,8 @@ const AccDetails = () => {
       });
   }
 
+  const theme = useAppSelector((state) => state.theme.theme);
+
   return (
     <div className={styles["acc-details"]}>
       <span>Username:</span>
@@ -54,7 +56,13 @@ const AccDetails = () => {
       <div className={styles["acc-details__avatar"]}>
         <UPhoto />
       </div>
-      <button onClick={handleSignOutCLick}>Sign Out</button>
+      <button
+        sign-out-theme={theme}
+        className={styles["acc-details__sign-out-btn"]}
+        onClick={handleSignOutCLick}
+      >
+        Sign Out
+      </button>
     </div>
   );
 };

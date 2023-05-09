@@ -278,7 +278,7 @@ export const getBoardImg = createAsyncThunk<string, undefined, {}>(
     return new Promise<string>((resolve) => {
       onValue(dbRef, (snapshot) => {
         const data = snapshot.val();
-        if (data) dispatch(setCurrentBoardIMG(data));
+        dispatch(setCurrentBoardIMG(data));
         resolve(data);
       });
     });

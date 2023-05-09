@@ -119,6 +119,8 @@ const AddUser: React.FC<props> = (props) => {
               dispatch(sendInvite({ inviteUserID: userInput }));
             }}
             type="button"
+            className={styles["found-user__invite-btn"]}
+            invite-btn-theme={theme}
           >
             Invite +
           </button>

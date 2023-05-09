@@ -21,10 +21,10 @@ const BoardPage = () => {
         onValue(
           userRef,
           (snapshot) => {
-            console.log(snapshot);
             if (snapshot.exists()) {
               setTodos(snapshot.val());
-              console.log(snapshot.val());
+            } else {
+              setTodos([]);
             }
           },
           (error) => {

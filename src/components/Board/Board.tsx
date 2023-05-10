@@ -42,9 +42,10 @@ interface props {
   todos: dataI[];
   boardID: string | undefined;
   guest: boolean;
+  guestBoardPHOTO?: string;
 }
 
-const Board: React.FC<props> = ({ todos, boardID, guest }) => {
+const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
 
@@ -52,11 +53,11 @@ const Board: React.FC<props> = ({ todos, boardID, guest }) => {
     if (userID) {
       setList(todos);
       dispatch(setCurrentBoardID(boardID));
-      dispatch(getBoardImg());
+      if (!guest) dispatch(getBoardImg());
     } else {
       setList([]);
     }
-  }, [todos, userID, boardID, dispatch]);
+  }, [todos, userID, boardID, dispatch, guest]);
 
   const [list, setList] = React.useState(todos);
   // console.log(list);
@@ -158,8 +159,10 @@ const Board: React.FC<props> = ({ todos, boardID, guest }) => {
   let backgroundImageStyle: backgroundStyle = {
     position: "relative",
   };
-  if (customBG) {
-    backgroundImageStyle.backgroundImage = `url(${customBG})`;
+  if (customBG || guestBoardPHOTO) {
+    backgroundImageStyle.backgroundImage = `url(${
+      customBG ? customBG : guestBoardPHOTO
+    })`;
     backgroundImageStyle.backgroundPosition = "center";
     backgroundImageStyle.backgroundRepeat = "no-repeat";
     backgroundImageStyle.backgroundSize = "cover";
@@ -173,6 +176,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest }) => {
       </div>
 
       <SimpleBar className={styles["board__scrollbar"]}>
+        {guest && <div></div>}
         <div className={styles["board"]}>
           {list.length > 0 &&
             list.map((group, groupIndex) => (

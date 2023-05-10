@@ -117,6 +117,7 @@ const AddUser: React.FC<props> = (props) => {
           <button
             onClick={() => {
               dispatch(sendInvite({ inviteUserID: userInput }));
+              props.hideAddUser();
             }}
             type="button"
             className={styles["found-user__invite-btn"]}

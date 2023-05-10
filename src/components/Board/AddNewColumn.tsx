@@ -38,7 +38,13 @@ const AddNewColumn: React.FC<props> = (props) => {
   return (
     <div>
       {checked && (
-        <form className={styles["add-form"]}>
+        <form
+          className={styles["add-form"]}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAddBtnClick();
+          }}
+        >
           <input
             value={listName}
             onChange={(e) => {

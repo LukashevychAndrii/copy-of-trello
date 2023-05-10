@@ -22,7 +22,12 @@ const AddNewBoard = () => {
   const theme = useAppSelector((state) => state.theme.theme);
 
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleCreateClick();
+      }}
+    >
       <input
         className={styles["boards__input"]}
         name="add-board"

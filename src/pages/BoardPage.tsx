@@ -5,12 +5,16 @@ import { app } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { createAlert } from "../store/slices/alert-slice";
 import { useParams } from "react-router-dom";
+import { setCurrentGuestBoard } from "../store/slices/boards-slice";
 
 const BoardPage = () => {
   const [todos, setTodos] = React.useState([]);
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
   const { boardID } = useParams();
+  React.useEffect(() => {
+    dispatch(setCurrentGuestBoard(undefined));
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (userID) {

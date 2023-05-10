@@ -25,7 +25,8 @@ const Notification: React.FC = () => {
     inviterName: string,
     inviterDATA: [],
     boardName: string,
-    inviterPhoto: string
+    inviterPhoto: string,
+    boardPhoto: string
   ) {
     dispatch(
       acceptInvite({
@@ -36,6 +37,7 @@ const Notification: React.FC = () => {
         inviterDATA: inviterDATA,
         boardName: boardName,
         inviterPhoto: inviterPhoto,
+        boardPhoto: boardPhoto,
       })
     );
   }
@@ -66,7 +68,8 @@ const Notification: React.FC = () => {
                         inviteVALUES[index].inviterName,
                         inviteVALUES[index].inviterDATA,
                         inviteVALUES[index].inviterDATA.boardName,
-                        inviteVALUES[index].inviterPhoto
+                        inviteVALUES[index].inviterPhoto,
+                        inviteVALUES[index].boardPhoto
                       );
                     }}
                     className={styles["notification__invite__button"]}

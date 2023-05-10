@@ -39,6 +39,9 @@ const BoardList = () => {
     console.log(fetchedGuestsBoards);
     setGuestsBoards(fetchedGuestsBoards);
   }, [fetchedGuestsBoards]);
+  React.useEffect(() => {
+    dispatch(fetchGuestsBoards());
+  }, [dispatch]);
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (

@@ -76,11 +76,15 @@ export const sendInvite = createAsyncThunk<
       .then(() => {
         const dbRef = ref(db, `users/${inviteUserID}/userInvites`);
         const userPHOTO = state.user.uPhoto ? state.user.uPhoto : "";
+        const boardPHOTO = state.boards.currentBoardIMG
+          ? state.boards.currentBoardIMG
+          : "";
         push(dbRef, {
           inviterName: state.user.uName,
           inviterPhoto: userPHOTO,
           inviterID: state.user.id,
           boardID: state.boards.currentBoardID,
+          boardPhoto: boardPHOTO,
           inviterDATA: boardDATA,
         }).then(() => {});
       });
@@ -125,6 +129,7 @@ export interface inviteDATAI {
   };
   inviterName: string;
   inviterPhoto: string;
+  boardPhoto: string;
 }
 
 export const acceptInvite = createAsyncThunk<
@@ -137,6 +142,7 @@ export const acceptInvite = createAsyncThunk<
     inviterDATA: [];
     boardName: string;
     inviterPhoto: string;
+    boardPhoto: string;
   },
   {}
 >(
@@ -150,6 +156,7 @@ export const acceptInvite = createAsyncThunk<
       inviterDATA,
       boardName,
       inviterPhoto,
+      boardPhoto,
     },
     { getState, dispatch }
   ) {
@@ -176,6 +183,8 @@ export const acceptInvite = createAsyncThunk<
           boardID: boardID,
           boardDATA: inviterDATA,
           ownerPHOTO: inviterPhoto,
+          boardNAME: boardName,
+          boardPhoto: boardPhoto,
         }).then(() => {
           const dbRef = ref(
             db,

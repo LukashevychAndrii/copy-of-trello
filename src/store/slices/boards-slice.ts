@@ -25,16 +25,17 @@ interface initialStateI {
   currentBoardID: string;
   currentBoardIMG: string;
 
-  currentSharedBoard?: currentSharedBoardI;
+  currentSharedBoard: currentSharedBoardI | null;
 
   guestsBoards: guestsBoardDATAI[];
-  currentGuestBoard?: guestsBoardDATAI;
+  currentGuestBoard?: guestsBoardDATAI | null;
 }
 const initialState: initialStateI = {
   boards: {},
   currentBoardID: "",
   currentBoardIMG: "",
   guestsBoards: [],
+  currentSharedBoard: null,
 };
 
 const boardsSlice = createSlice({
@@ -142,6 +143,7 @@ export interface guestsBoardDATAI {
   };
   boardID: string;
   ownerID: string;
+  boardPhoto: string;
   ownerPHOTO: string;
 }
 
@@ -327,17 +329,23 @@ export const updateUserTodos = createAsyncThunk<
   return undefined;
 });
 
-export const fetchSharedBoards = createAsyncThunk<undefined, undefined, {}>(
+export const fetchSharedBoards = createAsyncThunk<
+  undefined,
+  { boardID: string },
+  {}
+>(
   "board/updateUsersTodos",
-  async function (_, { getState, dispatch }) {
+  async function ({ boardID }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
     const state = getState() as RootState;
     const db = getDatabase();
-    const dbRef = ref(db, `users/${state.user.id}/sharedBoards`);
+    const dbRef = ref(
+      db,
+      `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
+    );
     get(dbRef)
       .then((snapshot) => {
-        if (snapshot.exists())
-          dispatch(setCurrentSharedBoard(Object.values(snapshot.val())[0]));
+        dispatch(setCurrentSharedBoard(snapshot.val()));
       })
       .catch((error) => {
         dispatch(appDispatch(createAlert(getErrorDetails(error.code))));

@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 
 const SmallBoardList = () => {
   const boards = useAppSelector((state) => state.boards.boards);
+  const currentBoardID = useAppSelector((state) => state.boards.currentBoardID);
+
   const theme = useAppSelector((state) => state.theme.theme);
   return (
     <>
@@ -20,7 +22,10 @@ const SmallBoardList = () => {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
-                className={styles["boards__item"]}
+                className={`${styles["boards__item"]} ${
+                  Object.keys(boards)[index] === currentBoardID &&
+                  styles["boards__item--selected"]
+                }`}
               >
                 <div className={styles["boards__item__name"]}>
                   {el.boardName}

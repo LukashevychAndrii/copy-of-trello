@@ -23,8 +23,26 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
     (state) => state.boards.currentGuestBoard
   );
   React.useEffect(() => {
-    if (currentBoard) setGuests(Object.values(currentBoard.GUESTS));
-  }, [currentBoard, guest]);
+    if (currentBoard?.GUESTS) setGuests(Object.values(currentBoard.GUESTS));
+    if (currentBoard && !currentBoard.GUESTS && guest) {
+      console.log("asd");
+      dispatch(
+        removeGuestBoard({
+          boardID: currentBoard?.boardID,
+          ownerNAME: currentBoard?.OWNER,
+          ownerID: currentBoard?.ownerID,
+        })
+      );
+      dispatch(
+        createAlert({
+          alertTitle: "Database error!",
+          alertText: `You were kicked from guest board by ${currentBoard.OWNER}`,
+          alertError: true,
+        })
+      );
+      navigate("/");
+    }
+  }, [currentBoard, guest, dispatch, navigate]);
 
   const userID = useAppSelector((state) => state.user.id);
   const sharedBoardDATA = useAppSelector(
@@ -60,7 +78,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
         );
       }
     }
-  }, [sharedBoardDATA, userID, dispatch, navigate, guest, guestBoard]);
+  }, [userID, dispatch, navigate, guest, guestBoard]);
 
   function handleRemoveUser(guestID: string) {
     dispatch(removeUser({ userID: guestID }));

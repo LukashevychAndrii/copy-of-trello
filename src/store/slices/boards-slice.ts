@@ -287,7 +287,7 @@ export const fetchGuestBoard = createAsyncThunk<
           appDispatch(
             createAlert({
               alertTitle: "Database error!",
-              alertText: "Trying to connect to database that was deleted!",
+              alertText: "Trying to connect to board that was deleted!",
               alertError: true,
             })
           );

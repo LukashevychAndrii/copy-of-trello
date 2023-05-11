@@ -105,10 +105,11 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
           );
         }
         dragItem.current = { groupIndex, groupItemIndex };
-        if (boardID)
-          dispatch(
-            updateBoard({ data: newList, boardID: boardID, guest: guest })
-          );
+        if (boardID) {
+        }
+        // dispatch(
+        //   updateBoard({ data: newList, boardID: boardID, guest: guest })
+        // );
         return newList;
       });
     }
@@ -152,6 +153,13 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
         );
       return newList;
     });
+  }
+
+  function handleRemoveItem(groupIndex: number, groupItemIndex: number) {
+    const newList: dataI[] = JSON.parse(JSON.stringify(list));
+    newList[groupIndex].items.splice(groupItemIndex, 1);
+    if (userID && boardID)
+      dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
@@ -216,6 +224,14 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                       }
                     >
                       {groupItem}
+                      <span
+                        onClick={() => {
+                          handleRemoveItem(groupIndex, groupItemIndex);
+                        }}
+                        className={styles["board__group__item__delete-btn"]}
+                      >
+                        &times;
+                      </span>
                     </div>
                   ))}
                   <AddNewColumnItem
@@ -230,7 +246,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       </SimpleBar>
 
       <BoardMembers guest={guest} />
-      <ThreeDots setList={setList} />
+      {!guest && <ThreeDots setList={setList} />}
     </div>
   );
 };

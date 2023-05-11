@@ -44,9 +44,18 @@
       color: var(--color-black);
       padding: 1rem;
       cursor: grab;
+      position: relative;
       &--dragging {
         color: var(--color-board-default);
         background-color: var(--color-board-default);
+      }
+      &__delete-btn {
+        position: absolute;
+        top: -0.3rem;
+        right: 0.5rem;
+        font-size: 2rem;
+        font-weight: 600;
+        cursor: pointer;
       }
     }
   }

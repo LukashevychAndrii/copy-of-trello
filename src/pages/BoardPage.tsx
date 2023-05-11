@@ -1,5 +1,5 @@
 import React from "react";
-import Board from "../components/Board/Board";
+import Board, { dataI } from "../components/Board/Board";
 import { getDatabase, ref, get, onValue } from "firebase/database";
 import { app } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { setCurrentGuestBoard } from "../store/slices/boards-slice";
 
 const BoardPage = () => {
-  const [todos, setTodos] = React.useState([]);
+  const [todos, setTodos] = React.useState<dataI[]>([]);
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
   const { boardID } = useParams();
@@ -26,7 +26,11 @@ const BoardPage = () => {
           userRef,
           (snapshot) => {
             if (snapshot.exists()) {
-              setTodos(snapshot.val());
+              const todos: dataI[] = snapshot.val();
+              const transformedTodos = todos.map((el) =>
+                el.items ? el : { title: el.title, items: [] }
+              );
+              setTodos(transformedTodos);
             } else {
               setTodos([]);
             }

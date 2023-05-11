@@ -60,7 +60,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   }, [todos, userID, boardID, dispatch, guest]);
 
   const [list, setList] = React.useState(todos);
-  // console.log(list);
   const [dragging, setDragging] = React.useState(false);
 
   const dragItem = React.useRef<dragItem | null>();

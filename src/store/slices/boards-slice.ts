@@ -15,6 +15,7 @@ import { dataI } from "../../components/Board/Board";
 import { createAlert } from "./alert-slice";
 import getErrorDetails from "../../utils/getErrorDetails";
 import { NavigateFunction, redirect, useNavigate } from "react-router-dom";
+import { log } from "console";
 
 interface initialStateI {
   boards: {
@@ -319,7 +320,6 @@ export const updateBoard = createAsyncThunk<
 >(
   "board/updateBoard",
   async function ({ boardID, data, guest }, { getState, dispatch }) {
-    console.log("we");
     const state = getState() as RootState;
     console.log(guest);
     const db = getDatabase();

@@ -7,6 +7,8 @@ import {
   fetchBoards,
   fetchGuestsBoards,
   guestsBoardDATAI,
+  removeBoard,
+  removeGuestBoard,
 } from "../../../store/slices/boards-slice";
 import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
@@ -27,8 +29,13 @@ const BoardList = () => {
   );
 
   React.useEffect(() => {
-    setFetchBoardsKeys(Object.keys(fetchedBoards));
-    setFetchBoardsValues(Object.values(fetchedBoards));
+    if (fetchedBoards) {
+      setFetchBoardsKeys(Object.keys(fetchedBoards));
+      setFetchBoardsValues(Object.values(fetchedBoards));
+    } else {
+      setFetchBoardsKeys([]);
+      setFetchBoardsValues([]);
+    }
   }, [fetchedBoards]);
 
   const fetchedGuestsBoards = useAppSelector(
@@ -42,6 +49,23 @@ const BoardList = () => {
   React.useEffect(() => {
     dispatch(fetchGuestsBoards());
   }, [dispatch]);
+
+  function handleRemoveBoardCLick(boardID: string) {
+    dispatch(removeBoard({ boardID: boardID }));
+  }
+  function handleRemoveGuestBoard(
+    boardID: string,
+    ownerName: string,
+    ownerID: string
+  ) {
+    dispatch(
+      removeGuestBoard({
+        boardID: boardID,
+        ownerNAME: ownerName,
+        ownerID: ownerID,
+      })
+    );
+  }
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (
@@ -68,6 +92,14 @@ const BoardList = () => {
                   <Link className={styles["boards__list__link"]} to={el}>
                     {fetchedBoardsValues[index].boardName}
                   </Link>
+                  <span
+                    onClick={() => {
+                      handleRemoveBoardCLick(el);
+                    }}
+                    className={styles["boards__list__item__delete-btn"]}
+                  >
+                    &times;
+                  </span>
                 </li>
               ))}
 
@@ -99,6 +131,14 @@ const BoardList = () => {
                   >
                     {`${el.boardDATA.boardName} (${el.OWNER}'s)`}
                   </Link>
+                  <span
+                    onClick={() => {
+                      handleRemoveGuestBoard(el.boardID, el.OWNER, el.ownerID);
+                    }}
+                    className={styles["boards__list__item__delete-btn"]}
+                  >
+                    &times;
+                  </span>
                 </li>
               ))}
             </ul>

@@ -219,4 +219,21 @@ export const rejectInvite = createAsyncThunk<
   return undefined;
 });
 
+export const removeUser = createAsyncThunk<undefined, { userID: string }, {}>(
+  "invite/acceptInvite",
+  async function ({ userID }, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+    const state = getState() as RootState;
+    const db = getDatabase();
+    const dbRef = ref(
+      db,
+      `users/${state.user.id}/sharedBoards/${state.boards.currentBoardID}__${state.user.uName}/GUESTS/${userID}`
+    );
+
+    remove(dbRef);
+
+    return undefined;
+  }
+);
+
 export default inviteSlice.reducer;

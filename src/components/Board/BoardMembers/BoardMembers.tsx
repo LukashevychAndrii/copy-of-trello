@@ -2,7 +2,13 @@ import React from "react";
 import styles from "./BoardMembers.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import defaultAvatar from "../../../img/default-avatar--black.png";
-import { fetchSharedBoards } from "../../../store/slices/boards-slice";
+import {
+  fetchSharedBoards,
+  removeGuestBoard,
+} from "../../../store/slices/boards-slice";
+import { removeUser } from "../../../store/slices/invite-slice";
+import { useNavigate } from "react-router-dom";
+import { createAlert } from "../../../store/slices/alert-slice";
 
 interface guestI {
   guestID: string;
@@ -11,6 +17,7 @@ interface guestI {
 }
 const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [guests, setGuests] = React.useState<guestI[]>();
   const currentBoard = useAppSelector(
     (state) => state.boards.currentGuestBoard
@@ -28,9 +35,39 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
     if (userID && !guest)
       dispatch(fetchSharedBoards({ boardID: currentBoardID }));
   }, [dispatch, userID, guest, currentBoardID]);
+  const guestBoard = useAppSelector((state) => state.boards.currentGuestBoard);
+
+  React.useEffect(() => {
+    if (guestBoard?.GUESTS && guest) {
+      const guestsIDS = Object.keys(guestBoard?.GUESTS);
+      const foundID = guestsIDS.findIndex((el) => el === userID);
+      console.log(foundID);
+      if (foundID === -1) {
+        dispatch(
+          removeGuestBoard({
+            boardID: guestBoard.boardID,
+            ownerNAME: guestBoard.OWNER,
+            ownerID: guestBoard.ownerID,
+          })
+        );
+        navigate("/");
+        dispatch(
+          createAlert({
+            alertTitle: "Database error!",
+            alertText: `You were kicked from guest board by ${guestBoard.OWNER}`,
+            alertError: true,
+          })
+        );
+      }
+    }
+  }, [sharedBoardDATA, userID, dispatch, navigate, guest, guestBoard]);
+
+  function handleRemoveUser(guestID: string) {
+    dispatch(removeUser({ userID: guestID }));
+  }
   return (
     <>
-      {!guest && sharedBoardDATA && (
+      {!guest && sharedBoardDATA?.GUESTS && (
         <div>
           <div className={styles["guests__text"]}>Board Members</div>
           <ul className={styles["guests"]}>
@@ -44,6 +81,14 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
                   src={el.guestPhoto.length > 0 ? el.guestPhoto : defaultAvatar}
                   alt="member"
                 />
+                <span
+                  onClick={() => {
+                    handleRemoveUser(el.guestID);
+                  }}
+                  className={styles["guests__guest__remove-btn"]}
+                >
+                  &times;
+                </span>
               </li>
             ))}
           </ul>

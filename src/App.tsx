@@ -68,6 +68,7 @@ function App() {
             if (snapshot.exists()) {
               const reternedData = snapshot.val();
               if (user.email) {
+                console.log(reternedData.boardImg);
                 const userData: userDataI = {
                   email: user.email,
                   id: user.uid,

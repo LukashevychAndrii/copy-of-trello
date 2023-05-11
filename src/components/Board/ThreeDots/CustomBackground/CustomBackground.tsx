@@ -6,7 +6,10 @@ import {
   removeBoardImg,
   setBoardImg,
 } from "../../../../store/slices/user-slice";
-import { updateBoardImg } from "../../../../store/slices/boards-slice";
+import {
+  setCurrentBoardIMG,
+  updateBoardImg,
+} from "../../../../store/slices/boards-slice";
 
 interface props {
   hideCustomBg: () => void;
@@ -32,7 +35,7 @@ const CustomBackground: React.FC<props> = (props) => {
       const reader = new FileReader();
       reader.readAsDataURL(droppedFiles[0]);
       reader.onload = () => {
-        dispatch(setBoardImg({ boardImg: reader.result }));
+        dispatch(setCurrentBoardIMG(reader.result));
       };
     } else {
       dispatch(
@@ -65,10 +68,11 @@ const CustomBackground: React.FC<props> = (props) => {
     }, [dropAreaRef]);
   }
   useHandleClickOutside(dropAreaRef);
+  const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
 
   return (
     <div className={styles["drag__wrapper"]}>
-      {boardImg ? (
+      {customBG ? (
         <>
           <div
             onDragStart={(e) => e.preventDefault()}
@@ -79,7 +83,7 @@ const CustomBackground: React.FC<props> = (props) => {
             }}
             className={styles["drag"]}
           >
-            <img className={styles["drag__img"]} src={boardImg} alt="board" />
+            <img className={styles["drag__img"]} src={customBG} alt="board" />
           </div>
           <div className={styles["drag__buttons"]}>
             <div style={{ display: "flex", gap: "2.5rem" }}>

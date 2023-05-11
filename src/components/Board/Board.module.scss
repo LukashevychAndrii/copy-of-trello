@@ -25,7 +25,7 @@
   &__group {
     background-color: var(--color-board-group-default);
     color: var(--color-white);
-    min-width: 30rem;
+    width: 30rem;
     height: max-content;
     padding: 0.5rem;
     display: flex;
@@ -33,10 +33,38 @@
     gap: 1rem;
     border-radius: 5px;
     box-shadow: 0.5rem 1rem 1.5rem rgba($color: #000000, $alpha: 0.5);
+    white-space: pre-wrap;
 
+    // overflow: hidden;
+
+    &__title-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+    }
     &__title {
       font-size: 2.3rem;
+      width: 30rem;
       word-wrap: break-word;
+
+      &__checkbox {
+        display: none;
+      }
+      &__pencil-icon {
+        fill: var(--color-white-dark);
+        opacity: 0.6;
+        cursor: pointer;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      &__new-title {
+        & > input {
+          width: 90%;
+          padding: 0.5rem 1rem;
+          font-size: var(--default-font);
+        }
+      }
     }
     &__item {
       background-color: var(--color-white);
@@ -45,6 +73,7 @@
       padding: 1rem;
       cursor: grab;
       position: relative;
+      word-wrap: break-word;
       &--dragging {
         color: var(--color-board-default);
         background-color: var(--color-board-default);
@@ -55,6 +84,12 @@
         right: 0.5rem;
         font-size: 2rem;
         font-weight: 600;
+        cursor: pointer;
+      }
+      &__pencil-icon {
+        position: absolute;
+        top: 0.7rem;
+        right: 2.5rem;
         cursor: pointer;
       }
     }

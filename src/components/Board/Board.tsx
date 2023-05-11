@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Board.module.scss";
+import { ReactComponent as PencilIcon } from "../../img/SVG/pencil.svg";
 
 import AddNewColumn from "./AddNewColumn";
 import AddNewColumnItem from "./AddNewColumnItem";
@@ -16,6 +17,7 @@ import {
 } from "../../store/slices/boards-slice";
 import BoardMembers from "./BoardMembers/BoardMembers";
 import SmallBoardList from "./SmallBoardList/SmallBoardList";
+import { createAlert } from "../../store/slices/alert-slice";
 
 export interface dataI {
   title: string;
@@ -48,6 +50,11 @@ interface props {
 const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
+  const [newTitle, setNewTitle] = React.useState("");
+  const [titleIndex, setTitleIndex] = React.useState(-1);
+  const [newItemText, setNewItemItext] = React.useState("");
+  const [titleIndex2, setTitleIndex2] = React.useState(-1);
+  const [itemIndex, setItemIndex] = React.useState(-1);
 
   React.useEffect(() => {
     if (userID) {
@@ -105,10 +112,10 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
         }
         dragItem.current = { groupIndex, groupItemIndex };
         if (boardID) {
+          dispatch(
+            updateBoard({ data: newList, boardID: boardID, guest: guest })
+          );
         }
-        // dispatch(
-        //   updateBoard({ data: newList, boardID: boardID, guest: guest })
-        // );
         return newList;
       });
     }
@@ -167,6 +174,82 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
   }
 
+  function handleChangeTitle(groupIndex: number) {
+    if (newTitle.trim().length > 10) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of title is 10!",
+          alertError: true,
+        })
+      );
+    } else if (newTitle.trim().length > 0) {
+      const newList: dataI[] = JSON.parse(JSON.stringify(list));
+      newList[groupIndex].title = newTitle;
+      if (userID && boardID)
+        dispatch(
+          updateBoard({ data: newList, boardID: boardID, guest: guest })
+        );
+      setTitleIndex(-1);
+    } else {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Title must not be empty!",
+          alertError: true,
+        })
+      );
+    }
+  }
+  const titleRef = React.useRef(null);
+  function useHandleClickOutside(dropAreaRef: any) {
+    React.useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (
+          dropAreaRef.current &&
+          !dropAreaRef.current.contains(event.target)
+        ) {
+          setTitleIndex(-1);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [dropAreaRef]);
+  }
+  useHandleClickOutside(titleRef);
+
+  function handleItemTextChange(groupIndex: number, groupItemIndex: number) {
+    if (newItemText.trim().length > 10) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of title is 10!",
+          alertError: true,
+        })
+      );
+      setTitleIndex2(-1);
+      setItemIndex(-1);
+    } else if (newItemText.trim().length > 0) {
+      const newList: dataI[] = JSON.parse(JSON.stringify(list));
+      newList[groupIndex].items[groupItemIndex] = newItemText;
+      if (userID && boardID)
+        dispatch(
+          updateBoard({ data: newList, boardID: boardID, guest: guest })
+        );
+      setItemIndex(-1);
+    } else {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Title must not be empty!",
+          alertError: true,
+        })
+      );
+    }
+  }
+
   const theme = useAppSelector((state) => state.theme.theme);
   const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
   let backgroundImageStyle: backgroundStyle = {
@@ -189,7 +272,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       </div>
 
       <SimpleBar className={styles["board__scrollbar"]}>
-        {guest && <div></div>}
         <div className={styles["board"]}>
           {list.length > 0 &&
             list.map((group, groupIndex) => (
@@ -209,34 +291,102 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                   className={styles["board__group"]}
                   list-theme={theme}
                 >
-                  <div className={styles["board__group__title"]}>
-                    {group.title}
-                  </div>
-                  {group.items?.map((groupItem, groupItemIndex) => (
-                    <div
-                      onDragStart={(e) => {
-                        handleDragStart(e, groupIndex, groupItemIndex);
+                  {titleIndex === groupIndex ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleChangeTitle(groupIndex);
                       }}
-                      onDragEnter={(e) => {
-                        handleDragEnter(e, groupIndex, groupItemIndex);
-                      }}
-                      key={groupItemIndex}
-                      draggable
-                      className={
-                        dragging
-                          ? getStyles(groupIndex, groupItemIndex)
-                          : styles[`board__group__item`]
-                      }
+                      className={styles["board__group__title__new-title"]}
+                      ref={titleRef}
                     >
-                      {groupItem}
-                      <span
-                        onClick={() => {
-                          handleRemoveItem(groupIndex, groupItemIndex);
+                      <input
+                        id={`new-title-text__${groupIndex}`}
+                        name="new-title-text"
+                        type="text"
+                        value={newTitle}
+                        onChange={(e) => {
+                          setNewTitle(e.target.value);
                         }}
-                        className={styles["board__group__item__delete-btn"]}
-                      >
-                        &times;
-                      </span>
+                      />
+                      <label htmlFor={`new-title-text__${groupIndex}`}></label>
+                    </form>
+                  ) : (
+                    <div className={styles["board__group__title-wrapper"]}>
+                      <div className={styles["board__group__title"]}>
+                        {group.title}
+                      </div>
+                      <PencilIcon
+                        className={styles["board__group__title__pencil-icon"]}
+                        onClick={() => {
+                          setTitleIndex(groupIndex);
+                          setNewTitle(group.title);
+                        }}
+                      />
+                    </div>
+                  )}
+                  {group.items?.map((groupItem, groupItemIndex) => (
+                    <div key={groupItemIndex}>
+                      {itemIndex === groupItemIndex &&
+                      titleIndex2 === groupIndex ? (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            handleItemTextChange(groupIndex, groupItemIndex);
+                          }}
+                          className={styles["board__group__title__new-title"]}
+                          ref={titleRef}
+                        >
+                          <input
+                            type="text"
+                            id={`new-item-text__${groupIndex}`}
+                            name={`new-item-text__${groupIndex}`}
+                            value={newItemText}
+                            onChange={(e) => {
+                              setNewItemItext(e.target.value);
+                            }}
+                          />
+                          <label
+                            htmlFor={`new-item-text__${groupIndex}`}
+                          ></label>
+                        </form>
+                      ) : (
+                        <div
+                          onDragStart={(e) => {
+                            handleDragStart(e, groupIndex, groupItemIndex);
+                          }}
+                          onDragEnter={(e) => {
+                            handleDragEnter(e, groupIndex, groupItemIndex);
+                          }}
+                          key={groupItemIndex}
+                          draggable
+                          className={
+                            dragging
+                              ? getStyles(groupIndex, groupItemIndex)
+                              : styles[`board__group__item`]
+                          }
+                        >
+                          {groupItem}
+                          <span
+                            onClick={() => {
+                              handleRemoveItem(groupIndex, groupItemIndex);
+                            }}
+                            className={styles["board__group__item__delete-btn"]}
+                          >
+                            &times;
+                          </span>
+                          <PencilIcon
+                            className={
+                              styles["board__group__item__pencil-icon"]
+                            }
+                            onClick={() => {
+                              setItemIndex(groupItemIndex);
+                              setTitleIndex2(groupIndex);
+                              setNewItemItext(groupItem);
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   ))}
                   <AddNewColumnItem

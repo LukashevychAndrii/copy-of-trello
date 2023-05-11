@@ -20,7 +20,15 @@ const AddNewColumn: React.FC<props> = (props) => {
     setChecked(false);
   }
   function handleAddBtnClick() {
-    if (listName.trim().length === 0) {
+    if (listName.trim().length > 10) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of title is 10!",
+          alertError: true,
+        })
+      );
+    } else if (listName.trim().length === 0) {
       dispatch(
         createAlert({
           alertTitle: "Error!",

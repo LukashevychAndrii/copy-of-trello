@@ -160,6 +160,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
     if (userID && boardID)
       dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
   }
+  function handleRemoveColumn(groupIndex: number) {
+    const newList: dataI[] = JSON.parse(JSON.stringify(list));
+    newList.splice(groupIndex, 1);
+    if (userID && boardID)
+      dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
+  }
 
   const theme = useAppSelector((state) => state.theme.theme);
   const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
@@ -237,6 +243,14 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                     index={groupIndex}
                     getNewListItem={getNewListItem}
                   />
+                  <span
+                    onClick={() => {
+                      handleRemoveColumn(groupIndex);
+                    }}
+                    className={styles["board__group__item__delete-btn"]}
+                  >
+                    &times;
+                  </span>
                 </div>
               </SimpleBar>
             ))}

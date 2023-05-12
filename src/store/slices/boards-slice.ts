@@ -345,9 +345,17 @@ export const updateBoard = createAsyncThunk<
       set(dbRef, data).then(() => {
         const dbRef = ref(
           db,
-          `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardDATA/boardData`
+          `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
         );
-        set(dbRef, data);
+        get(dbRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const dbRef = ref(
+              db,
+              `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardDATA/boardData`
+            );
+            set(dbRef, data);
+          }
+        });
       });
     }
     return undefined;

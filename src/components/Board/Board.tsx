@@ -270,143 +270,150 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
         <AddNewBoard />
         <SmallBoardList />
       </div>
+      <div>
+        {list.length > 0}
 
-      <SimpleBar className={styles["board__scrollbar"]}>
-        <div className={styles["board"]}>
-          {list.length > 0 &&
-            list.map((group, groupIndex) => (
-              <SimpleBar style={{ maxHeight: "70vh" }} key={groupIndex}>
-                <div
-                  onDragEnter={
-                    dragging && !group.items?.length
-                      ? (e) => {
-                          handleDragEnter(e, groupIndex, 0);
-                        }
-                      : undefined
-                  }
-                  onDragEnd={() => {
-                    setDragging(false);
-                  }}
-                  key={groupIndex}
-                  className={styles["board__group"]}
-                  list-theme={theme}
-                >
-                  {titleIndex === groupIndex ? (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleChangeTitle(groupIndex);
-                      }}
-                      className={styles["board__group__title__new-title"]}
-                      ref={titleRef}
-                    >
-                      <input
-                        id={`new-title-text__${groupIndex}`}
-                        name="new-title-text"
-                        type="text"
-                        value={newTitle}
-                        onChange={(e) => {
-                          setNewTitle(e.target.value);
-                        }}
-                      />
-                      <label htmlFor={`new-title-text__${groupIndex}`}></label>
-                    </form>
-                  ) : (
-                    <div className={styles["board__group__title-wrapper"]}>
-                      <div className={styles["board__group__title"]}>
-                        {group.title}
-                      </div>
-                      <PencilIcon
-                        className={styles["board__group__title__pencil-icon"]}
-                        onClick={() => {
-                          setTitleIndex(groupIndex);
-                          setNewTitle(group.title);
-                        }}
-                      />
-                    </div>
-                  )}
-                  {group.items?.map((groupItem, groupItemIndex) => (
-                    <div key={groupItemIndex}>
-                      {itemIndex === groupItemIndex &&
-                      titleIndex2 === groupIndex ? (
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            handleItemTextChange(groupIndex, groupItemIndex);
-                          }}
-                          className={styles["board__group__title__new-title"]}
-                          ref={titleRef}
-                        >
-                          <input
-                            type="text"
-                            id={`new-item-text__${groupIndex}`}
-                            name={`new-item-text__${groupIndex}`}
-                            value={newItemText}
-                            onChange={(e) => {
-                              setNewItemItext(e.target.value);
-                            }}
-                          />
-                          <label
-                            htmlFor={`new-item-text__${groupIndex}`}
-                          ></label>
-                        </form>
-                      ) : (
-                        <div
-                          onDragStart={(e) => {
-                            handleDragStart(e, groupIndex, groupItemIndex);
-                          }}
-                          onDragEnter={(e) => {
-                            handleDragEnter(e, groupIndex, groupItemIndex);
-                          }}
-                          key={groupItemIndex}
-                          draggable
-                          className={
-                            dragging
-                              ? getStyles(groupIndex, groupItemIndex)
-                              : styles[`board__group__item`]
+        <SimpleBar className={styles["board__scrollbar"]}>
+          <div className={styles["board"]}>
+            {list.length > 0 &&
+              list.map((group, groupIndex) => (
+                <SimpleBar style={{ maxHeight: "70vh" }} key={groupIndex}>
+                  <div
+                    onDragEnter={
+                      dragging && !group.items?.length
+                        ? (e) => {
+                            handleDragEnter(e, groupIndex, 0);
                           }
-                        >
-                          {groupItem}
-                          <span
-                            onClick={() => {
-                              handleRemoveItem(groupIndex, groupItemIndex);
-                            }}
-                            className={styles["board__group__item__delete-btn"]}
-                          >
-                            &times;
-                          </span>
-                          <PencilIcon
-                            className={
-                              styles["board__group__item__pencil-icon"]
-                            }
-                            onClick={() => {
-                              setItemIndex(groupItemIndex);
-                              setTitleIndex2(groupIndex);
-                              setNewItemItext(groupItem);
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  <AddNewColumnItem
-                    index={groupIndex}
-                    getNewListItem={getNewListItem}
-                  />
-                  <span
-                    onClick={() => {
-                      handleRemoveColumn(groupIndex);
+                        : undefined
+                    }
+                    onDragEnd={() => {
+                      setDragging(false);
                     }}
-                    className={styles["board__group__item__delete-btn"]}
+                    key={groupIndex}
+                    className={styles["board__group"]}
+                    list-theme={theme}
                   >
-                    &times;
-                  </span>
-                </div>
-              </SimpleBar>
-            ))}
-          <AddNewColumn getNewList={getNewList} />
-        </div>
-      </SimpleBar>
+                    {titleIndex === groupIndex ? (
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          handleChangeTitle(groupIndex);
+                        }}
+                        className={styles["board__group__title__new-title"]}
+                        ref={titleRef}
+                      >
+                        <input
+                          id={`new-title-text__${groupIndex}`}
+                          name="new-title-text"
+                          type="text"
+                          value={newTitle}
+                          onChange={(e) => {
+                            setNewTitle(e.target.value);
+                          }}
+                        />
+                        <label
+                          htmlFor={`new-title-text__${groupIndex}`}
+                        ></label>
+                      </form>
+                    ) : (
+                      <div className={styles["board__group__title-wrapper"]}>
+                        <div className={styles["board__group__title"]}>
+                          {group.title}
+                        </div>
+                        <PencilIcon
+                          className={styles["board__group__title__pencil-icon"]}
+                          onClick={() => {
+                            setTitleIndex(groupIndex);
+                            setNewTitle(group.title);
+                          }}
+                        />
+                      </div>
+                    )}
+                    {group.items?.map((groupItem, groupItemIndex) => (
+                      <div key={groupItemIndex}>
+                        {itemIndex === groupItemIndex &&
+                        titleIndex2 === groupIndex ? (
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              handleItemTextChange(groupIndex, groupItemIndex);
+                            }}
+                            className={styles["board__group__title__new-title"]}
+                            ref={titleRef}
+                          >
+                            <input
+                              type="text"
+                              id={`new-item-text__${groupIndex}`}
+                              name={`new-item-text__${groupIndex}`}
+                              value={newItemText}
+                              onChange={(e) => {
+                                setNewItemItext(e.target.value);
+                              }}
+                            />
+                            <label
+                              htmlFor={`new-item-text__${groupIndex}`}
+                            ></label>
+                          </form>
+                        ) : (
+                          <div
+                            onDragStart={(e) => {
+                              handleDragStart(e, groupIndex, groupItemIndex);
+                            }}
+                            onDragEnter={(e) => {
+                              handleDragEnter(e, groupIndex, groupItemIndex);
+                            }}
+                            key={groupItemIndex}
+                            draggable
+                            className={
+                              dragging
+                                ? getStyles(groupIndex, groupItemIndex)
+                                : styles[`board__group__item`]
+                            }
+                          >
+                            {groupItem}
+                            <span
+                              onClick={() => {
+                                handleRemoveItem(groupIndex, groupItemIndex);
+                              }}
+                              className={
+                                styles["board__group__item__delete-btn"]
+                              }
+                            >
+                              &times;
+                            </span>
+                            <PencilIcon
+                              className={
+                                styles["board__group__item__pencil-icon"]
+                              }
+                              onClick={() => {
+                                setItemIndex(groupItemIndex);
+                                setTitleIndex2(groupIndex);
+                                setNewItemItext(groupItem);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    <AddNewColumnItem
+                      index={groupIndex}
+                      getNewListItem={getNewListItem}
+                    />
+                    <span
+                      onClick={() => {
+                        handleRemoveColumn(groupIndex);
+                      }}
+                      className={styles["board__group__item__delete-btn"]}
+                    >
+                      &times;
+                    </span>
+                  </div>
+                </SimpleBar>
+              ))}
+            <AddNewColumn getNewList={getNewList} />
+          </div>
+        </SimpleBar>
+      </div>
 
       <BoardMembers guest={guest} />
       {!guest && <ThreeDots setList={setList} />}

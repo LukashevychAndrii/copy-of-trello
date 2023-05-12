@@ -79,7 +79,7 @@
 }
 .found-user {
   position: absolute;
-  top: 9.5rem;
+  top: 9.4rem;
   font-size: var(--default-font);
   right: 4rem;
   display: flex;
@@ -87,6 +87,7 @@
   gap: 8.6rem;
   width: 40rem;
   padding: 1.5rem 2rem;
+  z-index: 1000;
   &__data {
     display: flex;
     align-items: center;

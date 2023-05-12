@@ -25,7 +25,15 @@ const GuestBoardsPage = () => {
   const guestBoard = useAppSelector((state) => state.boards.currentGuestBoard);
 
   React.useEffect(() => {
-    setTodos(guestBoard?.boardDATA.boardData);
+    if (guestBoard?.boardDATA.boardData) {
+      const boardDATA: dataI[] = guestBoard.boardDATA.boardData;
+
+      const transformedTodos = boardDATA.map((el) =>
+        el.items ? el : { title: el.title, items: [] }
+      );
+
+      setTodos(transformedTodos);
+    }
   }, [guestBoard]);
 
   return (

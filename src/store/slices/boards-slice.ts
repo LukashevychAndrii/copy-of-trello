@@ -390,15 +390,32 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
     const db = getDatabase(app);
     const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
     console.log(state.boards.currentBoardIMG);
-    update(dbRef, { boardImg: state.boards.currentBoardIMG }).catch((error) => {
-      appDispatch(
-        createAlert({
-          alertTitle: "Error!",
-          alertText: "Database error!",
-          alertError: true,
-        })
-      );
-    });
+    update(dbRef, { boardImg: state.boards.currentBoardIMG })
+      .catch((error) => {
+        appDispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error!",
+            alertError: true,
+          })
+        );
+      })
+      .then(() => {
+        const dbRef = ref(
+          db,
+          `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
+        );
+        get(dbRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const dbRef = ref(
+              db,
+              `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardPhoto`
+            );
+            const boardPHOTO = state.boards.currentBoardIMG;
+            set(dbRef, boardPHOTO);
+          }
+        });
+      });
     return undefined;
   }
 );

@@ -238,7 +238,6 @@ export const removeGuestBoard = createAsyncThunk<
     const db = getDatabase();
     const state = getState() as RootState;
     const appDispatch = dispatch as AppDispatch;
-
     const dbRef = ref(
       db,
       `users/${state.user.id}/guestsBoards/${boardID}__${ownerNAME}`
@@ -377,13 +376,13 @@ export const getBoardImg = createAsyncThunk<string, undefined, {}>(
 export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
   "board/updateBoardImg",
   async function (_, { getState, dispatch }) {
-    console.log("qwe");
     const appDispatch = dispatch as AppDispatch;
     const state = getState() as RootState;
     const boardID = state.boards.currentBoardID;
     const db = getDatabase(app);
     const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
-    update(dbRef, { boardImg: state.user.boardImg }).catch((error) => {
+    console.log(state.boards.currentBoardIMG);
+    update(dbRef, { boardImg: state.boards.currentBoardIMG }).catch((error) => {
       appDispatch(
         createAlert({
           alertTitle: "Error!",

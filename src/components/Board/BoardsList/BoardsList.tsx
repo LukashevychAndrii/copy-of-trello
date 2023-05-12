@@ -115,13 +115,11 @@ const BoardList = () => {
               {guestsBoards.map((el, index) => (
                 <li
                   data-theme={theme}
-                  // style={{
-                  //   backgroundImage:
-                  //     el.boardDATA.boardData &&
-                  //     `url(${fetchedBoardsValues[index].boardImg})`,
-                  //   backgroundSize: "cover",
-                  //   backgroundPosition: "center",
-                  // }}
+                  style={{
+                    backgroundImage: el.boardPhoto && `url(${el.boardPhoto})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
                   className={styles["boards__list__item"]}
                   key={index}
                 >

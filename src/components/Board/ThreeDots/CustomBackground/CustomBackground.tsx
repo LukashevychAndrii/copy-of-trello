@@ -2,10 +2,7 @@ import React from "react";
 import styles from "./CustomBackground.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { createAlert } from "../../../../store/slices/alert-slice";
-import {
-  removeBoardImg,
-  setBoardImg,
-} from "../../../../store/slices/user-slice";
+import { setBoardImg } from "../../../../store/slices/user-slice";
 import {
   setCurrentBoardIMG,
   updateBoardImg,
@@ -16,7 +13,6 @@ interface props {
 }
 const CustomBackground: React.FC<props> = (props) => {
   const dispatch = useAppDispatch();
-  const boardImg = useAppSelector((state) => state.user.boardImg);
 
   const [over, setOver] = React.useState<boolean>(false);
 
@@ -36,6 +32,7 @@ const CustomBackground: React.FC<props> = (props) => {
       reader.readAsDataURL(droppedFiles[0]);
       reader.onload = () => {
         dispatch(setCurrentBoardIMG(reader.result));
+        dispatch(updateBoardImg());
       };
     } else {
       dispatch(
@@ -98,8 +95,9 @@ const CustomBackground: React.FC<props> = (props) => {
                 Set image
               </button>
               <button
+                type="button"
                 onClick={() => {
-                  dispatch(removeBoardImg());
+                  dispatch(setCurrentBoardIMG(""));
                   dispatch(updateBoardImg());
                   setOver(false);
                 }}

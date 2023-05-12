@@ -52,9 +52,6 @@ const userSlice = createSlice({
     setBoardImg(state, action) {
       state.boardImg = action.payload.boardImg;
     },
-    removeBoardImg(state) {
-      state.boardImg = null;
-    },
   },
 });
 
@@ -64,7 +61,6 @@ export const {
   removeUserPhoto,
   setUserPhoto,
   setBoardImg,
-  removeBoardImg,
 } = userSlice.actions;
 
 export default userSlice.reducer;

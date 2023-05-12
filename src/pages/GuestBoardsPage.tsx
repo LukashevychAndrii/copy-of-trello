@@ -9,17 +9,20 @@ const GuestBoardsPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [todos, setTodos] = React.useState<dataI[]>();
-
+  const [guestBoardID, setGuestBoardID] = React.useState<string | undefined>(
+    ""
+  );
   React.useEffect(() => {
-    if (params.guestBoardID) {
-      dispatch(
-        fetchGuestBoard({ boardID: params.guestBoardID, navigate: navigate })
-      );
+    setGuestBoardID(params.guestBoardID);
+  }, [guestBoardID, params]);
+  const guestsBoards = useAppSelector((state) => state.boards.guestsBoards);
+  React.useEffect(() => {
+    if (guestBoardID && guestsBoards) {
+      dispatch(fetchGuestBoard({ boardID: guestBoardID, navigate: navigate }));
     }
-  }, [dispatch, params, navigate]);
+  }, [dispatch, navigate, guestBoardID, guestsBoards]);
 
   const guestBoard = useAppSelector((state) => state.boards.currentGuestBoard);
-  console.log(guestBoard);
 
   React.useEffect(() => {
     setTodos(guestBoard?.boardDATA.boardData);

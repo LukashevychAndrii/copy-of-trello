@@ -126,7 +126,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
       )}
       {guests && (
         <div>
-          <div className={styles["owner"]}>
+          <div board-members-theme={theme} className={styles["owner"]}>
             <div board-members-theme={theme} className={styles["owner__name"]}>
               {currentBoard?.OWNER}
             </div>

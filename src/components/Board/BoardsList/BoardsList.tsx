@@ -72,7 +72,7 @@ const BoardList = () => {
     <div>
       <div className={`${styles["boards"]} boards`}>
         <div className={styles["boards__header"]}>Boards list</div>
-        <SimpleBar style={{ maxWidth: "835px", flex: 1 }} forceVisible="x">
+        <SimpleBar className={styles["boards__scrollbar"]} forceVisible="x">
           <ul className={styles["boards__list"]}>
             {fetchedBoardsKeys.length > 0 &&
               fetchedBoardsValues.length > 0 &&

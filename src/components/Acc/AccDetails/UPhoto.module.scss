@@ -1,11 +1,19 @@
 .acc-details {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  width: max-content;
+  padding: 3rem;
   &__photo {
     width: 10rem;
+    @media screen and (max-width: 900px) {
+      width: 8rem;
+    }
   }
   &__edit-btn {
     position: absolute;
-    top: 8rem;
-    left: -2.5rem;
+    top: 9rem;
+    left: -2rem;
     background-color: var(--color-board-default);
     color: var(--color-white-dark);
     border: none;
@@ -13,6 +21,9 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
+    @media screen and (max-width: 900px) {
+      width: 8rem;
+    }
     &--choise {
       position: absolute;
       background-color: var(--color-board-group-default);
@@ -111,4 +122,13 @@
       opacity: 1;
     }
   }
+}
+
+[sign-out-theme="light"] {
+  background-color: var(--default-theme-light);
+  color: var(--color-dark-light);
+}
+[sign-out-theme="dark"] {
+  background-color: var(--color-board-default);
+  color: var(--color-white-dark);
 }

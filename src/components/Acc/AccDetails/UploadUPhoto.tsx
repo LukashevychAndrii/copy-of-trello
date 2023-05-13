@@ -41,10 +41,10 @@ const UploadUPhoto: React.FC<props> = (props) => {
     >
       <div className={styles["acc-details__set-avatar"]}>
         <Avatar
-          width={400}
+          width={300}
           onCrop={onCrop}
           onClose={onClose}
-          height={300}
+          height={200}
           labelStyle={{ color: "white", fontSize: "2rem" }}
         />
         <div className={styles["acc-details__set-avatar__btns"]}>

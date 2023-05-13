@@ -53,8 +53,9 @@ const UPhoto = () => {
   }
   useOutsideAlerter(ref, ref2);
 
+  const theme = useAppSelector((state) => state.theme.theme);
   return (
-    <>
+    <div className={styles["acc-details"]}>
       {uPhoto ? (
         <img
           className={styles["acc-details__photo"]}
@@ -83,7 +84,11 @@ const UPhoto = () => {
           htmlFor="acc-details__checkbox"
           style={{ marginTop: "1rem", display: "block" }}
         >
-          <span ref={ref} className={styles["acc-details__edit-btn"]}>
+          <span
+            sign-out-theme={theme}
+            ref={ref}
+            className={styles["acc-details__edit-btn"]}
+          >
             &#9998; Edit
           </span>
         </label>
@@ -108,7 +113,7 @@ const UPhoto = () => {
           setShowAvatarLoader={setShowAvatarLoader}
         />
       </form>
-    </>
+    </div>
   );
 };
 

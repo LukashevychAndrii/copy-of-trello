@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./MainHeader.module.scss";
 
-import defaultAvatar from "../../img/default-avatar--white.png";
+import defaultAvatarWhite from "../../img/default-avatar--white.png";
+import defaultAvatarBlack from "../../img/default-avatar--black.png";
 
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
@@ -30,7 +31,13 @@ const MainHeader = () => {
             <div className={styles["header__acc"]}>
               <img
                 className={styles["header__user-photo"]}
-                src={userPhoto ? userPhoto : defaultAvatar}
+                src={
+                  userPhoto
+                    ? userPhoto
+                    : theme === "light"
+                    ? defaultAvatarBlack
+                    : defaultAvatarWhite
+                }
                 alt="user"
               />
               <span className={styles["header__user-name"]}>{userName}</span>

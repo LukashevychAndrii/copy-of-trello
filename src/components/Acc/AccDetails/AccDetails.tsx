@@ -27,8 +27,9 @@ const AccDetails = () => {
             alertError: false,
           })
         );
-        dispatch(removeUser());
         navigate("/");
+        dispatch(removeUser());
+        window.location.reload();
       })
       .catch((error) => {
         dispatch(

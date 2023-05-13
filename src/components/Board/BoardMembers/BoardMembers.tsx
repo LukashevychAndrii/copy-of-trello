@@ -101,6 +101,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
                   {el.guestName}
                 </div>
                 <img
+                  style={{ marginRight: "2rem" }}
                   className={styles["guests__guest__img"]}
                   src={
                     el.guestPhoto.length > 0
@@ -142,26 +143,30 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
               alt="owner avatar"
             />
           </div>
-          <ul board-members-theme={theme} className={styles["guests"]}>
-            {guests?.map((el) => (
-              <li className={styles["guests__guest"]} key={el.guestID}>
-                <div className={styles["guests__guest__name"]}>
-                  {el.guestName}
-                </div>
-                <img
-                  className={styles["guests__guest__img"]}
-                  src={
-                    el.guestPhoto.length > 0
-                      ? el.guestPhoto
-                      : theme === "light"
-                      ? defaultAvatarBlack
-                      : defaultAvatarWhite
-                  }
-                  alt="guest avatar"
-                />
-              </li>
-            ))}
-          </ul>
+          <div style={{ width: "100%" }}>
+            <ul board-members-theme={theme} className={styles["guests"]}>
+              {guests?.map((el) => (
+                <li className={styles["guests__guest"]} key={el.guestID}>
+                  <div className={styles["guests__guest__name"]}>
+                    {el.guestID === userID
+                      ? `${el.guestName} (you)`
+                      : el.guestName}
+                  </div>
+                  <img
+                    className={styles["guests__guest__img"]}
+                    src={
+                      el.guestPhoto.length > 0
+                        ? el.guestPhoto
+                        : theme === "light"
+                        ? defaultAvatarBlack
+                        : defaultAvatarWhite
+                    }
+                    alt="guest avatar"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </div>

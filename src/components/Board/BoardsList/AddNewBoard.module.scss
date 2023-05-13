@@ -17,8 +17,8 @@
     box-shadow: -0.1rem -0.1rem 0.1rem #6b6b6b,
       0.1rem 0.3rem 0.1rem var(--color-black);
     &:hover {
-      transform: translateY(-0.2rem);
-      background-color: rgba($color: #000000, $alpha: 0.7);
+      // transform: translateY(-0.2rem);
+      // background-color: rgba($color: #000000, $alpha: 0.7);
       box-shadow: -0.1rem -0.1rem 0.2rem #f7f7f7,
         0rem 0.5rem 2rem var(--color-black);
     }

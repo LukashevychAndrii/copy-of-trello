@@ -4,6 +4,7 @@ import styles from "./AddNewBoard.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Link } from "react-router-dom";
 import { createBoard } from "../../../store/slices/boards-slice";
+import { createAlert } from "../../../store/slices/alert-slice";
 
 const AddNewBoard = () => {
   const [checked, setChecked] = React.useState(false);
@@ -11,12 +12,47 @@ const AddNewBoard = () => {
 
   const userID = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
-
+  const boards = useAppSelector((state) => state.boards.boards);
   function handleCreateClick() {
-    if (boardName.trim().length > 0) {
-      dispatch(createBoard({ boardName: boardName }));
-      setChecked(false);
-      setBoardName("");
+    if (boardName.trim().length > 10) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of title is 10!",
+          alertError: true,
+        })
+      );
+    } else if (boardName.trim().length > 0) {
+      if (boards && Object.keys(boards) && Object.keys(boards).length >= 10) {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Max count of boards is 10!",
+            alertError: true,
+          })
+        );
+      } else {
+        dispatch(createBoard({ boardName: boardName }));
+        setChecked(false);
+        setBoardName("");
+        if (boards && Object.keys(boards)) {
+          dispatch(
+            createAlert({
+              alertTitle: "Success!",
+              alertText: `You can create ${
+                9 - Object.keys(boards).length
+              } more boards`,
+            })
+          );
+        } else {
+          dispatch(
+            createAlert({
+              alertTitle: "Success!",
+              alertText: `You can create 9 more boards`,
+            })
+          );
+        }
+      }
     }
   }
   const theme = useAppSelector((state) => state.theme.theme);

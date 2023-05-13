@@ -93,7 +93,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <SimpleBar style={{ maxHeight: "100vh" }}>
+    <SimpleBar style={{ maxHeight: "100vh" }} forceVisible="x">
       <RouterProvider router={router}></RouterProvider>;
     </SimpleBar>
   );

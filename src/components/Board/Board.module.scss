@@ -15,6 +15,7 @@
     grid-template-columns: min-content 1fr min-content min-content;
     padding: 0 1.5rem;
     padding-top: 3.5rem;
+    // column-gap: 1.5rem;
     @media screen and (max-width: 900px) {
       grid-template-columns: 1fr min-content;
       grid-template-rows: auto;
@@ -26,7 +27,7 @@
     margin: 0 auto;
     padding: 0;
     z-index: 10;
-    padding: 2rem 0;
+    padding: 2rem;
     margin-top: -2rem;
     @media screen and (max-width: 900px) {
       width: 95% !important;
@@ -57,6 +58,7 @@
       position: absolute;
       top: -0.5rem;
       right: 0;
+      cursor: pointer;
     }
     &__scrollbar {
       max-height: 70vh !important;
@@ -85,6 +87,7 @@
         font-size: 3rem;
         font-weight: 600;
         cursor: pointer;
+        margin-right: 1rem;
       }
 
       &__checkbox {
@@ -118,6 +121,7 @@
       word-wrap: break-word;
       display: flex;
       justify-content: space-between;
+      width: 97%;
       &__buttons {
         display: flex;
         flex-direction: column;

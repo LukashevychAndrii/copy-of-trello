@@ -89,7 +89,8 @@ const Notification: React.FC = () => {
             ))
           ) : (
             <p className={styles["notification__invite__clear"]}>
-              Invite list is clear!
+              Invite list is clear! (if you didn't get invite - try reload the
+              page)
             </p>
           )}
         </ul>

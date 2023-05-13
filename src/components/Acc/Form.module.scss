@@ -7,6 +7,9 @@
   display: flex;
   flex-direction: column;
   gap: 5.5rem;
+  @media screen and (max-width: 1200px) {
+    gap: 6.5rem;
+  }
 
   &__element {
     position: relative;
@@ -15,7 +18,7 @@
     width: 4rem;
   }
   &__input {
-    padding: 1.2rem;
+    padding: 12px;
     padding-left: 5rem;
     position: relative;
     width: 100%;
@@ -98,6 +101,9 @@
   &__input:not(:placeholder-shown) ~ &__label {
     transform: translate(0, -6rem);
     fill: var(--color-white-dark);
+    @media screen and (max-width: 1200px) {
+      transform: translate(0, -7rem);
+    }
   }
   &__input:not(:placeholder-shown) {
     padding-left: 1.2rem;
@@ -121,6 +127,10 @@
     }
     &:not(:disabled):hover {
       padding: 2rem 7.5rem;
+    }
+    @media screen and (max-width: 750px) {
+      padding: 1.5rem 3rem;
+      margin-top: -3rem;
     }
   }
   &__title {

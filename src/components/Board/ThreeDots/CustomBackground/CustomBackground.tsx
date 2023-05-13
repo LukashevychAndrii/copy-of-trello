@@ -70,7 +70,7 @@ const CustomBackground: React.FC<props> = (props) => {
   return (
     <div className={styles["drag__wrapper"]}>
       {customBG ? (
-        <>
+        <div className={styles["drag__items-wrapper"]}>
           <div
             onDragStart={(e) => e.preventDefault()}
             onDrop={(e) => dragDrop(e)}
@@ -115,7 +115,7 @@ const CustomBackground: React.FC<props> = (props) => {
               &times;
             </span>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div

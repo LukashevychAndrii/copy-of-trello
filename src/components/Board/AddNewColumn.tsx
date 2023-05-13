@@ -83,7 +83,7 @@ const AddNewColumn: React.FC<props> = (props) => {
         </form>
       )}
       {!checked && (
-        <form style={{ width: "200px" }}>
+        <form>
           <input
             onChange={handleCheckboxChange}
             className={styles["checkbox"]}

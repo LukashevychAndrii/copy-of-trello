@@ -1,10 +1,13 @@
 .drag {
   width: 60rem;
   height: 35rem;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto;
+  margin-top: 50vh;
+  transform: translate(0, -65%);
+  // position: absolute;
+  // top: 35%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
   border: 4px dotted var(--color-white-dark);
   z-index: 1100;
   display: flex;
@@ -12,6 +15,14 @@
   align-items: center;
   font-size: 2.5rem;
   color: var(--color-white-dark);
+  @media screen and (max-width: 600px) {
+    width: 40rem;
+    height: 30rem;
+  }
+  &__items-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
 
   &__wrapper {
     position: fixed;
@@ -30,15 +41,23 @@
     height: 100%;
   }
   &__buttons {
-    position: absolute;
+    // position: absolute;
     width: 60rem;
+    // height: 20rem;
+    margin: 0 auto;
+    margin-top: -20rem;
 
-    top: 58%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // top: 69%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    // background-color: red;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 600px) {
+      width: 40rem;
+      margin-top: -17rem;
+    }
 
     &__close-btn {
       font-size: 3rem;
@@ -64,6 +83,9 @@
       &:hover {
         transform: translateY(-0.2rem);
       }
+      @media screen and (max-width: 700px) {
+        padding: 1rem 2rem;
+      }
     }
     &__remove-btn {
       background-color: var(--color-white-dark);
@@ -74,6 +96,9 @@
       cursor: pointer;
       &:hover {
         transform: translateY(-0.2rem);
+      }
+      @media screen and (max-width: 700px) {
+        padding: 1rem 2rem;
       }
     }
   }

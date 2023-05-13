@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Board.module.scss";
+import "./AddBorderRadius.scss";
 import { ReactComponent as PencilIcon } from "../../img/SVG/pencil.svg";
+import { ReactComponent as Checkmark } from "../../img/SVG/checkmark.svg";
 
 import AddNewColumn from "./AddNewColumn";
 import AddNewColumnItem from "./AddNewColumnItem";
@@ -202,6 +204,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
     }
   }
   const titleRef = React.useRef(null);
+  const itemRef = React.useRef(null);
   function useHandleClickOutside(dropAreaRef: any) {
     React.useEffect(() => {
       function handleClickOutside(event: any) {
@@ -221,11 +224,11 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   useHandleClickOutside(titleRef);
 
   function handleItemTextChange(groupIndex: number, groupItemIndex: number) {
-    if (newItemText.trim().length > 10) {
+    if (newItemText.trim().length > 50) {
       dispatch(
         createAlert({
           alertTitle: "Error!",
-          alertText: "Max length of title is 10!",
+          alertText: "Max length of column item is 50!",
           alertError: true,
         })
       );
@@ -243,12 +246,30 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       dispatch(
         createAlert({
           alertTitle: "Error!",
-          alertText: "Title must not be empty!",
+          alertText: "Text area must not be empty!",
           alertError: true,
         })
       );
     }
   }
+  function useHandleClickOutside2(dropAreaRef: any) {
+    React.useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (
+          dropAreaRef.current &&
+          !dropAreaRef.current.contains(event.target)
+        ) {
+          setTitleIndex2(-1);
+          setItemIndex(-1);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [dropAreaRef]);
+  }
+  useHandleClickOutside2(itemRef);
 
   const theme = useAppSelector((state) => state.theme.theme);
   const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
@@ -266,7 +287,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   }
   return (
     <div style={backgroundImageStyle} className={styles["board__wrapper"]}>
-      <div>
+      <div className={styles["board__left-bar"]}>
         <AddNewBoard />
         <SmallBoardList />
       </div>
@@ -277,7 +298,10 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
           <div className={styles["board"]}>
             {list.length > 0 &&
               list.map((group, groupIndex) => (
-                <SimpleBar style={{ maxHeight: "70vh" }} key={groupIndex}>
+                <SimpleBar
+                  className={styles["board__group__scrollbar"]}
+                  key={groupIndex}
+                >
                   <div
                     onDragEnter={
                       dragging && !group.items?.length
@@ -314,6 +338,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                         <label
                           htmlFor={`new-title-text__${groupIndex}`}
                         ></label>
+                        <Checkmark
+                          className={styles["board__group__checkmark"]}
+                          onClick={() => {
+                            handleChangeTitle(groupIndex);
+                          }}
+                        />
                       </form>
                     ) : (
                       <div className={styles["board__group__title-wrapper"]}>
@@ -327,10 +357,18 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                             setNewTitle(group.title);
                           }}
                         />
+                        <span
+                          onClick={() => {
+                            handleRemoveColumn(groupIndex);
+                          }}
+                          className={styles["board__group__title__delete-btn"]}
+                        >
+                          &times;
+                        </span>
                       </div>
                     )}
                     {group.items?.map((groupItem, groupItemIndex) => (
-                      <div key={groupItemIndex}>
+                      <div ref={itemRef} key={groupItemIndex}>
                         {itemIndex === groupItemIndex &&
                         titleIndex2 === groupIndex ? (
                           <form
@@ -353,6 +391,15 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                             <label
                               htmlFor={`new-item-text__${groupIndex}`}
                             ></label>
+                            <Checkmark
+                              className={styles["board__group__checkmark"]}
+                              onClick={() => {
+                                handleItemTextChange(
+                                  groupIndex,
+                                  groupItemIndex
+                                );
+                              }}
+                            />
                           </form>
                         ) : (
                           <div
@@ -370,27 +417,31 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                                 : styles[`board__group__item`]
                             }
                           >
-                            {groupItem}
-                            <span
-                              onClick={() => {
-                                handleRemoveItem(groupIndex, groupItemIndex);
-                              }}
-                              className={
-                                styles["board__group__item__delete-btn"]
-                              }
+                            <div style={{ width: "85%" }}>{groupItem}</div>
+                            <div
+                              className={styles["board__group__item__buttons"]}
                             >
-                              &times;
-                            </span>
-                            <PencilIcon
-                              className={
-                                styles["board__group__item__pencil-icon"]
-                              }
-                              onClick={() => {
-                                setItemIndex(groupItemIndex);
-                                setTitleIndex2(groupIndex);
-                                setNewItemItext(groupItem);
-                              }}
-                            />
+                              <span
+                                onClick={() => {
+                                  handleRemoveItem(groupIndex, groupItemIndex);
+                                }}
+                                className={
+                                  styles["board__group__item__delete-btn"]
+                                }
+                              >
+                                &times;
+                              </span>
+                              <PencilIcon
+                                className={
+                                  styles["board__group__item__pencil-icon"]
+                                }
+                                onClick={() => {
+                                  setItemIndex(groupItemIndex);
+                                  setTitleIndex2(groupIndex);
+                                  setNewItemItext(groupItem);
+                                }}
+                              />
+                            </div>
                           </div>
                         )}
                       </div>
@@ -399,14 +450,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                       index={groupIndex}
                       getNewListItem={getNewListItem}
                     />
-                    <span
-                      onClick={() => {
-                        handleRemoveColumn(groupIndex);
-                      }}
-                      className={styles["board__group__item__delete-btn"]}
-                    >
-                      &times;
-                    </span>
                   </div>
                 </SimpleBar>
               ))}

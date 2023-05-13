@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./BoardMembers.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import defaultAvatar from "../../../img/default-avatar--black.png";
+import defaultAvatarBlack from "../../../img/default-avatar--black.png";
+import defaultAvatarWhite from "../../../img/default-avatar--white.png";
 import {
   fetchSharedBoards,
   removeGuestBoard,
@@ -83,12 +84,17 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
   function handleRemoveUser(guestID: string) {
     dispatch(removeUser({ userID: guestID }));
   }
+
+  const theme = useAppSelector((state) => state.theme.theme);
+
   return (
-    <>
+    <div className={styles["guests__wrapper"]}>
       {!guest && sharedBoardDATA?.GUESTS && (
         <div>
-          <div className={styles["guests__text"]}>Board Members</div>
-          <ul className={styles["guests"]}>
+          <div board-members-theme={theme} className={styles["guests__text"]}>
+            Board Members
+          </div>
+          <ul board-members-theme={theme} className={styles["guests"]}>
             {Object.values(sharedBoardDATA?.GUESTS).map((el) => (
               <li className={styles["guests__guest"]} key={el.guestID}>
                 <div className={styles["guests__guest__name"]}>
@@ -96,7 +102,13 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
                 </div>
                 <img
                   className={styles["guests__guest__img"]}
-                  src={el.guestPhoto.length > 0 ? el.guestPhoto : defaultAvatar}
+                  src={
+                    el.guestPhoto.length > 0
+                      ? el.guestPhoto
+                      : theme === "light"
+                      ? defaultAvatarBlack
+                      : defaultAvatarWhite
+                  }
                   alt="member"
                 />
                 <span
@@ -115,18 +127,22 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
       {guests && (
         <div>
           <div className={styles["owner"]}>
-            <div className={styles["owner__name"]}>{currentBoard?.OWNER}</div>
+            <div board-members-theme={theme} className={styles["owner__name"]}>
+              {currentBoard?.OWNER}
+            </div>
             <img
               className={styles["owner__img"]}
               src={
                 currentBoard?.ownerPHOTO
                   ? currentBoard.ownerPHOTO
-                  : defaultAvatar
+                  : theme === "light"
+                  ? defaultAvatarBlack
+                  : defaultAvatarWhite
               }
               alt="owner avatar"
             />
           </div>
-          <ul className={styles["guests"]}>
+          <ul board-members-theme={theme} className={styles["guests"]}>
             {guests?.map((el) => (
               <li className={styles["guests__guest"]} key={el.guestID}>
                 <div className={styles["guests__guest__name"]}>
@@ -134,7 +150,13 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
                 </div>
                 <img
                   className={styles["guests__guest__img"]}
-                  src={el.guestPhoto.length > 0 ? el.guestPhoto : defaultAvatar}
+                  src={
+                    el.guestPhoto.length > 0
+                      ? el.guestPhoto
+                      : theme === "light"
+                      ? defaultAvatarBlack
+                      : defaultAvatarWhite
+                  }
                   alt="guest avatar"
                 />
               </li>
@@ -142,7 +164,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

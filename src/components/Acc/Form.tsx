@@ -3,7 +3,7 @@ import styles from "./Form.module.scss";
 
 import { ReactComponent as PasswordIcon } from "../../img/SVG/lock.svg";
 import { ReactComponent as EmailIcon } from "../../img/SVG/mail.svg";
-import { ReactComponent as UserIcon } from "../../img/SVG/user-o.svg";
+import { ReactComponent as UserIcon } from "../../img/SVG//user-o.svg";
 import { useAppSelector } from "../../hooks/redux";
 
 interface props {

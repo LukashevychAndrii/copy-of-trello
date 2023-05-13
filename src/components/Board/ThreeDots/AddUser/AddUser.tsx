@@ -77,7 +77,7 @@ const AddUser: React.FC<props> = (props) => {
   return (
     <div ref={formRef}>
       <form theme-three-dots={theme} className={styles["add-user"]}>
-        <label htmlFor="add-user">Find user by id</label>
+        <label htmlFor="add-user"></label>
         <input
           type="text"
           name="add-user"

@@ -37,8 +37,8 @@ const Theme = () => {
             checked ? styles["theme--moon"] : styles["theme--sun"]
           }`}
         >
-          <SunIcon />
-          <MoonIcon />
+          <SunIcon className={styles["sun"]} />
+          <MoonIcon className={styles["moon"]} />
         </div>
       </label>
     </form>

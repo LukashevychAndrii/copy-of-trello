@@ -5,6 +5,7 @@ import MainHeader from "../../components/Header/MainHeader";
 import AlertWindow from "../../utils/AlertWindow/AlertWindow";
 
 import { useAppSelector } from "../../hooks/redux";
+import Footer from "../../components/Footer/Footer";
 
 const RootLayout = () => {
   const theme = useAppSelector((state) => state.theme.theme);
@@ -15,6 +16,7 @@ const RootLayout = () => {
       <main data-theme={theme} style={{ minHeight: "80vh" }}>
         <Outlet />
       </main>
+      <Footer />
     </>
   );
 };

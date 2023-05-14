@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "..";
-import { getDatabase, push, ref, set, update } from "firebase/database";
+import { get, getDatabase, push, ref, set, update } from "firebase/database";
 import { createAlert } from "./alert-slice";
 import { app } from "../../firebase";
 import { dataI } from "../../components/Board/Board";
@@ -65,6 +65,12 @@ export const {
 
 export default userSlice.reducer;
 
+interface guestBoardDATA {
+  boardID: string;
+  inviterID: string;
+  inviterName: string;
+}
+
 export const updateUserProfilePhoto = createAsyncThunk<
   undefined,
   undefined,
@@ -80,15 +86,48 @@ export const updateUserProfilePhoto = createAsyncThunk<
     console.log(state.user.uPhoto);
     const dbRef = ref(db, `users/${state.user.id}/userdata`);
 
-    update(dbRef, { uPhoto: state.user.uPhoto }).catch((error) => {
-      appDispatch(
-        createAlert({
-          alertTitle: "Error!",
-          alertText: "Database error!",
-          alertError: true,
-        })
-      );
-    });
+    update(dbRef, { uPhoto: state.user.uPhoto })
+      .catch((error) => {
+        appDispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error!",
+            alertError: true,
+          })
+        );
+      })
+      .then(() => {
+        const dbRef = ref(db, `users/${state.user.id}/sharedBoards`);
+        get(dbRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const dbRef = ref(
+              db,
+              `users/${state.user.id}/sharedBoards/ownerDATA/ownerPHOTO`
+            );
+            set(dbRef, state.user.uPhoto);
+          }
+        });
+      })
+      .then(() => {
+        const dbRef = ref(db, `users/${state.user.id}/guestsBoards`);
+        get(dbRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const values: guestBoardDATA[] = Object.values(snapshot.val());
+            const keys: string[] = Object.keys(snapshot.val());
+            console.log(values);
+            console.log(keys);
+            keys.map((el, index) => {
+              const dbRef = ref(
+                db,
+                `users/${values[index].inviterID}/sharedBoards/${el}/GUESTS/${state.user.id}/guestPhoto`
+              );
+              const userPHOTO = state.user.uPhoto ? state.user.uPhoto : "";
+              set(dbRef, userPHOTO);
+              return null;
+            });
+          }
+        });
+      });
 
     return undefined;
   }

@@ -16,6 +16,7 @@ import { createAlert } from "./alert-slice";
 import getErrorDetails from "../../utils/getErrorDetails";
 import { NavigateFunction, redirect, useNavigate } from "react-router-dom";
 import { log } from "console";
+import { resolve } from "path";
 
 interface initialStateI {
   boards: {
@@ -126,18 +127,18 @@ export const fetchBoards = createAsyncThunk<boardsData, undefined, {}>(
 interface guestsBoardsDATAI {
   [id: string]: {
     boardID: string;
-    inviterDATA: {
-      boardData: [];
-      boardName: string;
-    };
     inviterID: string;
     inviterName: string;
-    inviterPhoto: string;
   };
 }
 
-export interface guestsBoardDATAI {
+export interface guestBoardOwnerData {
   OWNER: string;
+  ownerID: string;
+  ownerPHOTO: string;
+}
+
+export interface guestsBoardDATAI {
   GUESTS: {
     [guestID: string]: {
       guestID: string;
@@ -150,8 +151,9 @@ export interface guestsBoardDATAI {
     boardName: string;
   };
   boardID: string;
-  ownerID: string;
   boardPhoto: string;
+  OWNER: string;
+  ownerID: string;
   ownerPHOTO: string;
 }
 
@@ -170,38 +172,36 @@ export const fetchGuestsBoards = createAsyncThunk<undefined, undefined, {}>(
       });
     }).then((snapshot) => {
       if (snapshot) {
-        const guestsBoards: guestsBoardDATAI[] = [];
         const keys = Object.keys(snapshot);
-        const test = async () => {
-          for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            const value = snapshot[key];
-            const dbRef = ref(
-              db,
-              `users/${value.inviterID}/sharedBoards/${value.boardID}__${value.inviterName}`
-            );
-            await get(dbRef).then((snapshot) => {
-              if (snapshot.val()) guestsBoards.push(snapshot.val());
-              else {
-                const dbRef = ref(
-                  db,
-                  `users/${state.user.id}/guestsBoards/${value.boardID}__${value.inviterName}`
-                );
-                remove(dbRef);
-                dispatch(
-                  createAlert({
-                    alertTitle: "Database error!",
-                    alertText:
-                      "One or more guests boards were deleted by owner!",
-                    alertError: true,
-                  })
-                );
-              }
-            });
-          }
-          dispatch(setGuestsBoards(guestsBoards));
-        };
-        test();
+        console.log(keys);
+        const promises = keys.map(async (key) => {
+          const value = snapshot[key];
+          const dbRef = ref(
+            db,
+            `users/${value.inviterID}/sharedBoards/ownerDATA`
+          );
+          return get(dbRef).then((snapshot) => {
+            if (snapshot.val()) {
+              const ownerData: guestBoardOwnerData = snapshot.val();
+              const dbRef = ref(
+                db,
+                `users/${value.inviterID}/sharedBoards/${value.boardID}__${value.inviterName}`
+              );
+              return get(dbRef).then((snapshot) => {
+                const guestBoard: guestsBoardDATAI = {
+                  ...snapshot.val(),
+                  ...ownerData,
+                };
+                return guestBoard;
+              });
+            } else {
+              console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+          });
+        });
+        Promise.all(promises).then((snapshot) => {
+          dispatch(setGuestsBoards(snapshot));
+        });
       } else {
         dispatch(setGuestsBoards([]));
       }
@@ -269,31 +269,98 @@ export const fetchGuestBoard = createAsyncThunk<
     const boardDATA = state.boards.guestsBoards.find(
       (el) => el.boardID === boardID
     );
-    console.log(state.boards.guestsBoards);
-    if (boardDATA) {
-      const dbRef = ref(
-        db,
-        `users/${boardDATA.ownerID}/sharedBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
-      );
-      onValue(dbRef, (snapshot) => {
-        if (snapshot.exists()) dispatch(setCurrentGuestBoard(snapshot.val()));
-        else {
-          const dbRef = ref(
-            db,
-            `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
-          );
-          remove(dbRef);
-          navigate("/");
-          appDispatch(
-            createAlert({
-              alertTitle: "Database error!",
-              alertText: "Trying to connect to board that was deleted!",
-              alertError: true,
-            })
-          );
-        }
+
+    // const guestRef = ref(
+    //   db,
+    //   `users/${boardDATA?.ownerID}/sharedBoards/${boardDATA?.boardID}__${boardDATA?.OWNER}/GUESTS/${state.user.id}`
+    // );
+    // if (boardDATA) {
+    //   onValue(guestRef, (snapshot) => {
+    //     if (snapshot.exists()) {
+    //       console.log("!!!!!!!!!!!!");
+    //       appDispatch(setCurrentGuestBoard(boardDATA));
+    //     } else {
+    //       const dbRef = ref(
+    //         db,
+    //         `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+    //       );
+    //       remove(dbRef);
+    //       navigate("/");
+    //       appDispatch(
+    //         createAlert({
+    //           alertTitle: "Database error!",
+    //           alertText: "Trying to connect to board that was deleted!",
+    //           alertError: true,
+    //         })
+    //       );
+    //     }
+    //   });
+    // }
+    // new Promise<undefined>((resolve)=>{
+    //   if(boardDATA){
+    //     const dbRef = ref(`users/${boardDATA.ownerID}/sharedBoards/ownerDATA`)
+    //   }
+    // })
+    new Promise<guestsBoardDATAI>((resolve) => {
+      if (boardDATA) {
+        const dbRef = ref(
+          db,
+          `users/${boardDATA.ownerID}/sharedBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+        );
+        onValue(dbRef, (board) => {
+          if (board.exists()) {
+            const dbRef = ref(
+              db,
+              `users/${boardDATA.ownerID}/sharedBoards/ownerDATA`
+            );
+            onValue(dbRef, (ownerDATA) => {
+              const transformedBoard = {
+                ...board.val(),
+                boardDATA: {
+                  boardData: board.val().boardDATA.boardData
+                    ? board.val().boardDATA.boardData
+                    : [],
+                  boardName: board.val().boardDATA.boardName,
+                },
+              };
+              if (ownerDATA) {
+                dispatch(
+                  setCurrentGuestBoard({
+                    ...transformedBoard,
+                    ...ownerDATA.val(),
+                  })
+                );
+              }
+            });
+          }
+          if (board.exists()) resolve(board.val());
+          else {
+            const dbRef = ref(
+              db,
+              `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+            );
+            remove(dbRef);
+            navigate("/");
+            appDispatch(
+              createAlert({
+                alertTitle: "Database error!",
+                alertText: "Trying to connect to board that was deleted!",
+                alertError: true,
+              })
+            );
+          }
+        });
+      }
+    }).then((snapshot) => {
+      const boardDATA = snapshot;
+      new Promise((resolve) => {
+        const dbRef = ref(
+          db,
+          `users/${boardDATA.ownerID}/sharedBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+        );
       });
-    }
+    });
+
     return undefined;
   }
 );

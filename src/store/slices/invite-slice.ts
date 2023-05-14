@@ -172,32 +172,38 @@ export const acceptInvite = createAsyncThunk<
         inviterID: inviterID,
         boardID: boardID,
         inviterName: inviterName,
-      }).then(() => {
-        const dbRef = ref(
-          db,
-          `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
-        );
-        update(dbRef, {
-          OWNER: inviterName,
-          ownerID: inviterID,
-          boardID: boardID,
-          boardDATA: inviterDATA,
-          ownerPHOTO: inviterPhoto,
-          boardNAME: boardName,
-          boardPhoto: boardPhoto,
-        }).then(() => {
+      })
+        .then(() => {
+          const dbRef = ref(db, `users/${inviterID}/sharedBoards/ownerDATA`);
+          set(dbRef, {
+            OWNER: inviterName,
+            ownerID: inviterID,
+            ownerPHOTO: inviterPhoto,
+          });
+        })
+        .then(() => {
           const dbRef = ref(
             db,
-            `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+            `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
           );
-          const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
-          set(dbRef, {
-            guestID: state.user.id,
-            guestName: state.user.uName,
-            guestPhoto: uPhoto,
+          update(dbRef, {
+            boardID: boardID,
+            boardDATA: inviterDATA,
+            boardNAME: boardName,
+            boardPhoto: boardPhoto,
+          }).then(() => {
+            const dbRef = ref(
+              db,
+              `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+            );
+            const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
+            set(dbRef, {
+              guestID: state.user.id,
+              guestName: state.user.uName,
+              guestPhoto: uPhoto,
+            });
           });
         });
-      });
     });
 
     return undefined;
@@ -208,7 +214,7 @@ export const rejectInvite = createAsyncThunk<
   undefined,
   { notifID: string },
   {}
->("invite/acceptInvite", async function ({ notifID }, { getState, dispatch }) {
+>("invite/rejectInvite", async function ({ notifID }, { getState, dispatch }) {
   const appDispatch = dispatch as AppDispatch;
   const state = getState() as RootState;
   const db = getDatabase();
@@ -220,7 +226,7 @@ export const rejectInvite = createAsyncThunk<
 });
 
 export const removeUser = createAsyncThunk<undefined, { userID: string }, {}>(
-  "invite/acceptInvite",
+  "invite/removeUser",
   async function ({ userID }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
     const state = getState() as RootState;

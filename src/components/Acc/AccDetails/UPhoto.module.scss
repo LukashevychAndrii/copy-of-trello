@@ -12,8 +12,8 @@
   }
   &__edit-btn {
     position: absolute;
-    top: 9rem;
-    left: -2rem;
+    top: 11rem;
+    left: -1rem;
     background-color: var(--color-board-default);
     color: var(--color-white-dark);
     border: none;
@@ -21,6 +21,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
+    @media screen and (max-width: 1200px) {
+      top: 9rem;
+      left: -2rem;
+    }
     @media screen and (max-width: 900px) {
       width: 8rem;
     }

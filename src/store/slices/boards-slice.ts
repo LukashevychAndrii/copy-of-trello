@@ -546,6 +546,9 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
         );
       })
       .then(() => {
+        appDispatch(clearPending());
+      })
+      .then(() => {
         const dbRef = ref(
           db,
           `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
@@ -557,9 +560,7 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
               `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardPhoto`
             );
             const boardPHOTO = state.boards.currentBoardIMG;
-            set(dbRef, boardPHOTO).then(() => {
-              appDispatch(clearPending());
-            });
+            set(dbRef, boardPHOTO);
           }
         });
       })

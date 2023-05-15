@@ -293,7 +293,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   };
   if (customBG || guestBoardPHOTO) {
     backgroundImageStyle.backgroundImage = `url(${
-      customBG ? customBG : guestBoardPHOTO
+      guest ? guestBoardPHOTO : customBG
     })`;
     backgroundImageStyle.backgroundPosition = "center";
     backgroundImageStyle.backgroundRepeat = "no-repeat";

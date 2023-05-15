@@ -39,7 +39,6 @@ const router = createBrowserRouter([
       { path: "notification", element: <NotificationPage /> },
       {
         path: "guest-board",
-        element: <ErrorPage />,
         children: [{ path: ":guestBoardID", element: <GuestBoardsPage /> }],
       },
     ],

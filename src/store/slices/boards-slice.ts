@@ -110,7 +110,7 @@ export interface boardsData {
     todos?: [];
   };
 }
-export const fetchBoards = createAsyncThunk<boardsData, undefined, {}>(
+export const fetchBoards = createAsyncThunk<undefined, undefined, {}>(
   "boards/fetchBoards",
   async function (_, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
@@ -119,13 +119,22 @@ export const fetchBoards = createAsyncThunk<boardsData, undefined, {}>(
     const db = getDatabase();
     console.log(state.user.id);
     const boardsRef = ref(db, `users/${state.user.id}/boards`);
-    return new Promise<boardsData>((resolve) => {
+    new Promise<boardsData>((resolve) => {
       onValue(boardsRef, (snapshot) => {
         dispatch(setBoards(snapshot.val()));
         resolve(snapshot.val());
         appDispatch(clearPending());
       });
+    }).catch(() => {
+      dispatch(
+        createAlert({
+          alertTitle: "Database error!",
+          alertText: "Fetching board",
+          alertError: true,
+        })
+      );
     });
+    return undefined;
   }
 );
 interface guestsBoardsDATAI {
@@ -175,47 +184,54 @@ export const fetchGuestsBoards = createAsyncThunk<undefined, undefined, {}>(
         const data = snapshot.val();
         resolve(data);
       });
-    }).then((snapshot) => {
-      if (snapshot) {
-        const keys = Object.keys(snapshot);
-        console.log(keys);
-        const promises = keys.map(async (key) => {
-          const value = snapshot[key];
-          const dbRef = ref(
-            db,
-            `users/${value.inviterID}/sharedBoards/ownerDATA`
-          );
-          return get(dbRef).then((snapshot) => {
-            if (snapshot.val()) {
-              const ownerData: guestBoardOwnerData = snapshot.val();
-              const dbRef = ref(
-                db,
-                `users/${value.inviterID}/sharedBoards/${value.boardID}__${value.inviterName}`
-              );
-              return get(dbRef).then((snapshot) => {
-                const guestBoard: guestsBoardDATAI = {
-                  ...snapshot.val(),
-                  ...ownerData,
-                };
-                return guestBoard;
-              });
-            } else {
-              console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            }
+    })
+      .then((snapshot) => {
+        if (snapshot) {
+          const keys = Object.keys(snapshot);
+          const promises = keys.map(async (key) => {
+            const value = snapshot[key];
+            const dbRef = ref(
+              db,
+              `users/${value.inviterID}/sharedBoards/ownerDATA`
+            );
+            return get(dbRef).then((snapshot) => {
+              if (snapshot.val()) {
+                const ownerData: guestBoardOwnerData = snapshot.val();
+                const dbRef = ref(
+                  db,
+                  `users/${value.inviterID}/sharedBoards/${value.boardID}__${value.inviterName}`
+                );
+                return get(dbRef).then((snapshot) => {
+                  const guestBoard: guestsBoardDATAI = {
+                    ...snapshot.val(),
+                    ...ownerData,
+                  };
+                  return guestBoard;
+                });
+              } else {
+                dispatch(
+                  createAlert({
+                    alertTitle: "Error!",
+                    alertText: "Database error",
+                    alertError: true,
+                  })
+                );
+              }
+            });
           });
-        });
-        Promise.all(promises)
-          .then((snapshot) => {
-            dispatch(setGuestsBoards(snapshot));
-          })
-          .then(() => {
-            appDispatch(clearPending());
-          });
-      } else {
-        dispatch(setGuestsBoards([]));
-        appDispatch(clearPending());
-      }
-    });
+          Promise.all(promises)
+            .then((snapshot) => {
+              dispatch(setGuestsBoards(snapshot));
+            })
+            .then(() => {
+              appDispatch(clearPending());
+            });
+        } else {
+          dispatch(setGuestsBoards([]));
+          appDispatch(clearPending());
+        }
+      })
+      .catch(() => {});
     return undefined;
   }
 );
@@ -372,15 +388,25 @@ export const fetchGuestBoard = createAsyncThunk<
           }
         });
       }
-    }).then((snapshot) => {
-      const boardDATA = snapshot;
-      new Promise((resolve) => {
-        const dbRef = ref(
-          db,
-          `users/${boardDATA.ownerID}/sharedBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+    })
+      .then((snapshot) => {
+        const boardDATA = snapshot;
+        new Promise((resolve) => {
+          const dbRef = ref(
+            db,
+            `users/${boardDATA.ownerID}/sharedBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
+          );
+        });
+      })
+      .catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error",
+            alertError: true,
+          })
         );
       });
-    });
 
     return undefined;
   }
@@ -407,15 +433,19 @@ export const createBoard = createAsyncThunk<
 
 export const updateBoard = createAsyncThunk<
   undefined,
-  { boardID: string; data: dataI[]; guest: boolean },
+  {
+    boardID: string;
+    data: dataI[];
+    guest: boolean;
+    navigate: NavigateFunction;
+  },
   {}
 >(
   "board/updateBoard",
-  async function ({ boardID, data, guest }, { getState, dispatch }) {
+  async function ({ boardID, data, guest, navigate }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
 
     const state = getState() as RootState;
-    console.log(guest);
     const db = getDatabase();
     if (guest) {
       const boardDATA = state.boards.guestsBoards.find(
@@ -423,42 +453,83 @@ export const updateBoard = createAsyncThunk<
       );
       const dbRef = ref(
         db,
-        `users/${boardDATA?.ownerID}/boards/${boardDATA?.boardID}/boardData`
+        `users/${boardDATA?.ownerID}/boards/${boardDATA?.boardID}`
       );
-      set(dbRef, data).then(() => {
-        const dbRef = ref(
-          db,
-          `users/${boardDATA?.ownerID}/sharedBoards/${boardDATA?.boardID}__${boardDATA?.OWNER}/boardDATA/boardData`
-        );
-        set(dbRef, data);
-      });
-    } else {
-      const dbRef = ref(
-        db,
-        `users/${state.user.id}/boards/${boardID}/boardData`
-      );
-      set(dbRef, data).then(() => {
-        const dbRef = ref(
-          db,
-          `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
-        );
-        get(dbRef).then((snapshot) => {
+      get(dbRef)
+        .then((snapshot) => {
           if (snapshot.exists()) {
             const dbRef = ref(
               db,
-              `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardDATA/boardData`
+              `users/${boardDATA?.ownerID}/boards/${boardDATA?.boardID}/boardData`
             );
-
-            set(dbRef, data);
+            set(dbRef, data).then(() => {
+              const dbRef = ref(
+                db,
+                `users/${boardDATA?.ownerID}/sharedBoards/${boardDATA?.boardID}__${boardDATA?.OWNER}/boardDATA/boardData`
+              );
+              set(dbRef, data);
+            });
+          } else {
+            dispatch(
+              createAlert({
+                alertTitle: "Error!",
+                alertText: "Trying to update board that does not exist",
+                alertError: true,
+              })
+            );
+            navigate("/");
           }
+        })
+        .catch(() => {
+          dispatch(
+            createAlert({
+              alertTitle: "Error!",
+              alertText: "Database error",
+              alertError: true,
+            })
+          );
         });
+    } else {
+      const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
+      get(dbRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const dbRef = ref(
+            db,
+            `users/${state.user.id}/boards/${boardID}/boardData`
+          );
+          set(dbRef, data).then(() => {
+            const dbRef = ref(
+              db,
+              `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
+            );
+            get(dbRef).then((snapshot) => {
+              if (snapshot.exists()) {
+                const dbRef = ref(
+                  db,
+                  `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardDATA/boardData`
+                );
+
+                set(dbRef, data);
+              }
+            });
+          });
+        } else {
+          dispatch(
+            createAlert({
+              alertTitle: "Error!",
+              alertText: "Trying to update board that does not exist",
+              alertError: true,
+            })
+          );
+          navigate("/");
+        }
       });
     }
     return undefined;
   }
 );
 
-export const getBoardImg = createAsyncThunk<string, undefined, {}>(
+export const getBoardImg = createAsyncThunk<undefined, undefined, {}>(
   "board/getBoardImg",
   async function (_, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
@@ -471,14 +542,23 @@ export const getBoardImg = createAsyncThunk<string, undefined, {}>(
       db,
       `users/${state.user.id}/boards/${state.boards.currentBoardID}/boardImg`
     );
-    return new Promise<string>((resolve) => {
+    new Promise<string>((resolve) => {
       onValue(dbRef, (snapshot) => {
         const data = snapshot.val();
         dispatch(setCurrentBoardIMG(data));
         resolve(data);
         appDispatch(clearPending());
       });
+    }).catch(() => {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Database error",
+          alertError: true,
+        })
+      );
     });
+    return undefined;
   }
 );
 
@@ -520,6 +600,15 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
             });
           }
         });
+      })
+      .catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error",
+            alertError: true,
+          })
+        );
       });
     return undefined;
   }

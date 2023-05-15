@@ -134,6 +134,15 @@ export const updateUserProfilePhoto = createAsyncThunk<
             });
           }
         });
+      })
+      .catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Updating user photo failed",
+            alertError: true,
+          })
+        );
       });
 
     return undefined;

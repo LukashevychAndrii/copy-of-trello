@@ -12,6 +12,7 @@ import {
 } from "firebase/database";
 import { app } from "../../firebase";
 import { clearPending, setPending } from "./pending-slice";
+import { createAlert } from "./alert-slice";
 
 interface initialStateI {
   invites: {
@@ -91,6 +92,15 @@ export const sendInvite = createAsyncThunk<
         }).then(() => {
           appDispatch(clearPending());
         });
+      })
+      .catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error",
+            alertError: true,
+          })
+        );
       });
 
     return undefined;
@@ -120,6 +130,14 @@ export const getInvite = createAsyncThunk<
       }
       resolve();
     });
+  }).catch(() => {
+    dispatch(
+      createAlert({
+        alertTitle: "Error!",
+        alertText: "An error occurs while getting invite",
+        alertError: true,
+      })
+    );
   });
 
   return { invitesData };
@@ -167,51 +185,61 @@ export const acceptInvite = createAsyncThunk<
     const appDispatch = dispatch as AppDispatch;
     appDispatch(setPending());
     const state = getState() as RootState;
-    dispatch(rejectInvite({ notifID: notifID })).then(() => {
-      const db = getDatabase(app);
-      const dbRef = ref(
-        db,
-        `users/${state.user.id}/guestsBoards/${boardID}__${inviterName}`
-      );
-      set(dbRef, {
-        inviterID: inviterID,
-        boardID: boardID,
-        inviterName: inviterName,
-      })
-        .then(() => {
-          const dbRef = ref(db, `users/${inviterID}/sharedBoards/ownerDATA`);
-          set(dbRef, {
-            OWNER: inviterName,
-            ownerID: inviterID,
-            ownerPHOTO: inviterPhoto,
-          });
+    dispatch(rejectInvite({ notifID: notifID }))
+      .then(() => {
+        const db = getDatabase(app);
+        const dbRef = ref(
+          db,
+          `users/${state.user.id}/guestsBoards/${boardID}__${inviterName}`
+        );
+        set(dbRef, {
+          inviterID: inviterID,
+          boardID: boardID,
+          inviterName: inviterName,
         })
-        .then(() => {
-          const dbRef = ref(
-            db,
-            `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
-          );
-          update(dbRef, {
-            boardID: boardID,
-            boardDATA: inviterDATA,
-            boardNAME: boardName,
-            boardPhoto: boardPhoto,
-          }).then(() => {
+          .then(() => {
+            const dbRef = ref(db, `users/${inviterID}/sharedBoards/ownerDATA`);
+            set(dbRef, {
+              OWNER: inviterName,
+              ownerID: inviterID,
+              ownerPHOTO: inviterPhoto,
+            });
+          })
+          .then(() => {
             const dbRef = ref(
               db,
-              `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+              `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
             );
-            const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
-            set(dbRef, {
-              guestID: state.user.id,
-              guestName: state.user.uName,
-              guestPhoto: uPhoto,
+            update(dbRef, {
+              boardID: boardID,
+              boardDATA: inviterDATA,
+              boardNAME: boardName,
+              boardPhoto: boardPhoto,
             }).then(() => {
-              appDispatch(clearPending());
+              const dbRef = ref(
+                db,
+                `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+              );
+              const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
+              set(dbRef, {
+                guestID: state.user.id,
+                guestName: state.user.uName,
+                guestPhoto: uPhoto,
+              }).then(() => {
+                appDispatch(clearPending());
+              });
             });
           });
-        });
-    });
+      })
+      .catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "An error occurs while accepting invite",
+            alertError: true,
+          })
+        );
+      });
 
     return undefined;
   }

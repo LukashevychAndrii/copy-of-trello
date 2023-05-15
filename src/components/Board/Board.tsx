@@ -20,6 +20,7 @@ import {
 import BoardMembers from "./BoardMembers/BoardMembers";
 import SmallBoardList from "./SmallBoardList/SmallBoardList";
 import { createAlert } from "../../store/slices/alert-slice";
+import { useNavigate } from "react-router-dom";
 
 export interface dataI {
   title: string;
@@ -74,6 +75,8 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
   const dragItem = React.useRef<dragItem | null>();
   const dragNode = React.useRef<any>();
 
+  const navigate = useNavigate();
+
   const handleDragStart: drag = (e, groupIndex, groupItemIndex) => {
     dragItem.current = { groupIndex, groupItemIndex };
     dragNode.current = e.target;
@@ -115,7 +118,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
         dragItem.current = { groupIndex, groupItemIndex };
         if (boardID) {
           dispatch(
-            updateBoard({ data: newList, boardID: boardID, guest: guest })
+            updateBoard({
+              data: newList,
+              boardID: boardID,
+              guest: guest,
+              navigate: navigate,
+            })
           );
         }
         return newList;
@@ -145,6 +153,7 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
           data: [...list, newList],
           boardID: boardID,
           guest: guest,
+          navigate: navigate,
         })
       );
   }
@@ -157,7 +166,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
         : (newList[index].items = [newItem]);
       if (userID && boardID)
         dispatch(
-          updateBoard({ data: newList, boardID: boardID, guest: guest })
+          updateBoard({
+            data: newList,
+            boardID: boardID,
+            guest: guest,
+            navigate: navigate,
+          })
         );
       return newList;
     });
@@ -167,13 +181,27 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
     const newList: dataI[] = JSON.parse(JSON.stringify(list));
     newList[groupIndex].items.splice(groupItemIndex, 1);
     if (userID && boardID)
-      dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
+      dispatch(
+        updateBoard({
+          data: newList,
+          boardID: boardID,
+          guest: guest,
+          navigate: navigate,
+        })
+      );
   }
   function handleRemoveColumn(groupIndex: number) {
     const newList: dataI[] = JSON.parse(JSON.stringify(list));
     newList.splice(groupIndex, 1);
     if (userID && boardID)
-      dispatch(updateBoard({ data: newList, boardID: boardID, guest: guest }));
+      dispatch(
+        updateBoard({
+          data: newList,
+          boardID: boardID,
+          guest: guest,
+          navigate: navigate,
+        })
+      );
   }
 
   function handleChangeTitle(groupIndex: number) {
@@ -190,7 +218,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       newList[groupIndex].title = newTitle;
       if (userID && boardID)
         dispatch(
-          updateBoard({ data: newList, boardID: boardID, guest: guest })
+          updateBoard({
+            data: newList,
+            boardID: boardID,
+            guest: guest,
+            navigate: navigate,
+          })
         );
       setTitleIndex(-1);
     } else {
@@ -239,7 +272,12 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       newList[groupIndex].items[groupItemIndex] = newItemText;
       if (userID && boardID)
         dispatch(
-          updateBoard({ data: newList, boardID: boardID, guest: guest })
+          updateBoard({
+            data: newList,
+            boardID: boardID,
+            guest: guest,
+            navigate: navigate,
+          })
         );
       setItemIndex(-1);
     } else {

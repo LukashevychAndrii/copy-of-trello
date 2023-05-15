@@ -252,24 +252,24 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       );
     }
   }
-  function useHandleClickOutside2(dropAreaRef: any) {
-    React.useEffect(() => {
-      function handleClickOutside(event: any) {
-        if (
-          dropAreaRef.current &&
-          !dropAreaRef.current.contains(event.target)
-        ) {
-          setTitleIndex2(-1);
-          setItemIndex(-1);
-        }
-      }
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [dropAreaRef]);
-  }
-  useHandleClickOutside2(itemRef);
+  // function useHandleClickOutside2(dropAreaRef: any) {
+  //   React.useEffect(() => {
+  //     function handleClickOutside(event: any) {
+  //       if (
+  //         dropAreaRef.current &&
+  //         !dropAreaRef.current.contains(event.target)
+  //       ) {
+  //         setTitleIndex2(-1);
+  //         setItemIndex(-1);
+  //       }
+  //     }
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => {
+  //       document.removeEventListener("mousedown", handleClickOutside);
+  //     };
+  //   }, [dropAreaRef]);
+  // }
+  // useHandleClickOutside2(itemRef);
 
   const theme = useAppSelector((state) => state.theme.theme);
   const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
@@ -338,12 +338,28 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                         <label
                           htmlFor={`new-title-text__${groupIndex}`}
                         ></label>
-                        <Checkmark
-                          className={styles["board__group__checkmark"]}
-                          onClick={() => {
-                            handleChangeTitle(groupIndex);
-                          }}
-                        />
+                        <div
+                          className={styles["board__group__new-title-buttons"]}
+                        >
+                          <Checkmark
+                            className={styles["board__group__checkmark"]}
+                            onClick={() => {
+                              handleChangeTitle(groupIndex);
+                            }}
+                          />
+                          <span
+                            className={
+                              styles[
+                                "board__group__new-title-buttons__delete-btn"
+                              ]
+                            }
+                            onClick={() => {
+                              setTitleIndex(-1);
+                            }}
+                          >
+                            &times;
+                          </span>
+                        </div>
                       </form>
                     ) : (
                       <div className={styles["board__group__title-wrapper"]}>
@@ -381,25 +397,45 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                           >
                             <input
                               type="text"
-                              id={`new-item-text__${groupIndex}`}
-                              name={`new-item-text__${groupIndex}`}
+                              id={`new-item-text__${groupIndex}-${groupItemIndex}`}
+                              name={`new-item-text__${groupIndex}-${groupItemIndex}`}
                               value={newItemText}
                               onChange={(e) => {
                                 setNewItemItext(e.target.value);
                               }}
+                              onClick={() => console.log("qwe")}
                             />
                             <label
-                              htmlFor={`new-item-text__${groupIndex}`}
+                              htmlFor={`new-item-text__${groupIndex}-${groupItemIndex}`}
                             ></label>
-                            <Checkmark
-                              className={styles["board__group__checkmark"]}
-                              onClick={() => {
-                                handleItemTextChange(
-                                  groupIndex,
-                                  groupItemIndex
-                                );
-                              }}
-                            />
+                            <div
+                              className={
+                                styles["board__group__new-title-buttons"]
+                              }
+                            >
+                              <Checkmark
+                                className={styles["board__group__checkmark"]}
+                                onClick={() => {
+                                  handleItemTextChange(
+                                    groupIndex,
+                                    groupItemIndex
+                                  );
+                                }}
+                              />
+                              <span
+                                className={
+                                  styles[
+                                    "board__group__new-title-buttons__delete-btn"
+                                  ]
+                                }
+                                onClick={() => {
+                                  setTitleIndex2(-1);
+                                  setItemIndex(-1);
+                                }}
+                              >
+                                &times;
+                              </span>
+                            </div>
                           </form>
                         ) : (
                           <div
@@ -439,6 +475,8 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                                   setItemIndex(groupItemIndex);
                                   setTitleIndex2(groupIndex);
                                   setNewItemItext(groupItem);
+                                  console.log(groupItemIndex);
+                                  console.log(groupIndex);
                                 }}
                               />
                             </div>

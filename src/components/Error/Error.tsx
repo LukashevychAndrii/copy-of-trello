@@ -25,7 +25,7 @@ const Error = () => {
             This page is not supported
           </div>
           <Link className={styles["error-container__link"]} to="/">
-            Back to Board Page
+            Back to Boards Page
           </Link>
         </div>
         <div className={styles["error-container__footer"]}>

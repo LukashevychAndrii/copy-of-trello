@@ -7,13 +7,13 @@
   gap: 2.5rem;
   font-size: var(--default-font);
   color: var(--color-white-dark);
-  padding-bottom: 4.5rem;
+  padding-bottom: 2rem;
   // & > * {
   //   border: 1px solid;
   // }
 
   @media screen and (max-width: 900px) {
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
   }
   &__company-name {
     font-size: 3rem;

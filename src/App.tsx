@@ -25,6 +25,8 @@ import { getInvite } from "./store/slices/invite-slice";
 import { useAppDispatch } from "./hooks/redux";
 import GuestBoardsPage from "./pages/GuestBoardsPage";
 import ErrorPage from "./pages/ErrorPage";
+import SignUpPage from "./pages/SignUpPage";
+import SignInPage from "./pages/SignInPage";
 
 const router = createBrowserRouter([
   {
@@ -34,12 +36,13 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <BoardList /> },
       { path: ":boardID", element: <BoardPage /> },
-      { path: "sign-up", element: <SignUp /> },
-      { path: "sign-in", element: <SignIn /> },
+      { path: "sign-up", element: <SignUpPage /> },
+      { path: "sign-in", element: <SignInPage /> },
       { path: "acc-details", element: <AccDetails /> },
       { path: "notification", element: <NotificationPage /> },
       {
         path: "guest-board",
+        element: <ErrorPage />,
         children: [{ path: ":guestBoardID", element: <GuestBoardsPage /> }],
       },
     ],

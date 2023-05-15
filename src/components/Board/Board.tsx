@@ -25,7 +25,6 @@ import { useNavigate } from "react-router-dom";
 export interface dataI {
   title: string;
   items: string[];
-  // [key:string]:any
 }
 
 interface drag {
@@ -92,10 +91,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
     dragItem.current = null;
     dragNode.current = null;
   }
-  // React.useEffect(() => {
-  //   if (boardID && list.length > 0)
-  //     dispatch(updateBoard({ data: list, boardID: boardID, guest: guest }));
-  // }, [list, dispatch, boardID, guest]);
 
   const handleDragEnter: drag = (e, groupIndex, groupItemIndex) => {
     const currentItem = dragItem.current;
@@ -290,24 +285,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
       );
     }
   }
-  // function useHandleClickOutside2(dropAreaRef: any) {
-  //   React.useEffect(() => {
-  //     function handleClickOutside(event: any) {
-  //       if (
-  //         dropAreaRef.current &&
-  //         !dropAreaRef.current.contains(event.target)
-  //       ) {
-  //         setTitleIndex2(-1);
-  //         setItemIndex(-1);
-  //       }
-  //     }
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //     return () => {
-  //       document.removeEventListener("mousedown", handleClickOutside);
-  //     };
-  //   }, [dropAreaRef]);
-  // }
-  // useHandleClickOutside2(itemRef);
 
   const theme = useAppSelector((state) => state.theme.theme);
   const customBG = useAppSelector((state) => state.boards.currentBoardIMG);
@@ -441,7 +418,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                               onChange={(e) => {
                                 setNewItemItext(e.target.value);
                               }}
-                              onClick={() => console.log("qwe")}
                             />
                             <label
                               htmlFor={`new-item-text__${groupIndex}-${groupItemIndex}`}
@@ -513,8 +489,6 @@ const Board: React.FC<props> = ({ todos, boardID, guest, guestBoardPHOTO }) => {
                                   setItemIndex(groupItemIndex);
                                   setTitleIndex2(groupIndex);
                                   setNewItemItext(groupItem);
-                                  console.log(groupItemIndex);
-                                  console.log(groupIndex);
                                 }}
                               />
                             </div>

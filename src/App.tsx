@@ -7,11 +7,8 @@ import RootLayout from "./pages/RootLayout/RootLayout";
 import BoardPage from "./pages/BoardPage";
 import NotificationPage from "./pages/NotificationPage";
 
-import SignUp from "./components/Acc/SignUp";
-import SignIn from "./components/Acc/SignIn";
 import AccDetails from "./components/Acc/AccDetails/AccDetails";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import { useDispatch } from "react-redux";
 import { setUser } from "./store/slices/user-slice";
 import { get, getDatabase, ref } from "@firebase/database";
 import { app } from "./firebase";
@@ -73,7 +70,6 @@ function App() {
             if (snapshot.exists()) {
               const reternedData = snapshot.val();
               if (user.email) {
-                console.log(reternedData.boardImg);
                 const userData: userDataI = {
                   email: user.email,
                   id: user.uid,
@@ -86,8 +82,6 @@ function App() {
                 dispatch(fetchBoards());
                 dispatch(fetchGuestsBoards());
                 dispatch(getInvite());
-
-                // dispatch(setUserPhoto(reternedData.uPhoto));
               }
             }
           });

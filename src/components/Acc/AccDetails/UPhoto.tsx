@@ -29,10 +29,6 @@ const UPhoto = () => {
     ref2: React.MutableRefObject<any>
   ) {
     React.useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
-
       function handleClickOutside(event: any) {
         if (
           ref.current &&
@@ -43,10 +39,8 @@ const UPhoto = () => {
           setChecked(false);
         }
       }
-      // Bind the event listener
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        // Unbind the event listener on clean up
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref, ref2]);

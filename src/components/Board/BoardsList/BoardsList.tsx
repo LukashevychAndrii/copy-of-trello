@@ -4,7 +4,6 @@ import "./AddBorderRadius.scss";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   boardsData,
-  fetchBoards,
   fetchGuestsBoards,
   guestsBoardDATAI,
   removeBoard,
@@ -43,7 +42,6 @@ const BoardList = () => {
   );
 
   React.useEffect(() => {
-    console.log(fetchedGuestsBoards);
     setGuestsBoards(fetchedGuestsBoards);
   }, [fetchedGuestsBoards]);
   React.useEffect(() => {

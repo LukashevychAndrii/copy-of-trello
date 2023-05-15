@@ -1,6 +1,6 @@
 import React from "react";
 import Board, { dataI } from "../components/Board/Board";
-import { getDatabase, ref, get, onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { app } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { createAlert } from "../store/slices/alert-slice";
@@ -45,22 +45,6 @@ const BoardPage = () => {
             );
           }
         );
-        // await get(userRef)
-        //   .then((snapshot) => {
-        //     if (snapshot.exists()) {
-        //       setTodos(snapshot.val());
-        //       console.log(snapshot.val());
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     dispatch(
-        //       createAlert({
-        //         alertTitle: "Error!",
-        //         alertText: "Fetching data failed",
-        //         alertError: true,
-        //       })
-        //     );
-        //   });
       };
       fetchUsersTodos();
     }

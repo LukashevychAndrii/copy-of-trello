@@ -26,7 +26,6 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
   React.useEffect(() => {
     if (currentBoard?.GUESTS) setGuests(Object.values(currentBoard.GUESTS));
     if (currentBoard && !currentBoard.GUESTS && guest) {
-      console.log("asd");
       dispatch(
         removeGuestBoard({
           boardID: currentBoard?.boardID,
@@ -60,7 +59,6 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
     if (guestBoard?.GUESTS && guest) {
       const guestsIDS = Object.keys(guestBoard?.GUESTS);
       const foundID = guestsIDS.findIndex((el) => el === userID);
-      console.log(foundID);
       if (foundID === -1) {
         dispatch(
           removeGuestBoard({

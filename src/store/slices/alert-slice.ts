@@ -15,13 +15,11 @@ const alertSlice = createSlice({
   initialState,
   reducers: {
     createAlert(state, action) {
-      // console.log(action.payload.)
       state.alertTitle = action.payload.alertTitle;
       state.alertText = action.payload.alertText;
       state.alertError = action.payload.alertError;
     },
     clearAlert(state) {
-      console.log("creal");
       state.alertTitle = null;
       state.alertText = null;
       state.alertError = null;

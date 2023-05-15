@@ -14,10 +14,7 @@ import { AppDispatch, RootState } from "..";
 import { dataI } from "../../components/Board/Board";
 import { createAlert } from "./alert-slice";
 import getErrorDetails from "../../utils/getErrorDetails";
-import { NavigateFunction, redirect, useNavigate } from "react-router-dom";
-import { log } from "console";
-import { resolve } from "path";
-import { useAppDispatch } from "../../hooks/redux";
+import { NavigateFunction } from "react-router-dom";
 import { clearPending, setPending } from "./pending-slice";
 
 interface initialStateI {
@@ -117,7 +114,6 @@ export const fetchBoards = createAsyncThunk<undefined, undefined, {}>(
     appDispatch(setPending());
     const state = getState() as RootState;
     const db = getDatabase();
-    console.log(state.user.id);
     const boardsRef = ref(db, `users/${state.user.id}/boards`);
     new Promise<boardsData>((resolve) => {
       onValue(boardsRef, (snapshot) => {
@@ -304,38 +300,6 @@ export const fetchGuestBoard = createAsyncThunk<
     const boardDATA = state.boards.guestsBoards.find(
       (el) => el.boardID === boardID
     );
-
-    // const guestRef = ref(
-    //   db,
-    //   `users/${boardDATA?.ownerID}/sharedBoards/${boardDATA?.boardID}__${boardDATA?.OWNER}/GUESTS/${state.user.id}`
-    // );
-    // if (boardDATA) {
-    //   onValue(guestRef, (snapshot) => {
-    //     if (snapshot.exists()) {
-    //       console.log("!!!!!!!!!!!!");
-    //       appDispatch(setCurrentGuestBoard(boardDATA));
-    //     } else {
-    //       const dbRef = ref(
-    //         db,
-    //         `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
-    //       );
-    //       remove(dbRef);
-    //       navigate("/");
-    //       appDispatch(
-    //         createAlert({
-    //           alertTitle: "Database error!",
-    //           alertText: "Trying to connect to board that was deleted!",
-    //           alertError: true,
-    //         })
-    //       );
-    //     }
-    //   });
-    // }
-    // new Promise<undefined>((resolve)=>{
-    //   if(boardDATA){
-    //     const dbRef = ref(`users/${boardDATA.ownerID}/sharedBoards/ownerDATA`)
-    //   }
-    // })
     new Promise<guestsBoardDATAI>((resolve) => {
       if (boardDATA) {
         const dbRef = ref(
@@ -423,7 +387,6 @@ export const createBoard = createAsyncThunk<
   const state = getState() as RootState;
   const db = getDatabase(app);
   const dbRef = ref(db, `users/${state.user.id}/boards`);
-  console.log(state.boards);
   push(dbRef, { boardName: boardName }).then(() => {
     appDispatch(clearPending());
   });
@@ -572,7 +535,6 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
     const boardID = state.boards.currentBoardID;
     const db = getDatabase(app);
     const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
-    console.log(state.boards.currentBoardIMG);
     update(dbRef, { boardImg: state.boards.currentBoardIMG })
       .catch((error) => {
         appDispatch(
@@ -623,7 +585,6 @@ export const updateUserTodos = createAsyncThunk<
   appDispatch(setPending());
 
   const state = getState() as RootState;
-  console.log(data);
   const db = getDatabase();
   const dbRef = ref(
     db,

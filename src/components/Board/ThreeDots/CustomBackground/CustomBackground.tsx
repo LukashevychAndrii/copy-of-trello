@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./CustomBackground.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { createAlert } from "../../../../store/slices/alert-slice";
-import { setBoardImg } from "../../../../store/slices/user-slice";
 import {
   setCurrentBoardIMG,
   updateBoardImg,

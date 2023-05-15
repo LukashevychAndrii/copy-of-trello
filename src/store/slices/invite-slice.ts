@@ -35,10 +35,6 @@ const inviteSlice = createSlice({
     setInvites(state, action) {
       state.invites = action.payload;
     },
-    removeInvite(state, action) {
-      console.log("qwe");
-      console.log(state.invites.findIndex(action.payload));
-    },
     setSentInvites(state, action) {
       state.sentInvites.push(action.payload);
     },
@@ -46,7 +42,7 @@ const inviteSlice = createSlice({
   extraReducers(builder) {},
 });
 
-export const { setInvites, setSentInvites, removeInvite } = inviteSlice.actions;
+export const { setInvites, setSentInvites } = inviteSlice.actions;
 
 interface invitesData {
   inviteKey: {
@@ -123,7 +119,6 @@ export const getInvite = createAsyncThunk<
       const data = snapshot.val();
       if (data) {
         invitesData = Object.values(data);
-        // console.log(data);
         dispatch(setInvites(data));
       } else {
         dispatch(setInvites({}));

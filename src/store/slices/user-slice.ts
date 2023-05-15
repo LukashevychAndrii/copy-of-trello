@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "..";
-import { get, getDatabase, push, ref, set, update } from "firebase/database";
+import { get, getDatabase, ref, set, update } from "firebase/database";
 import { createAlert } from "./alert-slice";
-import { app } from "../../firebase";
-import { dataI } from "../../components/Board/Board";
-import getErrorDetails from "../../utils/getErrorDetails";
 import { clearPending, setPending } from "./pending-slice";
 
 interface initialStateI {
@@ -85,7 +82,6 @@ export const updateUserProfilePhoto = createAsyncThunk<
 
     const state = getState() as RootState;
     const db = getDatabase();
-    console.log(state.user.uPhoto);
     const dbRef = ref(db, `users/${state.user.id}/userdata`);
 
     update(dbRef, { uPhoto: state.user.uPhoto })
@@ -119,8 +115,6 @@ export const updateUserProfilePhoto = createAsyncThunk<
           if (snapshot.exists()) {
             const values: guestBoardDATA[] = Object.values(snapshot.val());
             const keys: string[] = Object.keys(snapshot.val());
-            console.log(values);
-            console.log(keys);
             keys.map((el, index) => {
               const dbRef = ref(
                 db,
@@ -128,8 +122,6 @@ export const updateUserProfilePhoto = createAsyncThunk<
               );
               const userPHOTO = state.user.uPhoto ? state.user.uPhoto : "";
               set(dbRef, userPHOTO);
-              console.log("1");
-
               return null;
             });
           }

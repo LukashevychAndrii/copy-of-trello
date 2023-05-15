@@ -106,8 +106,6 @@
     display: none;
   }
   &__checkbox:checked ~ &__edit-btn--choise {
-    // transform: scale(0);
-    // display: none;
     display: flex;
   }
   &__set-btn {

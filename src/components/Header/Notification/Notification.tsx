@@ -13,7 +13,6 @@ const Notification: React.FC = () => {
   React.useEffect(() => {
     setInviteIDS(Object.keys(invites));
     setInviteVALUES(Object.values(invites));
-    console.log(Object.values(invites));
   }, [invites]);
 
   const dispatch = useAppDispatch();

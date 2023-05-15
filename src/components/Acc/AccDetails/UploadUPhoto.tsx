@@ -28,7 +28,6 @@ const UploadUPhoto: React.FC<props> = (props) => {
   };
   function handleSetPhotoClick() {
     dispatch(setUserPhoto({ uPhoto: src }));
-    console.log(src);
     props.setShowAvatarLoader(false);
     setPreview(null);
     if (userID) dispatch(updateUserProfilePhoto());

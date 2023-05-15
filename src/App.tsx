@@ -24,11 +24,13 @@ import { fetchBoards, fetchGuestsBoards } from "./store/slices/boards-slice";
 import { getInvite } from "./store/slices/invite-slice";
 import { useAppDispatch } from "./hooks/redux";
 import GuestBoardsPage from "./pages/GuestBoardsPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <BoardList /> },
       { path: ":boardID", element: <BoardPage /> },

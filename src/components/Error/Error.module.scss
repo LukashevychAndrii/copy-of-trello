@@ -1,0 +1,38 @@
+.error-container {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  &__wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+  }
+  &__title {
+    font-size: 5.5rem;
+  }
+  &__text {
+    font-size: 2.5rem;
+  }
+  &__link {
+    font-size: 2rem;
+    color: inherit;
+  }
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translate(0, -50%);
+  }
+}
+
+[error-theme="light"] {
+  color: var(--color-black);
+}
+[error-theme="dark"] {
+  color: var(--color-white-dark);
+}

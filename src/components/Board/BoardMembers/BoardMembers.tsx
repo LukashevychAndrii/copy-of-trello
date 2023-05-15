@@ -92,7 +92,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
       {!guest && sharedBoardDATA?.GUESTS && (
         <div>
           <div board-members-theme={theme} className={styles["guests__text"]}>
-            Board Members
+            {`Board Members (${sharedBoardDATA.boardDATA.boardName})`}
           </div>
           <ul board-members-theme={theme} className={styles["guests"]}>
             {Object.values(sharedBoardDATA?.GUESTS).map((el) => (
@@ -125,7 +125,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
           </ul>
         </div>
       )}
-      {guests && (
+      {guests && currentBoard?.OWNER && (
         <div>
           <div board-members-theme={theme} className={styles["owner"]}>
             <div board-members-theme={theme} className={styles["owner__name"]}>
@@ -145,6 +145,9 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
           </div>
           <div style={{ width: "100%" }}>
             <ul board-members-theme={theme} className={styles["guests"]}>
+              <div className={styles["guests__guest__name"]}>
+                {`Bord name - ${currentBoard.boardDATA.boardName}`}
+              </div>
               {guests?.map((el) => (
                 <li className={styles["guests__guest"]} key={el.guestID}>
                   <div className={styles["guests__guest__name"]}>

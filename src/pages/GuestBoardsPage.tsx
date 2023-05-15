@@ -38,6 +38,7 @@ const GuestBoardsPage = () => {
 
   return (
     <div>
+      <div>{guestBoard?.boardDATA.boardName}</div>
       <Board
         todos={todos ? todos : []}
         boardID={params.guestBoardID}

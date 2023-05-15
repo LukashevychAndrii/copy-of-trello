@@ -4,6 +4,7 @@ import alertSlice from "./slices/alert-slice";
 import themeSlice from "./slices/theme-slice";
 import boardsSlice from "./slices/boards-slice";
 import inviteSlice from "./slices/invite-slice";
+import pendingSlice from "./slices/pending-slice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     theme: themeSlice,
     boards: boardsSlice,
     invite: inviteSlice,
+    pending: pendingSlice,
   },
 });
 

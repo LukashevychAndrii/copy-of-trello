@@ -17,6 +17,8 @@ import getErrorDetails from "../../utils/getErrorDetails";
 import { NavigateFunction, redirect, useNavigate } from "react-router-dom";
 import { log } from "console";
 import { resolve } from "path";
+import { useAppDispatch } from "../../hooks/redux";
+import { clearPending, setPending } from "./pending-slice";
 
 interface initialStateI {
   boards: {
@@ -111,8 +113,9 @@ export interface boardsData {
 export const fetchBoards = createAsyncThunk<boardsData, undefined, {}>(
   "boards/fetchBoards",
   async function (_, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
     const state = getState() as RootState;
-    // const appDispatch
     const db = getDatabase();
     console.log(state.user.id);
     const boardsRef = ref(db, `users/${state.user.id}/boards`);
@@ -120,6 +123,7 @@ export const fetchBoards = createAsyncThunk<boardsData, undefined, {}>(
       onValue(boardsRef, (snapshot) => {
         dispatch(setBoards(snapshot.val()));
         resolve(snapshot.val());
+        appDispatch(clearPending());
       });
     });
   }
@@ -160,10 +164,11 @@ export interface guestsBoardDATAI {
 export const fetchGuestsBoards = createAsyncThunk<undefined, undefined, {}>(
   "boards/fetchGuestsBoards",
   async function (_, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const state = getState() as RootState;
-    // const appDispatch
     const db = getDatabase();
-    console.log(state.user.id);
     const boardsRef = ref(db, `users/${state.user.id}/guestsBoards`);
     new Promise<guestsBoardsDATAI>((resolve) => {
       onValue(boardsRef, (snapshot) => {
@@ -199,11 +204,16 @@ export const fetchGuestsBoards = createAsyncThunk<undefined, undefined, {}>(
             }
           });
         });
-        Promise.all(promises).then((snapshot) => {
-          dispatch(setGuestsBoards(snapshot));
-        });
+        Promise.all(promises)
+          .then((snapshot) => {
+            dispatch(setGuestsBoards(snapshot));
+          })
+          .then(() => {
+            appDispatch(clearPending());
+          });
       } else {
         dispatch(setGuestsBoards([]));
+        appDispatch(clearPending());
       }
     });
     return undefined;
@@ -212,8 +222,11 @@ export const fetchGuestsBoards = createAsyncThunk<undefined, undefined, {}>(
 
 export const removeBoard = createAsyncThunk<undefined, { boardID: string }, {}>(
   "boards/removeBoard",
-  async function ({ boardID }, { getState }) {
+  async function ({ boardID }, { getState, dispatch }) {
     const db = getDatabase();
+    const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const state = getState() as RootState;
 
     const dbRef = ref(db, `users/${state.user.id}/boards/${boardID}`);
@@ -222,7 +235,9 @@ export const removeBoard = createAsyncThunk<undefined, { boardID: string }, {}>(
         db,
         `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}`
       );
-      remove(dbRef);
+      remove(dbRef).then(() => {
+        appDispatch(clearPending());
+      });
     });
     return undefined;
   }
@@ -235,9 +250,11 @@ export const removeGuestBoard = createAsyncThunk<
 >(
   "boards/removeGuestBoard",
   async function ({ boardID, ownerNAME, ownerID }, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const db = getDatabase();
     const state = getState() as RootState;
-    const appDispatch = dispatch as AppDispatch;
     const dbRef = ref(
       db,
       `users/${state.user.id}/guestsBoards/${boardID}__${ownerNAME}`
@@ -250,6 +267,7 @@ export const removeGuestBoard = createAsyncThunk<
       );
       remove(dbRef);
       dispatch(removeGuestBoardFromState(boardID));
+      appDispatch(clearPending());
     });
 
     return undefined;
@@ -264,6 +282,7 @@ export const fetchGuestBoard = createAsyncThunk<
   "boards/fetchGuestBoard",
   async function ({ boardID, navigate }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
     const state = getState() as RootState;
     const db = getDatabase();
     const boardDATA = state.boards.guestsBoards.find(
@@ -330,6 +349,7 @@ export const fetchGuestBoard = createAsyncThunk<
                     ...ownerDATA.val(),
                   })
                 );
+                appDispatch(clearPending());
               }
             });
           }
@@ -348,6 +368,7 @@ export const fetchGuestBoard = createAsyncThunk<
                 alertError: true,
               })
             );
+            appDispatch(clearPending());
           }
         });
       }
@@ -371,11 +392,16 @@ export const createBoard = createAsyncThunk<
   {}
 >("boards/createBoard", async function ({ boardName }, { getState, dispatch }) {
   const appDispatch = dispatch as AppDispatch;
+  appDispatch(setPending());
+
   const state = getState() as RootState;
   const db = getDatabase(app);
   const dbRef = ref(db, `users/${state.user.id}/boards`);
   console.log(state.boards);
-  push(dbRef, { boardName: boardName });
+  push(dbRef, { boardName: boardName }).then(() => {
+    appDispatch(clearPending());
+  });
+
   return undefined;
 });
 
@@ -386,6 +412,8 @@ export const updateBoard = createAsyncThunk<
 >(
   "board/updateBoard",
   async function ({ boardID, data, guest }, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+
     const state = getState() as RootState;
     console.log(guest);
     const db = getDatabase();
@@ -420,6 +448,7 @@ export const updateBoard = createAsyncThunk<
               db,
               `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardDATA/boardData`
             );
+
             set(dbRef, data);
           }
         });
@@ -432,6 +461,10 @@ export const updateBoard = createAsyncThunk<
 export const getBoardImg = createAsyncThunk<string, undefined, {}>(
   "board/getBoardImg",
   async function (_, { getState, dispatch }) {
+    const appDispatch = dispatch as AppDispatch;
+
+    appDispatch(setPending());
+
     const state = getState() as RootState;
     const db = getDatabase(app);
     const dbRef = ref(
@@ -443,6 +476,7 @@ export const getBoardImg = createAsyncThunk<string, undefined, {}>(
         const data = snapshot.val();
         dispatch(setCurrentBoardIMG(data));
         resolve(data);
+        appDispatch(clearPending());
       });
     });
   }
@@ -452,6 +486,8 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
   "board/updateBoardImg",
   async function (_, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const state = getState() as RootState;
     const boardID = state.boards.currentBoardID;
     const db = getDatabase(app);
@@ -479,7 +515,9 @@ export const updateBoardImg = createAsyncThunk<undefined, undefined, {}>(
               `users/${state.user.id}/sharedBoards/${boardID}__${state.user.uName}/boardPhoto`
             );
             const boardPHOTO = state.boards.currentBoardIMG;
-            set(dbRef, boardPHOTO);
+            set(dbRef, boardPHOTO).then(() => {
+              appDispatch(clearPending());
+            });
           }
         });
       });
@@ -493,6 +531,8 @@ export const updateUserTodos = createAsyncThunk<
   {}
 >("board/updateUsersTodos", async function ({ data }, { getState, dispatch }) {
   const appDispatch = dispatch as AppDispatch;
+  appDispatch(setPending());
+
   const state = getState() as RootState;
   console.log(data);
   const db = getDatabase();
@@ -500,9 +540,13 @@ export const updateUserTodos = createAsyncThunk<
     db,
     `users/${state.user.id}/boards/${state.boards.currentBoardID}/boardData`
   );
-  set(dbRef, data).catch((error) => {
-    dispatch(appDispatch(createAlert(getErrorDetails(error.code))));
-  });
+  set(dbRef, data)
+    .catch((error) => {
+      dispatch(appDispatch(createAlert(getErrorDetails(error.code))));
+    })
+    .then(() => {
+      appDispatch(clearPending());
+    });
   return undefined;
 });
 
@@ -514,6 +558,7 @@ export const fetchSharedBoards = createAsyncThunk<
   "board/updateUsersTodos",
   async function ({ boardID }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
     const state = getState() as RootState;
     const db = getDatabase();
     const dbRef = ref(
@@ -527,6 +572,7 @@ export const fetchSharedBoards = createAsyncThunk<
           dispatch(setCurrentSharedBoard(snapshot.val()));
 
           resolve(snapshot.val());
+          appDispatch(clearPending());
         });
       } catch (error) {
         dispatch(

@@ -5,6 +5,7 @@ import { createAlert } from "./alert-slice";
 import { app } from "../../firebase";
 import { dataI } from "../../components/Board/Board";
 import getErrorDetails from "../../utils/getErrorDetails";
+import { clearPending, setPending } from "./pending-slice";
 
 interface initialStateI {
   email: string | null;
@@ -79,8 +80,9 @@ export const updateUserProfilePhoto = createAsyncThunk<
   "user/updateUserProfilePhoto",
 
   async function (_, { getState, dispatch }) {
-    console.log("update");
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const state = getState() as RootState;
     const db = getDatabase();
     console.log(state.user.uPhoto);
@@ -95,6 +97,9 @@ export const updateUserProfilePhoto = createAsyncThunk<
             alertError: true,
           })
         );
+      })
+      .then(() => {
+        appDispatch(clearPending());
       })
       .then(() => {
         const dbRef = ref(db, `users/${state.user.id}/sharedBoards`);
@@ -123,6 +128,8 @@ export const updateUserProfilePhoto = createAsyncThunk<
               );
               const userPHOTO = state.user.uPhoto ? state.user.uPhoto : "";
               set(dbRef, userPHOTO);
+              console.log("1");
+
               return null;
             });
           }

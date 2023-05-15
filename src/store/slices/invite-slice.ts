@@ -11,6 +11,7 @@ import {
   update,
 } from "firebase/database";
 import { app } from "../../firebase";
+import { clearPending, setPending } from "./pending-slice";
 
 interface initialStateI {
   invites: {
@@ -61,6 +62,7 @@ export const sendInvite = createAsyncThunk<
   "invite/sendInvite",
   async function ({ inviteUserID }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
     const state = getState() as RootState;
 
     const db = getDatabase();
@@ -86,7 +88,9 @@ export const sendInvite = createAsyncThunk<
           boardID: state.boards.currentBoardID,
           boardPhoto: boardPHOTO,
           inviterDATA: boardDATA,
-        }).then(() => {});
+        }).then(() => {
+          appDispatch(clearPending());
+        });
       });
 
     return undefined;
@@ -161,6 +165,7 @@ export const acceptInvite = createAsyncThunk<
     { getState, dispatch }
   ) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
     const state = getState() as RootState;
     dispatch(rejectInvite({ notifID: notifID })).then(() => {
       const db = getDatabase(app);
@@ -201,6 +206,8 @@ export const acceptInvite = createAsyncThunk<
               guestID: state.user.id,
               guestName: state.user.uName,
               guestPhoto: uPhoto,
+            }).then(() => {
+              appDispatch(clearPending());
             });
           });
         });
@@ -216,11 +223,14 @@ export const rejectInvite = createAsyncThunk<
   {}
 >("invite/rejectInvite", async function ({ notifID }, { getState, dispatch }) {
   const appDispatch = dispatch as AppDispatch;
+  dispatch(setPending());
   const state = getState() as RootState;
   const db = getDatabase();
   const dbRef = ref(db, `users/${state.user.id}/userInvites/${notifID}`);
 
-  remove(dbRef);
+  remove(dbRef).then(() => {
+    appDispatch(clearPending());
+  });
 
   return undefined;
 });
@@ -229,6 +239,8 @@ export const removeUser = createAsyncThunk<undefined, { userID: string }, {}>(
   "invite/removeUser",
   async function ({ userID }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
+    appDispatch(setPending());
+
     const state = getState() as RootState;
     const db = getDatabase();
     const dbRef = ref(
@@ -236,7 +248,9 @@ export const removeUser = createAsyncThunk<undefined, { userID: string }, {}>(
       `users/${state.user.id}/sharedBoards/${state.boards.currentBoardID}__${state.user.uName}/GUESTS/${userID}`
     );
 
-    remove(dbRef);
+    remove(dbRef).then(() => {
+      appDispatch(clearPending());
+    });
 
     return undefined;
   }

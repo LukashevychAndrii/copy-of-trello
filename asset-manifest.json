@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/copy-of-trello/static/css/main.30a4f672.css",
-    "main.js": "/copy-of-trello/static/js/main.768089da.js",
+    "main.js": "/copy-of-trello/static/js/main.ce860963.js",
     "static/media/default-avatar--white.png": "/copy-of-trello/static/media/default-avatar--white.22442c9fb2c59809a60d.png",
     "static/media/default-avatar--black.png": "/copy-of-trello/static/media/default-avatar--black.07262702af79c582e9f8.png",
     "static/media/instagram.svg": "/copy-of-trello/static/media/instagram.c08ed5b69e335275e46cb6ffe23b563d.svg",
@@ -23,10 +23,10 @@
     "static/media/checkmark2.svg": "/copy-of-trello/static/media/checkmark2.0871d3cfaf1b4eec6a66b8c7f5085579.svg",
     "static/media/facebook.svg": "/copy-of-trello/static/media/facebook.e0c46f79b2857cbb5afff6bef47c8bc2.svg",
     "main.30a4f672.css.map": "/copy-of-trello/static/css/main.30a4f672.css.map",
-    "main.768089da.js.map": "/copy-of-trello/static/js/main.768089da.js.map"
+    "main.ce860963.js.map": "/copy-of-trello/static/js/main.ce860963.js.map"
   },
   "entrypoints": [
     "static/css/main.30a4f672.css",
-    "static/js/main.768089da.js"
+    "static/js/main.ce860963.js"
   ]
 }

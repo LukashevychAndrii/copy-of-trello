@@ -27,19 +27,24 @@ import SignInPage from "./pages/SignInPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <BoardList /> },
-      { path: ":boardID", element: <BoardPage /> },
-      { path: "sign-up", element: <SignUpPage /> },
-      { path: "sign-in", element: <SignInPage /> },
-      { path: "acc-details", element: <AccDetails /> },
-      { path: "notification", element: <NotificationPage /> },
       {
-        path: "guest-board",
-        children: [{ path: ":guestBoardID", element: <GuestBoardsPage /> }],
+        path: "/copy-of-trello",
+        element: <RootLayout />,
+        errorElement: <ErrorPage />,
+        children: [
+          { index: true, element: <BoardList /> },
+          { path: ":boardID", element: <BoardPage /> },
+          { path: "sign-up", element: <SignUpPage /> },
+          { path: "sign-in", element: <SignInPage /> },
+          { path: "acc-details", element: <AccDetails /> },
+          { path: "notification", element: <NotificationPage /> },
+          {
+            path: "guest-board",
+            children: [{ path: ":guestBoardID", element: <GuestBoardsPage /> }],
+          },
+        ],
       },
     ],
   },

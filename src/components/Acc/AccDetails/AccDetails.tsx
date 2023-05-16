@@ -27,7 +27,7 @@ const AccDetails = () => {
             alertError: false,
           })
         );
-        navigate("/");
+        navigate("/copy-of-trello");
         dispatch(removeUser());
         window.location.reload();
       })

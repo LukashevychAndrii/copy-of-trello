@@ -100,7 +100,8 @@ const AddUser: React.FC<props> = (props) => {
           </div>
         </label>
         <div className={styles["add-user__clue"]}>
-          You can get user id in your <Link to="/acc-details">Acc Details</Link>
+          You can get user id in your{" "}
+          <Link to="/copy-of-trello/acc-details">Acc Details</Link>
         </div>
       </form>
       {inviteUserName && (

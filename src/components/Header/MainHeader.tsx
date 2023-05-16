@@ -20,7 +20,7 @@ const MainHeader = () => {
 
   return (
     <header data-theme={`${theme}`} className={styles["header"]}>
-      <NavLink className={getStyle} to="/">
+      <NavLink className={getStyle} to="/copy-of-trello">
         Boards
       </NavLink>
       {userName ? (
@@ -47,10 +47,10 @@ const MainHeader = () => {
       ) : (
         <div className={styles["header__auth-nav"]}>
           <ThemeToggleBtn />
-          <NavLink className={getStyle} to="sign-in">
+          <NavLink className={getStyle} to="/copy-of-trello/sign-in">
             Sign In
           </NavLink>
-          <NavLink className={getStyle} to="sign-up">
+          <NavLink className={getStyle} to="/copy-of-trello/sign-up">
             Sign Up
           </NavLink>
         </div>

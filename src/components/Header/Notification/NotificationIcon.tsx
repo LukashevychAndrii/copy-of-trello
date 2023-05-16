@@ -10,7 +10,10 @@ const NotificationIcon = () => {
   );
   return (
     <>
-      <Link to="notification" className={styles["notification"]}>
+      <Link
+        to="/copy-of-trello/notification"
+        className={styles["notification"]}
+      >
         <NotifIcon className={styles["notification__icon"]} />
         <div className={styles["notification__count__wrapper"]}>
           <span className={styles["notification__count"]}>{notifCount}</span>

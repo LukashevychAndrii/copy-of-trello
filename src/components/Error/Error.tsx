@@ -24,7 +24,10 @@ const Error = () => {
           <div className={styles["error-container__text"]}>
             This page is not supported
           </div>
-          <Link className={styles["error-container__link"]} to="/">
+          <Link
+            className={styles["error-container__link"]}
+            to="/copy-of-trello"
+          >
             Back to Boards Page
           </Link>
         </div>

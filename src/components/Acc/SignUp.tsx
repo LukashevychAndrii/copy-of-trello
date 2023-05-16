@@ -53,7 +53,7 @@ const SignUp = () => {
           })
         );
 
-        navigate("/");
+        navigate("/copy-of-trello");
       })
       .catch((error) => {
         dispatch(createAlert(getErrorDetails(error.code)));
@@ -67,7 +67,8 @@ const SignUp = () => {
 
       <Form getUserData={getUserData} />
       <p className={styles["form__text"]}>
-        Or, if you already have an account <Link to="/sign-in">Sign In</Link>
+        Or, if you already have an account{" "}
+        <Link to="/copy-of-trello/sign-in">Sign In</Link>
       </p>
     </div>
   );

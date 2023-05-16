@@ -78,7 +78,7 @@ const AddNewBoard = () => {
         {!userID ? (
           <Link
             create-btn-theme={theme}
-            to="sign-in"
+            to="/copy-of-trello/sign-in"
             className={styles["boards__add-btn"]}
           >
             Add new board

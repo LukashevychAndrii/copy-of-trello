@@ -46,7 +46,7 @@ const SignIn = () => {
                   alertError: false,
                 })
               );
-              navigate("/");
+              navigate("/copy-of-trello");
             } else {
               dispatch(
                 createAlert({
@@ -78,7 +78,8 @@ const SignIn = () => {
       <span className={styles["form__title"]}>Sign In</span>
       <Form getUserData={getUserData} />
       <p className={styles["form__text"]}>
-        Or, if you don't have an account <Link to="/sign-up">Sign Up</Link>
+        Or, if you don't have an account{" "}
+        <Link to="/copy-of-trello/sign-up">Sign Up</Link>
       </p>
     </div>
   );

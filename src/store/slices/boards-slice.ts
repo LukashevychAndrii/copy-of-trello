@@ -340,7 +340,7 @@ export const fetchGuestBoard = createAsyncThunk<
               `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`
             );
             remove(dbRef);
-            navigate("/");
+            navigate("/copy-of-trello");
             appDispatch(
               createAlert({
                 alertTitle: "Database error!",
@@ -440,7 +440,7 @@ export const updateBoard = createAsyncThunk<
                 alertError: true,
               })
             );
-            navigate("/");
+            navigate("/copy-of-trello");
           }
         })
         .catch(() => {
@@ -484,7 +484,7 @@ export const updateBoard = createAsyncThunk<
               alertError: true,
             })
           );
-          navigate("/");
+          navigate("/copy-of-trello");
         }
       });
     }

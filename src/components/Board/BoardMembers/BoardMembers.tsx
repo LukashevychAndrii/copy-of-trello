@@ -40,7 +40,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
           alertError: true,
         })
       );
-      navigate("/");
+      navigate("/copy-of-trello");
     }
   }, [currentBoard, guest, dispatch, navigate]);
 
@@ -67,7 +67,7 @@ const BoardMembers: React.FC<{ guest: boolean }> = ({ guest }) => {
             ownerID: guestBoard.ownerID,
           })
         );
-        navigate("/");
+        navigate("/copy-of-trello");
         dispatch(
           createAlert({
             alertTitle: "Database error!",

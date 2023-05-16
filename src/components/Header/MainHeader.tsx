@@ -20,7 +20,7 @@ const MainHeader = () => {
 
   return (
     <header data-theme={`${theme}`} className={styles["header"]}>
-      <NavLink className={getStyle} to="/copy-of-trello">
+      <NavLink end className={getStyle} to="/copy-of-trello">
         Boards
       </NavLink>
       {userName ? (

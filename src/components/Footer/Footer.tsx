@@ -22,7 +22,7 @@ const Footer = () => {
         <li className={styles["footer__links-1__item"]}>Careers</li>
         <li className={styles["footer__links-1__item"]}>FAQ</li>
         <li className={styles["footer__links-1__item"]}>Legal</li>
-        <li className={styles["footer__links-1__item"]}>Contanct</li>
+        <li className={styles["footer__links-1__item"]}>Contact</li>
       </ul>
       <div className={styles["footer__text"]}>Stay in touch</div>
       <ul className={styles["footer__links-2"]}>

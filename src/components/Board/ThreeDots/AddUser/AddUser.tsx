@@ -15,6 +15,7 @@ interface props {
 }
 
 const AddUser: React.FC<props> = (props) => {
+  const [checked, setChecked] = React.useState<boolean>(false);
   const theme = useAppSelector((state) => state.theme.theme);
   const dispatch = useAppDispatch();
   const userID = useAppSelector((state) => state.user.id);
@@ -76,7 +77,13 @@ const AddUser: React.FC<props> = (props) => {
 
   return (
     <div ref={formRef}>
-      <form theme-three-dots={theme} className={styles["add-user"]}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        theme-three-dots={theme}
+        className={styles["add-user"]}
+      >
         <label htmlFor="add-user"></label>
         <input
           type="text"
@@ -93,12 +100,23 @@ const AddUser: React.FC<props> = (props) => {
           name="question-mark"
           id="question-mark"
           className={styles["add-user__checkbox"]}
+          checked={checked}
+          onChange={(e) => {
+            setChecked(e.target.checked);
+          }}
         />
-        <label htmlFor="question-mark">
-          <div className={styles["add-user__question-mark__wrapper"]}>
-            <span className={styles["add-user__question-mark"]}> &#63;</span>
-          </div>
-        </label>
+        <label htmlFor="question-mark"></label>
+        <div
+          onMouseOver={() => {
+            setChecked(true);
+          }}
+          onMouseLeave={() => {
+            setChecked(false);
+          }}
+          className={styles["add-user__question-mark__wrapper"]}
+        >
+          <span className={styles["add-user__question-mark"]}> &#63;</span>
+        </div>
         <div className={styles["add-user__clue"]}>
           You can get user id in your{" "}
           <Link to="/copy-of-trello/acc-details">Acc Details</Link>

@@ -22,6 +22,14 @@ const AddNewBoard = () => {
           alertError: true,
         })
       );
+    } else if (boardName.trim().length === 0) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Min length of title is 1!",
+          alertError: true,
+        })
+      );
     } else if (boardName.trim().length > 0) {
       if (boards && Object.keys(boards) && Object.keys(boards).length >= 10) {
         dispatch(
@@ -33,7 +41,6 @@ const AddNewBoard = () => {
         );
       } else {
         dispatch(createBoard({ boardName: boardName }));
-        console.log("qw");
         setChecked(false);
         setBoardName("");
         if (boards && Object.keys(boards)) {

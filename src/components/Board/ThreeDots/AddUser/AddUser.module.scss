@@ -17,6 +17,9 @@
     padding: 0.5rem;
   }
   &__question-mark {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
     font-weight: 600;
     font-size: 2rem;
     position: absolute;

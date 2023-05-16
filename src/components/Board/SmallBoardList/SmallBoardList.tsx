@@ -15,7 +15,7 @@ const SmallBoardList = () => {
           {Object.values(boards).map((el, index) => (
             <li key={index}>
               <Link
-                to={`/${Object.keys(boards)[index]}`}
+                to={`/copy-of-trello/${Object.keys(boards)[index]}`}
                 small-board-theme={theme}
                 style={{
                   backgroundImage: el.boardImg && `url(${el.boardImg})`,

@@ -294,7 +294,7 @@ export const fetchGuestBoard = createAsyncThunk<
   "boards/fetchGuestBoard",
   async function ({ boardID, navigate }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
-    appDispatch(setPending());
+    // appDispatch(setPending());
     const state = getState() as RootState;
     const db = getDatabase();
     const boardDATA = state.boards.guestsBoards.find(
@@ -333,8 +333,10 @@ export const fetchGuestBoard = createAsyncThunk<
               }
             });
           }
-          if (board.exists()) resolve(board.val());
-          else {
+          if (board.exists()) {
+            resolve(board.val());
+            appDispatch(clearPending());
+          } else {
             const dbRef = ref(
               db,
               `users/${state.user.id}/guestsBoards/${boardDATA.boardID}__${boardDATA.OWNER}`

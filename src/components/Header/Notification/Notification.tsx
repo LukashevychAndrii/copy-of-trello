@@ -3,10 +3,13 @@ import styles from "./Notification.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import defaultImg from "../../../img/default-avatar--black.png";
 import { acceptInvite, rejectInvite } from "../../../store/slices/invite-slice";
+import { useNavigate } from "react-router-dom";
 
 const Notification: React.FC = () => {
   const [inviteIDS, setInviteIDS] = React.useState<string[]>([]);
   const [inviteVALUES, setInviteVALUES] = React.useState<any[]>([]);
+
+  const navigate = useNavigate();
 
   const invites = useAppSelector((state) => state.invite.invites);
 
@@ -37,6 +40,7 @@ const Notification: React.FC = () => {
         boardName: boardName,
         inviterPhoto: inviterPhoto,
         boardPhoto: boardPhoto,
+        navigate: navigate,
       })
     );
   }

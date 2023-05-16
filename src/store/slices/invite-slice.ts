@@ -13,6 +13,8 @@ import {
 import { app } from "../../firebase";
 import { clearPending, setPending } from "./pending-slice";
 import { createAlert } from "./alert-slice";
+import { NavigateFunction } from "react-router-dom";
+import { resolve } from "path";
 
 interface initialStateI {
   invites: {
@@ -160,6 +162,7 @@ export const acceptInvite = createAsyncThunk<
     boardName: string;
     inviterPhoto: string;
     boardPhoto: string;
+    navigate: NavigateFunction;
   },
   {}
 >(
@@ -174,59 +177,79 @@ export const acceptInvite = createAsyncThunk<
       boardName,
       inviterPhoto,
       boardPhoto,
+      navigate,
     },
     { getState, dispatch }
   ) {
     const appDispatch = dispatch as AppDispatch;
-    appDispatch(setPending());
+    // appDispatch(setPending());
     const state = getState() as RootState;
-    dispatch(rejectInvite({ notifID: notifID }))
-      .then(() => {
-        const db = getDatabase(app);
-        const dbRef = ref(
-          db,
-          `users/${state.user.id}/guestsBoards/${boardID}__${inviterName}`
-        );
-        set(dbRef, {
-          inviterID: inviterID,
-          boardID: boardID,
-          inviterName: inviterName,
-        })
-          .then(() => {
-            const dbRef = ref(db, `users/${inviterID}/sharedBoards/ownerDATA`);
-            set(dbRef, {
-              OWNER: inviterName,
-              ownerID: inviterID,
-              ownerPHOTO: inviterPhoto,
-            });
+    await new Promise<void>((resolve) => {
+      return dispatch(rejectInvite({ notifID: notifID }))
+        .then(() => {
+          const db = getDatabase(app);
+          const dbRef = ref(
+            db,
+            `users/${state.user.id}/guestsBoards/${boardID}__${inviterName}`
+          );
+          return set(dbRef, {
+            inviterID: inviterID,
+            boardID: boardID,
+            inviterName: inviterName,
           })
-          .then(() => {
-            const dbRef = ref(
-              db,
-              `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
-            );
-            update(dbRef, {
-              boardID: boardID,
-              boardDATA: inviterDATA,
-              boardNAME: boardName,
-              boardPhoto: boardPhoto,
-            }).then(() => {
+            .then(() => {
               const dbRef = ref(
                 db,
-                `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+                `users/${inviterID}/sharedBoards/ownerDATA`
               );
-              const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
-              set(dbRef, {
-                guestID: state.user.id,
-                guestName: state.user.uName,
-                guestPhoto: uPhoto,
+              return set(dbRef, {
+                OWNER: inviterName,
+                ownerID: inviterID,
+                ownerPHOTO: inviterPhoto,
+              });
+            })
+            .then(() => {
+              const dbRef = ref(
+                db,
+                `users/${inviterID}/sharedBoards/${boardID}__${inviterName}`
+              );
+              return update(dbRef, {
+                boardID: boardID,
+                boardDATA: inviterDATA,
+                boardNAME: boardName,
+                boardPhoto: boardPhoto,
               }).then(() => {
-                appDispatch(clearPending());
+                const dbRef = ref(
+                  db,
+                  `users/${inviterID}/sharedBoards/${boardID}__${inviterName}/GUESTS/${state.user.id}`
+                );
+                const uPhoto = state.user.uPhoto ? state.user.uPhoto : "";
+                resolve(undefined);
+                return set(dbRef, {
+                  guestID: state.user.id,
+                  guestName: state.user.uName,
+                  guestPhoto: uPhoto,
+                });
               });
             });
-          });
+        })
+        .catch(() => {
+          dispatch(
+            createAlert({
+              alertTitle: "Error!",
+              alertText: "An error occurs while accepting invite",
+              alertError: true,
+            })
+          );
+          appDispatch(clearPending());
+        });
+    })
+      .then(() => {
+        appDispatch(clearPending());
+        navigate(`/copy-of-trello/guest-board/${boardID}`);
       })
       .catch(() => {
+        navigate("/copy-of-trello");
         dispatch(
           createAlert({
             alertTitle: "Error!",

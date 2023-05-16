@@ -42,7 +42,7 @@ const Form: React.FC<props> = ({ getUserData }) => {
     if (e.target.value.trim().length < 5) {
       setUNameError("Username is too short! (5-10 letters)");
     } else if (e.target.value.trim().length > 10) {
-      setUNameError("Username is too short!");
+      setUNameError("Username is too long! (max length is 10)");
     } else {
       setUNameError("");
     }

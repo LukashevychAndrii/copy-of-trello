@@ -1,7 +1,7 @@
 .boards {
   &__add-btn {
     background-color: rgba($color: #000000, $alpha: 0.8);
-    color: var(--color-white-dark);
+    color: var(--color-white-dark) !important;
     text-decoration: none;
     height: 5rem;
     border-radius: 20rem;
@@ -14,7 +14,7 @@
     border: none;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: -0.1rem -0.1rem 0.1rem #6b6b6b,
+    box-shadow: -0.1rem -0.1rem 0.1rem #ffffff,
       0.1rem 0.3rem 0.1rem var(--color-black);
     &:hover {
       // transform: translateY(-0.2rem);
@@ -58,7 +58,7 @@
 
       &--create-btn {
         border: none;
-        background-color: inherit;
+        // background-color: inherit;
         padding: 0.5rem 1rem;
         border-radius: 0.4rem;
         box-shadow: 0.1rem 0.3rem 1rem rgba($color: #000000, $alpha: 0.7);
@@ -94,9 +94,9 @@
 
 [create-btn-theme="light"] {
   background-color: var(--default-theme-light);
-  color: var(--color-dark-light);
+  color: var(--color-black) !important;
 }
 [create-btn-theme="dark"] {
   background-color: var(--color-board-group-default);
-  color: var(--color-white-dark);
+  color: var(--color-white-dark) !important;
 }

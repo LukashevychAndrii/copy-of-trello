@@ -76,11 +76,17 @@ const AddNewBoard = () => {
       />
       <label htmlFor="add-board">
         {!userID ? (
-          <Link to="sign-in" className={styles["boards__add-btn"]}>
+          <Link
+            create-btn-theme={theme}
+            to="sign-in"
+            className={styles["boards__add-btn"]}
+          >
             Add new board
           </Link>
         ) : (
-          <div className={styles["boards__add-btn"]}>Add new board</div>
+          <div create-btn-theme={theme} className={styles["boards__add-btn"]}>
+            Add new board
+          </div>
         )}
       </label>
       <div className={styles["boards__create-panel"]}>

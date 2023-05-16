@@ -16,7 +16,11 @@ const themeSlice = createSlice({
       localStorage.setItem("todo-theme", state.theme);
     },
     setThemeInitial(state, action) {
-      state.theme = action.payload.theme;
+      if (action.payload.theme) {
+        state.theme = action.payload.theme;
+      } else {
+        state.theme = "dark";
+      }
     },
   },
 });

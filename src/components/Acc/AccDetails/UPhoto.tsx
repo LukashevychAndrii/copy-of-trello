@@ -87,7 +87,11 @@ const UPhoto = () => {
           </span>
         </label>
 
-        <div ref={ref2} className={styles["acc-details__edit-btn--choise"]}>
+        <div
+          edit-btn-theme={theme}
+          ref={ref2}
+          className={styles["acc-details__edit-btn--choise"]}
+        >
           <span
             style={{ cursor: "pointer" }}
             onClick={() => {

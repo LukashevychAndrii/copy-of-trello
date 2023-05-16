@@ -139,3 +139,23 @@
   background-color: var(--color-board-default);
   color: var(--color-white-dark);
 }
+
+[edit-btn-theme="light"] {
+  background-color: var(--default-theme-light);
+  color: var(--color-dark-light);
+  border-color: var(--color-grey);
+  &::after {
+    background-color: var(--color-grey);
+  }
+  &::before {
+    background-color: var(--default-theme-light);
+  }
+  & span {
+    background-color: var(--color-grey);
+  }
+}
+
+[edit-btn-theme="dark"] {
+  background-color: var(--color-board-group-default);
+  color: var(--color-white-dark);
+}

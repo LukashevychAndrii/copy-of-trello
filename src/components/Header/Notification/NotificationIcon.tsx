@@ -44,18 +44,19 @@ const NotificationIcon = () => {
     <>
       <Link
         to="/copy-of-trello/notification"
-        className={`${styles["notification"]}`}
+        className={`${styles["notification"]} ${
+          notifCount > 0 && styles["notification__new"]
+        }`}
       >
-        {notifSound && (
-          <audio
-            style={{ display: "none" }}
-            ref={notifRef}
-            controls
-            src={notif}
-          ></audio>
+        {notifSound && notifCount > 0 && !firstRender && (
+          <audio style={{ display: "none" }} ref={notifRef} src={notif}></audio>
         )}
         <NotifIcon className={styles["notification__icon"]} />
-        <div className={styles["notification__count__wrapper"]}>
+        <div
+          className={`${styles["notification__count__wrapper"]} ${
+            notifCount > 0 && styles["notification__count__wrapper__new-notif"]
+          }`}
+        >
           <span className={styles["notification__count"]}>{notifCount}</span>
         </div>
       </Link>

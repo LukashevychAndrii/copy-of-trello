@@ -1,9 +1,10 @@
 {
   "files": {
-    "main.css": "/copy-of-trello/static/css/main.30a4f672.css",
-    "main.js": "/copy-of-trello/static/js/main.ce860963.js",
+    "main.css": "/copy-of-trello/static/css/main.f329fae3.css",
+    "main.js": "/copy-of-trello/static/js/main.4c327eb8.js",
     "static/media/default-avatar--white.png": "/copy-of-trello/static/media/default-avatar--white.22442c9fb2c59809a60d.png",
     "static/media/default-avatar--black.png": "/copy-of-trello/static/media/default-avatar--black.07262702af79c582e9f8.png",
+    "static/media/new-notif-sound.mp3": "/copy-of-trello/static/media/new-notif-sound.cd572cf6af4c5c7d9518.mp3",
     "static/media/instagram.svg": "/copy-of-trello/static/media/instagram.c08ed5b69e335275e46cb6ffe23b563d.svg",
     "static/media/sun.svg": "/copy-of-trello/static/media/sun.ac9317afacbd31825c78ca360013cc9d.svg",
     "static/media/user-plus.svg": "/copy-of-trello/static/media/user-plus.06369a622980350a7e2f19fa598da6d2.svg",
@@ -22,11 +23,11 @@
     "static/media/moon.svg": "/copy-of-trello/static/media/moon.442cc22cdb5a60d56b610812c541932d.svg",
     "static/media/checkmark2.svg": "/copy-of-trello/static/media/checkmark2.0871d3cfaf1b4eec6a66b8c7f5085579.svg",
     "static/media/facebook.svg": "/copy-of-trello/static/media/facebook.e0c46f79b2857cbb5afff6bef47c8bc2.svg",
-    "main.30a4f672.css.map": "/copy-of-trello/static/css/main.30a4f672.css.map",
-    "main.ce860963.js.map": "/copy-of-trello/static/js/main.ce860963.js.map"
+    "main.f329fae3.css.map": "/copy-of-trello/static/css/main.f329fae3.css.map",
+    "main.4c327eb8.js.map": "/copy-of-trello/static/js/main.4c327eb8.js.map"
   },
   "entrypoints": [
-    "static/css/main.30a4f672.css",
-    "static/js/main.ce860963.js"
+    "static/css/main.f329fae3.css",
+    "static/js/main.4c327eb8.js"
   ]
 }

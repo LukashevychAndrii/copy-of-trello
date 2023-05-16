@@ -19,7 +19,7 @@ import "simplebar-react/dist/simplebar.min.css";
 import BoardList from "./components/Board/BoardsList/BoardsList";
 import { fetchBoards, fetchGuestsBoards } from "./store/slices/boards-slice";
 import { getInvite } from "./store/slices/invite-slice";
-import { useAppDispatch } from "./hooks/redux";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import GuestBoardsPage from "./pages/GuestBoardsPage";
 import ErrorPage from "./pages/ErrorPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -94,6 +94,13 @@ function App() {
       }
     });
   }, [dispatch]);
+
+  const userID = useAppSelector((state) => state.user.id);
+  React.useEffect(() => {
+    if (userID) {
+      dispatch(fetchBoards());
+    }
+  }, [userID, dispatch]);
 
   return (
     <SimpleBar style={{ maxHeight: "100vh" }} forceVisible="x">

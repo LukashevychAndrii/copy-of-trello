@@ -27,7 +27,7 @@ const MainHeader = () => {
         <div className={styles["header__items-wrapper"]}>
           <ThemeToggleBtn />
           <NotificationIcon />
-          <NavLink className={getStyle} to="acc-details">
+          <NavLink className={getStyle} to="/copy-of-trello/acc-details">
             <div className={styles["header__acc"]}>
               <img
                 className={styles["header__user-photo"]}

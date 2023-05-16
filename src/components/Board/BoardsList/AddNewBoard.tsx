@@ -33,6 +33,7 @@ const AddNewBoard = () => {
         );
       } else {
         dispatch(createBoard({ boardName: boardName }));
+        console.log("qw");
         setChecked(false);
         setBoardName("");
         if (boards && Object.keys(boards)) {

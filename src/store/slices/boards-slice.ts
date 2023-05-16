@@ -294,7 +294,7 @@ export const fetchGuestBoard = createAsyncThunk<
   "boards/fetchGuestBoard",
   async function ({ boardID, navigate }, { getState, dispatch }) {
     const appDispatch = dispatch as AppDispatch;
-    // appDispatch(setPending());
+    appDispatch(setPending());
     const state = getState() as RootState;
     const db = getDatabase();
     const boardDATA = state.boards.guestsBoards.find(
@@ -357,6 +357,7 @@ export const fetchGuestBoard = createAsyncThunk<
     })
       .then((snapshot) => {
         const boardDATA = snapshot;
+        dispatch(clearPending());
         new Promise((resolve) => {
           const dbRef = ref(
             db,
@@ -372,6 +373,10 @@ export const fetchGuestBoard = createAsyncThunk<
             alertError: true,
           })
         );
+        dispatch(clearPending());
+      })
+      .finally(() => {
+        dispatch(clearPending());
       });
 
     return undefined;

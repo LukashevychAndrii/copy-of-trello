@@ -99,6 +99,7 @@ function App() {
   React.useEffect(() => {
     if (userID) {
       dispatch(fetchBoards());
+      dispatch(getInvite());
     }
   }, [userID, dispatch]);
 

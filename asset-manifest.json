@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/copy-of-trello/static/css/main.e4ec90fe.css",
+    "main.js": "/copy-of-trello/static/js/main.16af56b2.js",
+    "static/media/default-avatar--white.png": "/copy-of-trello/static/media/default-avatar--white.22442c9fb2c59809a60d.png",
+    "static/media/default-avatar--black.png": "/copy-of-trello/static/media/default-avatar--black.07262702af79c582e9f8.png",
+    "static/media/instagram.svg": "/copy-of-trello/static/media/instagram.c08ed5b69e335275e46cb6ffe23b563d.svg",
+    "static/media/sun.svg": "/copy-of-trello/static/media/sun.ac9317afacbd31825c78ca360013cc9d.svg",
+    "static/media/user-plus.svg": "/copy-of-trello/static/media/user-plus.06369a622980350a7e2f19fa598da6d2.svg",
+    "static/media/twitter.svg": "/copy-of-trello/static/media/twitter.f2c6fa57217e8a945eadcf4e174245a6.svg",
+    "static/media/mail.svg": "/copy-of-trello/static/media/mail.933bf33e2b37f15651a99727c6334b91.svg",
+    "static/media/pencil.svg": "/copy-of-trello/static/media/pencil.3612db63a76428de9a05374e9a1faedc.svg",
+    "static/media/lock.svg": "/copy-of-trello/static/media/lock.1dd710a74fceefb9f670ce1e13567305.svg",
+    "static/media/user-o.svg": "/copy-of-trello/static/media/user-o.c476de0321ffa6488b51b741fa494b10.svg",
+    "index.html": "/copy-of-trello/index.html",
+    "static/media/linkedin2.svg": "/copy-of-trello/static/media/linkedin2.8d810cdc84a740ee7472fc052015454e.svg",
+    "static/media/notification.svg": "/copy-of-trello/static/media/notification.bebef96050c3123088ca24052b639adf.svg",
+    "static/media/delete_forever.svg": "/copy-of-trello/static/media/delete_forever.f35f9ed408cae88b639b4c92a7188f7e.svg",
+    "static/media/error_outline.svg": "/copy-of-trello/static/media/error_outline.4993da1e2f8176ddc5431f0d8e6b4341.svg",
+    "static/media/checkmark.svg": "/copy-of-trello/static/media/checkmark.b04c3a1248558affd392f6e241031590.svg",
+    "static/media/paint-format.svg": "/copy-of-trello/static/media/paint-format.59cccf0181e40f287477d339d52432f2.svg",
+    "static/media/moon.svg": "/copy-of-trello/static/media/moon.442cc22cdb5a60d56b610812c541932d.svg",
+    "static/media/checkmark2.svg": "/copy-of-trello/static/media/checkmark2.0871d3cfaf1b4eec6a66b8c7f5085579.svg",
+    "static/media/facebook.svg": "/copy-of-trello/static/media/facebook.e0c46f79b2857cbb5afff6bef47c8bc2.svg",
+    "main.e4ec90fe.css.map": "/copy-of-trello/static/css/main.e4ec90fe.css.map",
+    "main.16af56b2.js.map": "/copy-of-trello/static/js/main.16af56b2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e4ec90fe.css",
+    "static/js/main.16af56b2.js"
+  ]
+}
